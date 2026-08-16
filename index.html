@@ -6,8 +6,8 @@
 <title>Hearth 95 — Family Meal Planner</title>
 <meta name="theme-color" content="#000080">
 <link rel="manifest" href="./manifest.json">
-<link rel="icon" type="image/png" href="./icons/icon-192.png">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="icon" type="image/png" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bungee&display=swap" rel="stylesheet">
@@ -307,7 +307,7 @@ label.field-label{
 .tabbtn span{font-size:9px; font-weight:700;}
 .tabbtn.active{
   background: #E0E0E0;
-  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
+  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-dark);
   box-shadow: inset 1px 1px 0px var(--win-border-dark);
   color: var(--win-blue);
 }
@@ -1147,16 +1147,27 @@ function openPlanModal({mealId=null, defaultDate=null, existingEntry=null}={}){
   let mealServings = existingEntry ? existingEntry.servings : state.householdSize;
   let isRecurring = existingEntry ? existingEntry.recurring : false;
   let selectedDays = existingEntry && existingEntry.daysOfWeek ? [...existingEntry.daysOfWeek] : [new Date(d0+'T00:00:00').getDay()];
+  let planSearchQuery = '';
 
   const DOW_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   function bodyHtml(){
     const fixedMealName = mealId ? (state.meals.find(m=>m.id===selMeal)||{}).name : null;
+    
+    const filteredMeals = state.meals.filter(m => {
+      if(!planSearchQuery) return true;
+      const q = planSearchQuery.toLowerCase();
+      return m.name.toLowerCase().includes(q) || m.ingredients.some(i => i.name.toLowerCase().includes(q));
+    });
+
     return `
       <h2>Menu Planner Builder</h2>
       ${fixedMealName ? `<div class="card" style="padding:6px 10px; margin-bottom:6px;"><strong>${fixedMealName}</strong></div>` :
         `<label class="field-label">Select Recipe</label>
-         <select id="planMealSelect">${state.meals.map(m=>`<option value="${m.id}" ${m.id===selMeal?'selected':''}>${m.name}</option>`).join('')}</select>`}
+         <input type="text" id="planSearchInput" placeholder="🔍 Search recipe or ingredient..." value="${planSearchQuery}" style="margin-bottom:4px;">
+         <select id="planMealSelect" size="4" style="height:90px; margin-bottom:6px;">
+           ${filteredMeals.map(m=>`<option value="${m.id}" ${m.id===selMeal?'selected':''}>${m.name} (${m.type})</option>`).join('')}
+         </select>`}
       
       <label class="field-label">Meal Type</label>
       <div id="typeToggle" style="display:flex; gap:4px; flex-wrap:wrap;">
@@ -1202,6 +1213,20 @@ function openPlanModal({mealId=null, defaultDate=null, existingEntry=null}={}){
 
   function wire(){
     document.getElementById('cancelPlan').onclick = closeModal;
+    
+    const searchIn = document.getElementById('planSearchInput');
+    if(searchIn){
+      searchIn.oninput = (e)=>{
+        planSearchQuery = e.target.value;
+        refresh();
+        const newSearchIn = document.getElementById('planSearchInput');
+        if(newSearchIn){
+          newSearchIn.focus();
+          newSearchIn.setSelectionRange(newSearchIn.value.length, newSearchIn.value.length);
+        }
+      };
+    }
+
     const mealSel = document.getElementById('planMealSelect');
     if(mealSel) mealSel.onchange = ()=>{ selMeal = mealSel.value; };
     const servIn = document.getElementById('planServingsInput');
