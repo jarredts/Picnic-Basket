@@ -310,7 +310,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v3';
+const STORE_KEY = 'hearth_v4';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -458,6 +458,7 @@ function defaultState(){
     calendarView:'week',
     anchorDate: todayISO(),
     selectedDate: todayISO(),
+    householdSize: 5,
     budgetTarget: 150,
     meals: [...breakfasts, ...lunches, ...dinnerMeals],
     entries: [
@@ -480,6 +481,7 @@ function load(){
     if(!raw) return defaultState();
     const parsed = JSON.parse(raw);
     const merged = {...defaultState(), ...parsed};
+    merged.householdSize = merged.householdSize || 5;
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', checked:[], recurring:false, ...e}));
     merged.meals = (merged.meals||[]).map(m=>({...m, ingredients:(m.ingredients||[]).map(i=>({cost:0, ...i}))}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
@@ -488,16 +490,30 @@ function load(){
 }
 function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
 
+/* ============================= SCALING HELPERS ============================= */
+function getScaledMealCost(meal){
+  const baseServings = meal.servings || 4;
+  const costPerPerson = (meal.costTotal || 0) / baseServings;
+  return costPerPerson * state.householdSize;
+}
+function getScaledQty(qty, meal){
+  const baseServings = meal.servings || 4;
+  return qty * (state.householdSize / baseServings);
+}
+function getScaledIngredientCost(ingCost, meal){
+  const baseServings = meal.servings || 4;
+  const costPerPerson = (ingCost || 0) / baseServings;
+  return costPerPerson * state.householdSize;
+}
+
 /* ============================= RECURRING AUTO-GENERATOR ============================= */
 function checkRecurringEntries(){
   const todayStr = todayISO();
   let updated = false;
-  // Look for any recurring entries in the past or present, and ensure they exist for upcoming matching weekday or next 7 days
   state.entries.forEach(entry => {
     if(entry.recurring){
       const originalDate = new Date(entry.date+'T00:00:00');
       const dayOfWeek = originalDate.getDay();
-      // Check next 4 weeks for this day of week
       for(let i=1; i<=28; i++){
         const checkDate = new Date();
         checkDate.setDate(checkDate.getDate() + i);
@@ -549,21 +565,24 @@ function round4(n){
   const r = Math.round(n*4)/4;
   return r % 1 === 0 ? r : Math.round(r*100)/100;
 }
-function fmtQtyUnit(qty, unit){ return `${qty} ${unit}`; }
+function fmtQtyUnit(qty, unit){ return `${round4(qty)} ${unit}`; }
 
 /* ============================= SHOPPING LIST AGGREGATION ============================= */
-function addIngredientsToShoppingList(ingredients){
+function addIngredientsToShoppingListForEntry(meal, entryChecked){
   let added = 0;
-  ingredients.forEach(ing=>{
+  meal.ingredients.forEach(ing=>{
+    if(entryChecked.includes(ing.id)) return; // skip checked items
+    const scaledQty = getScaledQty(ing.qty, meal);
+    const scaledCost = getScaledIngredientCost(ing.cost, meal);
     const cat = UNITS[ing.unit].cat;
-    const base = toBase(ing.qty, ing.unit);
+    const base = toBase(scaledQty, ing.unit);
     const key = ing.name.trim().toLowerCase();
     let item = state.shoppingList.find(i => i.key===key && i.category===cat);
     if(item){
       item.base += base;
-      item.costEstimate = (item.costEstimate||0) + (ing.cost||0);
+      item.costEstimate = (item.costEstimate||0) + scaledCost;
     } else {
-      state.shoppingList.push({id:uid(), key, name:ing.name.trim(), category:cat, base, purchased:false, costEstimate: ing.cost||0});
+      state.shoppingList.push({id:uid(), key, name:ing.name.trim(), category:cat, base, purchased:false, costEstimate: scaledCost});
     }
     added++;
   });
@@ -650,9 +669,17 @@ function byType(a,b){ return TYPE_ORDER.indexOf(a.mealType)-TYPE_ORDER.indexOf(b
 function renderCalendarTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
+    <div style="display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.1); padding:4px 10px; border-radius:999px; border:1px solid rgba(244,241,233,.25);">
+      <span style="font-size:12px; font-weight:600; color:#F4F1E9;">Servings:</span>
+      <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:44px; padding:2px 4px; font-size:13px; font-weight:700; text-align:center; border-radius:6px; border:none; background:#fff; color:var(--ink);">
+    </div>
     <button class="pill ${state.calendarView==='week'?'active':''}" id="viewWeekBtn">Week</button>
     <button class="pill ${state.calendarView==='month'?'active':''}" id="viewMonthBtn">Month</button>
   `;
+  controls.querySelector('#globalServingsInput').onchange = (e)=>{
+    const val = parseInt(e.target.value, 10);
+    if(val > 0){ state.householdSize = val; save(); render(); }
+  };
   controls.querySelector('#viewWeekBtn').onclick=()=>{state.calendarView='week'; save(); render();};
   controls.querySelector('#viewMonthBtn').onclick=()=>{state.calendarView='month'; save(); render();};
 
@@ -690,10 +717,11 @@ function renderWeekView(view){
       dayEntries.forEach(e=>{
         const meal = state.meals.find(m=>m.id===e.mealId);
         if(!meal) return;
+        const scaledCost = getScaledMealCost(meal);
         const r = document.createElement('div');
         r.className='week-meal-row';
         r.style.borderLeftColor = TYPE_COLORS[e.mealType];
-        r.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span><span class="mname">${meal.name} ${e.recurring?'<span style="font-size:10px;color:var(--gold-dark);">&#8635;</span>':''}</span><span class="cost">$${(meal.costTotal||0).toFixed(2)}</span>`;
+        r.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span><span class="mname">${meal.name} ${e.recurring?'<span style="font-size:10px;color:var(--gold-dark);">&#8635;</span>':''}</span><span class="cost">$${scaledCost.toFixed(2)}</span>`;
         r.onclick = ()=>{ state.selectedDate = ds; save(); render(); };
         col.appendChild(r);
       });
@@ -789,17 +817,23 @@ function renderDayDetail(view){
   entries.forEach(entry=>{
     const meal = state.meals.find(m=>m.id===entry.mealId);
     if(!meal) return;
+    const scaledCost = getScaledMealCost(meal);
+    const costPerPerson = scaledCost / state.householdSize;
+
     const card = document.createElement('div');
     card.className='card';
     let ingHtml = meal.ingredients.map(ing=>{
       const checked = entry.checked.includes(ing.id);
+      const scaledQty = getScaledQty(ing.qty, meal);
+      const scaledIngCost = getScaledIngredientCost(ing.cost, meal);
       return `
         <div class="ing-row ${checked?'checked':''}" data-ing="${ing.id}">
           <input type="checkbox" ${checked?'checked':''} data-ing-cb="${ing.id}">
           <span>${ing.name}</span>
-          <span class="ing-qty">${fmtQtyUnit(ing.qty, ing.unit)}${ing.cost?` &middot; $${ing.cost.toFixed(2)}`:''}</span>
+          <span class="ing-qty">${fmtQtyUnit(scaledQty, ing.unit)}${ing.cost?` &middot; $${scaledIngCost.toFixed(2)}`:''}</span>
         </div>`;
     }).join('');
+
     card.innerHTML = `
       <div class="row-between">
         <div style="display:flex; align-items:center; gap:8px;">
@@ -811,7 +845,7 @@ function renderDayDetail(view){
           <button class="iconbtn" title="Remove" data-remove-entry="${entry.id}">${ICONS.x}</button>
         </div>
       </div>
-      <div class="costline">$${(meal.costTotal||0).toFixed(2)} total ${meal.servings?`&middot; $${(meal.costTotal/meal.servings).toFixed(2)}/person`:''}</div>
+      <div class="costline">$${scaledCost.toFixed(2)} total (${state.householdSize} people) &middot; $${costPerPerson.toFixed(2)}/person</div>
       ${meal.instructionsUrl?`<a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener">Instructions &rarr;</a>`:''}
       <div style="margin-top:8px;">${ingHtml}</div>
       <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
@@ -852,12 +886,13 @@ function renderDayDetail(view){
       showToast(entry.recurring ? 'Set as recurring weekly!' : 'Recurring turned off');
     };
     card.querySelector('[data-add-unchecked]').onclick = ()=>{
-      const unchecked = meal.ingredients.filter(ing=>!entry.checked.includes(ing.id));
-      if(unchecked.length===0){ showToast('Already added — nothing unchecked left.'); return; }
-      addIngredientsToShoppingList(unchecked.map(i=>({name:i.name, qty:i.qty, unit:i.unit, cost:i.cost})));
-      unchecked.forEach(ing=>entry.checked.push(ing.id));
+      const addedCount = addIngredientsToShoppingListForEntry(meal, entry.checked);
+      if(addedCount === 0){ showToast('Already added — nothing unchecked left.'); return; }
+      meal.ingredients.forEach(ing => {
+        if(!entry.checked.includes(ing.id)) entry.checked.push(ing.id);
+      });
       save();
-      showToast(`Added ${unchecked.length} item${unchecked.length===1?'':'s'} to shopping list`);
+      showToast(`Added scaled ingredients to shopping list`);
       render();
     };
   });
@@ -985,7 +1020,9 @@ function renderMenuTab(view){
   state.meals.forEach(meal=>{
     const card = document.createElement('div');
     card.className='card meal-card';
-    const perPerson = meal.servings ? (meal.costTotal/meal.servings) : null;
+    const scaledCost = getScaledMealCost(meal);
+    const costPerPerson = scaledCost / state.householdSize;
+
     card.innerHTML = `
       <div class="row-between">
         <h3>${meal.name}</h3>
@@ -994,7 +1031,7 @@ function renderMenuTab(view){
           <button class="iconbtn" title="Edit meal" data-edit="${meal.id}">&#9998;</button>
         </div>
       </div>
-      <div class="costline">$${(meal.costTotal||0).toFixed(2)} total ${perPerson?`&middot; $${perPerson.toFixed(2)}/person (${meal.servings} servings)`:''}</div>
+      <div class="costline">$${scaledCost.toFixed(2)} for ${state.householdSize} people &middot; $${costPerPerson.toFixed(2)}/person</div>
       <div style="margin-top:6px;">${meal.ingredients.map(i=>`<span class="tag">${i.name}</span>`).join('')}</div>
       ${meal.instructionsUrl?`<div style="margin-top:6px;"><a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener">Instructions &rarr;</a></div>`:''}
       <div style="display:flex; gap:8px; margin-top:10px;">
@@ -1049,14 +1086,14 @@ function openMealForm(mealId){
     return `
       <h2>${editing?'Edit meal':'New meal'}</h2>
       <label class="field-label">Meal name</label>
-      <input type="text" id="mName" value="${meal.name}" placeholder="e.g. Buffalo Chicken Dip">
+      <input type="text" id="mName" value="${meal.name}" placeholder="e.g. Pasta Bake">
       <div style="display:flex; gap:10px;">
         <div style="flex:1;">
-          <label class="field-label">Servings</label>
-          <input type="number" id="mServings" value="${meal.servings||''}" min="1">
+          <label class="field-label">Base Servings</label>
+          <input type="number" id="mServings" value="${meal.servings||4}" min="1">
         </div>
         <div style="flex:1;">
-          <label class="field-label">Total cost ($)</label>
+          <label class="field-label">Total Cost ($)</label>
           <input type="number" id="mCost" value="${meal.costTotal||''}" step="0.01" min="0">
         </div>
       </div>
@@ -1089,7 +1126,7 @@ function openMealForm(mealId){
       const name = document.getElementById('mName').value.trim();
       if(!name){ alert('Give the meal a name first.'); return; }
       meal.name = name;
-      meal.servings = parseFloat(document.getElementById('mServings').value) || null;
+      meal.servings = parseFloat(document.getElementById('mServings').value) || 4;
       meal.costTotal = parseFloat(document.getElementById('mCost').value) || 0;
       meal.instructionsUrl = document.getElementById('mLink').value.trim();
       meal.ingredients = draftIngredients.filter(i=>i.name.trim()!=='');
@@ -1161,7 +1198,7 @@ function renderShoppingTab(view){
   receipt.innerHTML = `
     <div class="receipt-head">
       <div class="store">HEARTH GROCERY</div>
-      <div class="meta">${items.length} item${items.length===1?'':'s'} &middot; ${new Date().toLocaleDateString()}</div>
+      <div class="meta">${items.length} item${items.length===1?'':'s'} &middot; Household: ${state.householdSize}</div>
     </div>
     <hr>
     ${items.length===0 ? `<div class="empty" style="font-family:var(--body);">List is empty. Uncheck ingredients on a planned meal, or add items above.</div>` :
@@ -1326,9 +1363,17 @@ function openPantryAddForm(){
 function renderBudgetTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
+    <div style="display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.1); padding:4px 10px; border-radius:999px; border:1px solid rgba(244,241,233,.25);">
+      <span style="font-size:12px; font-weight:600; color:#F4F1E9;">Servings:</span>
+      <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:44px; padding:2px 4px; font-size:13px; font-weight:700; text-align:center; border-radius:6px; border:none; background:#fff; color:var(--ink);">
+    </div>
     <button class="pill ${state.calendarView==='week'?'active':''}" id="bWeek">This week</button>
     <button class="pill ${state.calendarView==='month'?'active':''}" id="bMonth">This month</button>
   `;
+  controls.querySelector('#globalServingsInput').onchange = (e)=>{
+    const val = parseInt(e.target.value, 10);
+    if(val > 0){ state.householdSize = val; save(); render(); }
+  };
   controls.querySelector('#bWeek').onclick=()=>{state.calendarView='week'; save(); render();};
   controls.querySelector('#bMonth').onclick=()=>{state.calendarView='month'; save(); render();};
 
@@ -1347,7 +1392,7 @@ function renderBudgetTab(view){
 
   const total = rangeEntries.reduce((sum,e)=>{
     const meal = state.meals.find(m=>m.id===e.mealId);
-    return sum + (meal?meal.costTotal:0);
+    return sum + (meal ? getScaledMealCost(meal) : 0);
   },0);
   const pct = state.budgetTarget>0 ? Math.min(100, Math.round((total/state.budgetTarget)*100)) : 0;
   const over = total > state.budgetTarget;
@@ -1356,7 +1401,7 @@ function renderBudgetTab(view){
   targetCard.className='card';
   targetCard.innerHTML = `
     <div class="budget-header">
-      <span>${rangeLabel}</span>
+      <span>${rangeLabel} (${state.householdSize} people)</span>
       <span>Target: <input type="number" id="targetInput" value="${state.budgetTarget}" style="width:70px; display:inline-block; padding:3px 6px;"></span>
     </div>
     <div class="budget-bar-track"><div class="budget-bar-fill" style="width:${pct}%; background:${over?'var(--persimmon)':'var(--teal)'}"></div></div>
@@ -1379,11 +1424,12 @@ function renderBudgetTab(view){
     rangeEntries.slice().sort((a,b)=> a.date.localeCompare(b.date) || byType(a,b)).forEach(e=>{
       const meal = state.meals.find(m=>m.id===e.mealId);
       if(!meal) return;
+      const scaledCost = getScaledMealCost(meal);
       const row = document.createElement('div');
       row.className='ing-row';
       row.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span>
         <span>${meal.name} ${e.recurring?'&#8635;':''} <span class="tag">${e.date}</span></span>
-        <span class="ing-qty">$${(meal.costTotal||0).toFixed(2)}</span>
+        <span class="ing-qty">$${scaledCost.toFixed(2)}</span>
         <button class="iconbtn" data-rm="${e.id}">${ICONS.x}</button>`;
       row.querySelector('[data-rm]').onclick=()=>{
         state.entries = state.entries.filter(x=>x.id!==e.id);
@@ -1397,14 +1443,15 @@ function renderBudgetTab(view){
   const libCard = document.createElement('div');
   libCard.className='card';
   libCard.innerHTML = `<h2 class="section-title">Recipe box, sorted by cost</h2>`;
-  const sorted = state.meals.slice().sort((a,b)=>(a.costTotal||0)-(b.costTotal||0));
+  const sorted = state.meals.slice().sort((a,b)=>getScaledMealCost(a)-getScaledMealCost(b));
   if(sorted.length===0){
     libCard.innerHTML += `<div class="empty">No meals yet.</div>`;
   }
   sorted.forEach(meal=>{
+    const scaledCost = getScaledMealCost(meal);
     const row = document.createElement('div');
     row.className='ing-row';
-    row.innerHTML = `<span>${meal.name}</span><span class="ing-qty">$${(meal.costTotal||0).toFixed(2)}</span>
+    row.innerHTML = `<span>${meal.name}</span><span class="ing-qty">$${scaledCost.toFixed(2)}</span>
       <button class="btn btn-teal btn-sm" style="margin-left:8px;" data-add="${meal.id}">+ Add</button>`;
     row.querySelector('[data-add]').onclick = ()=>{
       const d = state.calendarView==='week' ? iso(startOfWeek(state.anchorDate)) : state.anchorDate;
