@@ -614,7 +614,7 @@ function defaultState(){
     budgetTarget: 150,
     menuSearchQuery: '',
     menuFilterType: 'all',
-    theme: 'retro', // default theme safely set
+    theme: 'retro',
     meals: [...breakfasts, ...lunches, ...dinnerMeals],
     entries: [
       {id:uid(), date: t0.toISOString().slice(0,10), mealId: b1.id, mealType:'breakfast', servings:5, checked:[], recurring:true, daysOfWeek:[1,2,3,4,5]}
@@ -661,7 +661,7 @@ function load(){
     merged.menuFilterType = merged.menuFilterType || 'all';
     merged.entryStops = merged.entryStops || [];
     merged.ruleTemplates = merged.ruleTemplates || def.ruleTemplates;
-    merged.theme = parsed.theme || def.theme; // Ensure user's theme choice is strictly honored
+    merged.theme = parsed.theme || def.theme;
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, daysOfWeek:[], ...e}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
     return merged;
@@ -675,7 +675,7 @@ function save(){
   }
 }
 
-// Immediate theme and sync listener connection
+// Apply theme immediately before any render execution to prevent flashing
 applyTheme();
 
 db.ref('hearth_state').on('value', (snapshot) => {
@@ -1906,7 +1906,7 @@ function openModal(innerHtml){
 function closeModal(){ document.getElementById('modalRoot').innerHTML=''; }
 
 /* ============================= INIT ============================= */
-// Initial render happens right away with correct theme/state attached
+// Immediate render trigger ensuring local state and remote values match cleanly
 render();
 </script>
 </body>
