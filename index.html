@@ -4,30 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
 <title>Hearth — Family Meal Planner</title>
-<meta name="theme-color" content="#1F2937">
+<meta name="theme-color" content="#8B263E">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#1F2937;
-  --ink-soft:#5B6673;
-  --bg:#F1ECE3;
+  --ink:#2C221E;
+  --ink-soft:#6E5E57;
+  --bg:#FAF6F0;
   --card:#FFFFFF;
-  --card-line:#E3DACB;
-  --persimmon:#E8613C;
-  --persimmon-dark:#C64B2A;
-  --teal:#1F8A82;
-  --teal-dark:#166F68;
-  --gold:#C99A2E;
-  --gold-dark:#A67D1F;
-  --plum:#6B4A7A;
-  --paper-shadow: 0 1px 0 rgba(31,41,55,.06), 0 6px 16px rgba(31,41,55,.08);
-  --radius: 14px;
-  --disp: 'Bricolage Grotesque', system-ui, sans-serif;
+  --card-line:#EADFD6;
+  --primary:#8B263E;       /* Rich Cranberry Red */
+  --primary-dark:#691A2E;
+  --accent:#2E6F40;        /* Fresh Sage Green */
+  --accent-dark:#1E4A2A;
+  --gold:#D99B26;          /* Warm Honey Gold */
+  --gold-dark:#A67215;
+  --paper-shadow: 0 2px 8px rgba(44,34,30,.06), 0 8px 20px rgba(44,34,30,.04);
+  --radius: 16px;
+  --disp: 'Plus Jakarta Sans', system-ui, sans-serif;
   --body: 'Inter', system-ui, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
 }
@@ -54,10 +53,13 @@ button{font-family:inherit;}
 /* ---------- topbar ---------- */
 .topbar{
   position:sticky; top:0; z-index:20;
-  background:var(--ink);
-  color:#F4F1E9;
+  background:var(--primary);
+  color:#FFF9F5;
   padding:14px 16px 12px;
-  border-bottom:3px solid var(--persimmon);
+  border-bottom:3px solid var(--gold);
+}
+.topbar-header{
+  display:flex; justify-content:space-between; align-items:baseline;
 }
 .topbar h1{
   font-family:var(--disp);
@@ -66,9 +68,17 @@ button{font-family:inherit;}
   margin:0 0 2px;
   letter-spacing:.2px;
 }
+.version-tag{
+  font-family:var(--mono);
+  font-size:11px;
+  color:rgba(255,249,245,.75);
+  background:rgba(0,0,0,.15);
+  padding:2px 6px;
+  border-radius:6px;
+}
 .topbar .sub{
   font-size:12px;
-  color:#AEB6C2;
+  color:#F0D1D7;
   font-family:var(--mono);
   text-transform:uppercase;
   letter-spacing:.08em;
@@ -107,18 +117,18 @@ h2.section-title{
   gap:6px;
   padding:6px 12px;
   border-radius:999px;
-  border:1px solid rgba(244,241,233,.25);
-  background:rgba(255,255,255,.08);
-  color:#F4F1E9;
+  border:1px solid rgba(255,249,245,.25);
+  background:rgba(255,255,255,.1);
+  color:#FFF9F5;
   font-size:13px;
   font-weight:600;
   cursor:pointer;
   transition:background .15s;
 }
 .pill.active{
-  background:var(--persimmon);
-  border-color:var(--persimmon);
-  color:#fff;
+  background:var(--gold);
+  border-color:var(--gold);
+  color:#3A2A04;
 }
 .chip{
   display:inline-flex; align-items:center; gap:4px;
@@ -126,20 +136,20 @@ h2.section-title{
   border:1.5px solid var(--card-line); background:#fff; color:var(--ink);
   font-size:13px; font-weight:600; cursor:pointer;
 }
-.chip.active{background:var(--persimmon); border-color:var(--persimmon); color:#fff;}
+.chip.active{background:var(--primary); border-color:var(--primary); color:#fff;}
 .btn{
   display:inline-flex; align-items:center; justify-content:center; gap:6px;
   border:none; border-radius:10px; padding:10px 14px;
   font-weight:600; font-size:14px; cursor:pointer;
   font-family:var(--body);
 }
-.btn-primary{background:var(--persimmon); color:#fff;}
-.btn-primary:active{background:var(--persimmon-dark);}
-.btn-teal{background:var(--teal); color:#fff;}
-.btn-teal:active{background:var(--teal-dark);}
-.btn-gold{background:var(--gold); color:#3A2B04;}
+.btn-primary{background:var(--primary); color:#fff;}
+.btn-primary:active{background:var(--primary-dark);}
+.btn-teal{background:var(--accent); color:#fff;}
+.btn-teal:active{background:var(--accent-dark);}
+.btn-gold{background:var(--gold); color:#3A2A04;}
 .btn-ghost{background:transparent; color:var(--ink); border:1.5px solid var(--card-line);}
-.btn-danger{background:transparent; color:var(--persimmon-dark); border:1.5px solid var(--persimmon-dark);}
+.btn-danger{background:transparent; color:var(--primary-dark); border:1.5px solid var(--primary-dark);}
 .btn-block{width:100%;}
 .btn-sm{padding:6px 10px; font-size:12.5px; border-radius:8px;}
 input[type=text],input[type=number],input[type=url],input[type=date],select,textarea{
@@ -160,19 +170,19 @@ label.field-label{
 .tabbar{
   position:sticky; bottom:0; z-index:20;
   display:flex;
-  background:var(--ink);
-  border-top:3px solid var(--persimmon);
+  background:var(--primary);
+  border-top:3px solid var(--gold);
   padding:6px 4px calc(6px + env(safe-area-inset-bottom));
 }
 .tabbtn{
   flex:1;
   display:flex; flex-direction:column; align-items:center; gap:3px;
-  background:none; border:none; color:#8A93A3; padding:6px 2px; cursor:pointer;
+  background:none; border:none; color:#E8B4BE; padding:6px 2px; cursor:pointer;
 }
 .tabbtn svg{width:20px;height:20px;}
 .tabbtn span{font-size:10px; font-weight:600; letter-spacing:.02em;}
-.tabbtn.active{color:#F4F1E9;}
-.tabbtn.active svg{color:var(--persimmon);}
+.tabbtn.active{color:#FFF9F5;}
+.tabbtn.active svg{color:var(--gold);}
 /* ---------- calendar ---------- */
 .cal-grid-month{display:grid; grid-template-columns:repeat(7,1fr); gap:4px;}
 .cal-dow{font-family:var(--mono); font-size:10px; color:var(--ink-soft); text-align:center; padding-bottom:4px;}
@@ -180,8 +190,8 @@ label.field-label{
   background:var(--card); border:1px solid var(--card-line); border-radius:8px;
   min-height:56px; padding:4px; cursor:pointer; position:relative;
 }
-.cal-day-month.today{border-color:var(--persimmon); border-width:2px;}
-.cal-day-month.selected{background:#F1E2D2;}
+.cal-day-month.today{border-color:var(--primary); border-width:2px;}
+.cal-day-month.selected{background:#F7EBEB;}
 .cal-day-month.other-month{opacity:.35;}
 .cal-daynum{font-family:var(--mono); font-size:11px; font-weight:600;}
 .badge-row{display:flex; flex-wrap:wrap; gap:2px; margin-top:3px;}
@@ -194,7 +204,7 @@ label.field-label{
   flex:0 0 84%; scroll-snap-align:start; background:var(--card); border:1px solid var(--card-line);
   border-radius:var(--radius); padding:10px; min-height:180px;
 }
-.cal-week-day.today{border-color:var(--persimmon); border-width:2px;}
+.cal-week-day.today{border-color:var(--primary); border-width:2px;}
 .cal-week-day h3{font-family:var(--disp); font-size:15px; margin:0 0 8px;}
 .week-meal-row{
   display:flex; justify-content:space-between; align-items:center; gap:8px;
@@ -207,7 +217,7 @@ label.field-label{
 .day-detail{margin-top:14px;}
 .ing-row{display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px dashed var(--card-line); font-size:14px;}
 .ing-row.checked{opacity:.5; text-decoration:line-through;}
-.ing-row input[type=checkbox]{width:18px; height:18px; accent-color:var(--teal);}
+.ing-row input[type=checkbox]{width:18px; height:18px; accent-color:var(--accent);}
 .ing-qty{font-family:var(--mono); color:var(--ink-soft); font-size:12.5px; margin-left:auto;}
 /* ---------- receipt (shopping list signature) ---------- */
 .receipt{
@@ -236,7 +246,7 @@ label.field-label{
 .receipt-line .qty{white-space:nowrap; font-weight:600;}
 .receipt-line .est{white-space:nowrap; color:var(--gold-dark); font-size:11.5px;}
 .step-btn{
-  width:20px; height:20px; border-radius:5px; border:none; background:#EFEADA;
+  width:20px; height:20px; border-radius:5px; border:none; background:#F4ECE1;
   font-weight:700; cursor:pointer; font-family:var(--mono); line-height:1; color:var(--ink);
 }
 .receipt-total{display:flex; justify-content:space-between; font-weight:700; font-size:14px; padding-top:8px;}
@@ -248,12 +258,12 @@ label.field-label{
 }
 .tag{
   display:inline-block; font-family:var(--mono); font-size:10.5px; padding:2px 7px;
-  border-radius:5px; background:#EFEADA; color:var(--ink-soft); margin-right:4px;
+  border-radius:5px; background:#F4ECE1; color:var(--ink-soft); margin-right:4px;
 }
-.match-bar-track{background:#EFEADA; border-radius:6px; height:8px; overflow:hidden; margin-top:6px;}
-.match-bar-fill{height:100%; background:var(--teal);}
+.match-bar-track{background:#F4ECE1; border-radius:6px; height:8px; overflow:hidden; margin-top:6px;}
+.match-bar-fill{height:100%; background:var(--accent);}
 .modal-backdrop{
-  position:fixed; inset:0; background:rgba(31,41,55,.55); z-index:50;
+  position:fixed; inset:0; background:rgba(44,34,30,.55); z-index:50;
   display:flex; align-items:flex-end; justify-content:center;
 }
 .modal{
@@ -269,18 +279,18 @@ label.field-label{
 .ing-edit-subrow select{flex:0 0 62px; padding:9px 4px;}
 .ing-edit-subrow .cost-input{flex:0 0 58px;}
 .ing-edit-subrow .iconbtn{margin-left:auto;}
-.iconbtn{background:none;border:none;color:var(--persimmon-dark);cursor:pointer;font-size:18px;padding:4px 8px;}
+.iconbtn{background:none;border:none;color:var(--primary-dark);cursor:pointer;font-size:18px;padding:4px 8px;}
 .row-between{display:flex; justify-content:space-between; align-items:center;}
 .meal-card h3{font-family:var(--disp); font-size:16px; margin:0 0 4px;}
-.meal-card .costline{font-family:var(--mono); font-size:13px; color:var(--teal-dark); font-weight:600;}
+.meal-card .costline{font-family:var(--mono); font-size:13px; color:var(--accent-dark); font-weight:600;}
 .budget-header{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;}
 .budget-target-num{font-family:var(--mono); font-weight:700;}
-.budget-bar-track{background:#EFEADA; border-radius:8px; height:14px; overflow:hidden;}
+.budget-bar-track{background:#F4ECE1; border-radius:8px; height:14px; overflow:hidden;}
 .budget-bar-fill{height:100%;}
-a.link{color:var(--teal-dark); font-size:12.5px;}
+a.link{color:var(--accent-dark); font-size:12.5px;}
 #toast{
   position:fixed; left:50%; bottom:82px; transform:translate(-50%,12px);
-  background:var(--ink); color:#F4F1E9; padding:10px 16px; border-radius:10px;
+  background:var(--ink); color:#FFF9F5; padding:10px 16px; border-radius:10px;
   font-size:13px; font-weight:600; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
   z-index:60; max-width:80%; text-align:center; box-shadow:var(--paper-shadow);
 }
@@ -291,7 +301,10 @@ a.link{color:var(--teal-dark); font-size:12.5px;}
 <body>
 <div id="app">
   <header class="topbar">
-    <h1 id="topTitle">Hearth</h1>
+    <div class="topbar-header">
+      <h1 id="topTitle">Hearth</h1>
+      <span class="version-tag">v9.4.7.3</span>
+    </div>
     <div class="sub" id="topSub">FAMILY MEAL PLANNER</div>
     <div class="topbar-controls" id="topControls"></div>
   </header>
@@ -310,7 +323,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v4';
+const STORE_KEY = 'hearth_v9_4';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -328,70 +341,70 @@ const UNIT_LIST = Object.keys(UNITS);
 const TYPE_ORDER = ['breakfast','lunch','dinner','snack'];
 const TYPE_LABELS = {breakfast:'B', lunch:'L', dinner:'D', snack:'S'};
 const TYPE_NAMES = {breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', snack:'Snack'};
-const TYPE_COLORS = {breakfast:'#C99A2E', lunch:'#1F8A82', dinner:'#E8613C', snack:'#6B4A7A'};
+const TYPE_COLORS = {breakfast:'#D99B26', lunch:'#2E6F40', dinner:'#8B263E', snack:'#6B4A7A'};
 
 function defaultState(){
   // --- 10 BREAKFASTS ---
-  const b1 = { id:uid(), name:'Overnight Peanut Butter Oats', servings:4, costTotal:3.20, instructionsUrl:'', ingredients:[
+  const b1 = { id:uid(), type:'breakfast', name:'Overnight Peanut Butter Oats', servings:4, costTotal:3.20, instructionsUrl:'', ingredients:[
     {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'milk', qty:2, unit:'cup', cost:1.00}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:1.00}
   ]};
-  const b2 = { id:uid(), name:'Scrambled Eggs & Toast', servings:4, costTotal:2.80, instructionsUrl:'', ingredients:[
+  const b2 = { id:uid(), type:'breakfast', name:'Scrambled Eggs & Toast', servings:4, costTotal:2.80, instructionsUrl:'', ingredients:[
     {id:uid(), name:'eggs', qty:8, unit:'ea', cost:2.00}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80}
   ]};
-  const b3 = { id:uid(), name:'Classic Pancakes', servings:4, costTotal:2.20, instructionsUrl:'', ingredients:[
+  const b3 = { id:uid(), type:'breakfast', name:'Classic Pancakes', servings:4, costTotal:2.20, instructionsUrl:'', ingredients:[
     {id:uid(), name:'flour', qty:2, unit:'cup', cost:0.80}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50}, {id:uid(), name:'sugar', qty:2, unit:'tbsp', cost:0.40}
   ]};
-  const b4 = { id:uid(), name:'Cinnamon French Toast', servings:4, costTotal:3.10, instructionsUrl:'', ingredients:[
+  const b4 = { id:uid(), type:'breakfast', name:'Cinnamon French Toast', servings:4, costTotal:3.10, instructionsUrl:'', ingredients:[
     {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'eggs', qty:3, unit:'ea', cost:0.75}, {id:uid(), name:'milk', qty:0.5, unit:'cup', cost:0.50}, {id:uid(), name:'cinnamon', qty:1, unit:'tbsp', cost:0.25}
   ]};
-  const b5 = { id:uid(), name:'Banana Oatmeal Porridge', servings:4, costTotal:2.00, instructionsUrl:'', ingredients:[
+  const b5 = { id:uid(), type:'breakfast', name:'Banana Oatmeal Porridge', servings:4, costTotal:2.00, instructionsUrl:'', ingredients:[
     {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'bananas', qty:2, unit:'ea', cost:0.60}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.20}
   ]};
-  const b6 = { id:uid(), name:'Breakfast Egg & Cheese Burritos', servings:4, costTotal:4.50, instructionsUrl:'', ingredients:[
+  const b6 = { id:uid(), type:'breakfast', name:'Breakfast Egg & Cheese Burritos', servings:4, costTotal:4.50, instructionsUrl:'', ingredients:[
     {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50}, {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50}, {id:uid(), name:'salsa', qty:0.5, unit:'cup', cost:0.50}
   ]};
-  const b7 = { id:uid(), name:'Cheesy Scrambled Egg Toast', servings:2, costTotal:2.10, instructionsUrl:'', ingredients:[
+  const b7 = { id:uid(), type:'breakfast', name:'Cheesy Scrambled Egg Toast', servings:2, costTotal:2.10, instructionsUrl:'', ingredients:[
     {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.80}, {id:uid(), name:'bread', qty:2, unit:'ea', cost:0.30}
   ]};
-  const b8 = { id:uid(), name:'Bagels & Cream Cheese', servings:4, costTotal:3.50, instructionsUrl:'', ingredients:[
+  const b8 = { id:uid(), type:'breakfast', name:'Bagels & Cream Cheese', servings:4, costTotal:3.50, instructionsUrl:'', ingredients:[
     {id:uid(), name:'bagels', qty:4, unit:'ea', cost:2.50}, {id:uid(), name:'cream cheese', qty:4, unit:'oz', cost:1.00}
   ]};
-  const b9 = { id:uid(), name:'Yogurt & Honey Granola Bowl', servings:3, costTotal:4.20, instructionsUrl:'', ingredients:[
+  const b9 = { id:uid(), type:'breakfast', name:'Yogurt & Honey Granola Bowl', servings:3, costTotal:4.20, instructionsUrl:'', ingredients:[
     {id:uid(), name:'yogurt', qty:3, unit:'cup', cost:2.50}, {id:uid(), name:'granola', qty:1.5, unit:'cup', cost:1.20}, {id:uid(), name:'honey', qty:2, unit:'tbsp', cost:0.50}
   ]};
-  const b10 = { id:uid(), name:'Loaded Breakfast Potato Hash', servings:4, costTotal:3.80, instructionsUrl:'', ingredients:[
+  const b10 = { id:uid(), type:'breakfast', name:'Loaded Breakfast Potato Hash', servings:4, costTotal:3.80, instructionsUrl:'', ingredients:[
     {id:uid(), name:'potatoes', qty:4, unit:'ea', cost:2.00}, {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'onion', qty:1, unit:'ea', cost:0.80}
   ]};
 
   // --- 10 LUNCHES ---
-  const l1 = { id:uid(), name:'Classic Peanut Butter & Jelly', servings:4, costTotal:2.50, instructionsUrl:'', ingredients:[
+  const l1 = { id:uid(), type:'lunch', name:'Classic Peanut Butter & Jelly', servings:4, costTotal:2.50, instructionsUrl:'', ingredients:[
     {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:0.60}, {id:uid(), name:'jelly', qty:4, unit:'tbsp', cost:0.30}
   ]};
-  const l2 = { id:uid(), name:'Tuna Salad Sandwiches', servings:4, costTotal:4.20, instructionsUrl:'', ingredients:[
+  const l2 = { id:uid(), type:'lunch', name:'Tuna Salad Sandwiches', servings:4, costTotal:4.20, instructionsUrl:'', ingredients:[
     {id:uid(), name:'canned tuna', qty:2, unit:'ea', cost:3.00}, {id:uid(), name:'mayo', qty:4, unit:'tbsp', cost:0.80}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.40}
   ]};
-  const l3 = { id:uid(), name:'Grilled Cheese & Tomato Soup', servings:4, costTotal:4.80, instructionsUrl:'', ingredients:[
+  const l3 = { id:uid(), type:'lunch', name:'Grilled Cheese & Tomato Soup', servings:4, costTotal:4.80, instructionsUrl:'', ingredients:[
     {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'canned tomato soup', qty:2, unit:'ea', cost:1.00}
   ]};
-  const l4 = { id:uid(), name:'Black Bean & Rice Bowls', servings:4, costTotal:3.60, instructionsUrl:'', ingredients:[
+  const l4 = { id:uid(), type:'lunch', name:'Black Bean & Rice Bowls', servings:4, costTotal:3.60, instructionsUrl:'', ingredients:[
     {id:uid(), name:'black beans', qty:2, unit:'ea', cost:1.40}, {id:uid(), name:'rice', qty:2, unit:'cup', cost:0.80}, {id:uid(), name:'salsa', qty:1, unit:'cup', cost:0.80}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.60}
   ]};
-  const l5 = { id:uid(), name:'Egg Salad Sandwiches', servings:4, costTotal:3.20, instructionsUrl:'', ingredients:[
+  const l5 = { id:uid(), type:'lunch', name:'Egg Salad Sandwiches', servings:4, costTotal:3.20, instructionsUrl:'', ingredients:[
     {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50}, {id:uid(), name:'mayo', qty:3, unit:'tbsp', cost:0.60}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80}, {id:uid(), name:'mustard', qty:1, unit:'tbsp', cost:0.30}
   ]};
-  const l6 = { id:uid(), name:'Turkey & Cheese Wraps', servings:4, costTotal:5.50, instructionsUrl:'', ingredients:[
+  const l6 = { id:uid(), type:'lunch', name:'Turkey & Cheese Wraps', servings:4, costTotal:5.50, instructionsUrl:'', ingredients:[
     {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'sliced turkey', qty:8, unit:'oz', cost:3.00}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50}
   ]};
-  const l7 = { id:uid(), name:'Quick Ramen & Soft Egg', servings:2, costTotal:2.20, instructionsUrl:'', ingredients:[
+  const l7 = { id:uid(), type:'lunch', name:'Quick Ramen & Soft Egg', servings:2, costTotal:2.20, instructionsUrl:'', ingredients:[
     {id:uid(), name:'instant ramen', qty:2, unit:'ea', cost:1.00}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50}, {id:uid(), name:'frozen vegetables', qty:1, unit:'cup', cost:0.70}
   ]};
-  const l8 = { id:uid(), name:'Hummus & Veggie Pita Pockets', servings:3, costTotal:4.50, instructionsUrl:'', ingredients:[
+  const l8 = { id:uid(), type:'lunch', name:'Hummus & Veggie Pita Pockets', servings:3, costTotal:4.50, instructionsUrl:'', ingredients:[
     {id:uid(), name:'pita bread', qty:3, unit:'ea', cost:1.80}, {id:uid(), name:'hummus', qty:1, unit:'cup', cost:2.00}, {id:uid(), name:'cucumber', qty:1, unit:'ea', cost:0.70}
   ]};
-  const l9 = { id:uid(), name:'Loaded Macaroni & Cheese', servings:4, costTotal:3.40, instructionsUrl:'', ingredients:[
+  const l9 = { id:uid(), type:'lunch', name:'Loaded Macaroni & Cheese', servings:4, costTotal:3.40, instructionsUrl:'', ingredients:[
     {id:uid(), name:'macaroni pasta', qty:12, unit:'oz', cost:1.20}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:1.70}
   ]};
-  const l10 = { id:uid(), name:'Quesadillas with Beans & Cheese', servings:4, costTotal:3.80, instructionsUrl:'', ingredients:[
+  const l10 = { id:uid(), type:'lunch', name:'Quesadillas with Beans & Cheese', servings:4, costTotal:3.80, instructionsUrl:'', ingredients:[
     {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'black beans', qty:1, unit:'ea', cost:0.60}
   ]};
 
@@ -441,6 +454,7 @@ function defaultState(){
 
   const dinnerMeals = dinners.map(d => ({
     id: uid(),
+    type: 'dinner',
     name: d.name,
     servings: 4,
     costTotal: d.cost,
@@ -460,6 +474,8 @@ function defaultState(){
     selectedDate: todayISO(),
     householdSize: 5,
     budgetTarget: 150,
+    menuSearchQuery: '',
+    menuFilterType: 'all',
     meals: [...breakfasts, ...lunches, ...dinnerMeals],
     entries: [
       {id:uid(), date: t0.toISOString().slice(0,10), mealId: b1.id, mealType:'breakfast', checked:[], recurring:false},
@@ -467,9 +483,23 @@ function defaultState(){
     ],
     shoppingList:[],
     pantry:[
-      {id:uid(), key:'rice', name:'rice', qty:4, unit:'cup'},
-      {id:uid(), key:'pasta', name:'pasta', qty:16, unit:'oz'},
+      {id:uid(), key:'rice', name:'rice', qty:5, unit:'lb'},
+      {id:uid(), key:'pasta', name:'pasta', qty:3, unit:'lb'},
       {id:uid(), key:'eggs', name:'eggs', qty:12, unit:'ea'},
+      {id:uid(), key:'milk', name:'milk', qty:1, unit:'qt'},
+      {id:uid(), key:'butter', name:'butter', qty:8, unit:'oz'},
+      {id:uid(), key:'flour', name:'flour', qty:5, unit:'lb'},
+      {id:uid(), key:'sugar', name:'sugar', qty:4, unit:'lb'},
+      {id:uid(), key:'olive oil', name:'olive oil', qty:16, unit:'oz'},
+      {id:uid(), key:'salt', name:'salt', qty:16, unit:'oz'},
+      {id:uid(), key:'black pepper', name:'black pepper', qty:4, unit:'oz'},
+      {id:uid(), key:'garlic powder', name:'garlic powder', qty:4, unit:'oz'},
+      {id:uid(), key:'onion powder', name:'onion powder', qty:4, unit:'oz'},
+      {id:uid(), key:'soy sauce', name:'soy sauce', qty:16, unit:'oz'},
+      {id:uid(), key:'black beans', name:'black beans', qty:4, unit:'ea'},
+      {id:uid(), key:'canned diced tomatoes', name:'canned diced tomatoes', qty:3, unit:'ea'},
+      {id:uid(), key:'bread', name:'bread', qty:1, unit:'ea'},
+      {id:uid(), key:'peanut butter', name:'peanut butter', qty:1, unit:'ea'}
     ]
   };
 }
@@ -482,8 +512,10 @@ function load(){
     const parsed = JSON.parse(raw);
     const merged = {...defaultState(), ...parsed};
     merged.householdSize = merged.householdSize || 5;
+    merged.menuSearchQuery = merged.menuSearchQuery || '';
+    merged.menuFilterType = merged.menuFilterType || 'all';
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', checked:[], recurring:false, ...e}));
-    merged.meals = (merged.meals||[]).map(m=>({...m, ingredients:(m.ingredients||[]).map(i=>({cost:0, ...i}))}));
+    merged.meals = (merged.meals||[]).map(m=>({type:'dinner', ...m, ingredients:(m.ingredients||[]).map(i=>({cost:0, ...i}))}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
     return merged;
   }catch(e){ return defaultState(); }
@@ -508,7 +540,6 @@ function getScaledIngredientCost(ingCost, meal){
 
 /* ============================= RECURRING AUTO-GENERATOR ============================= */
 function checkRecurringEntries(){
-  const todayStr = todayISO();
   let updated = false;
   state.entries.forEach(entry => {
     if(entry.recurring){
@@ -571,7 +602,7 @@ function fmtQtyUnit(qty, unit){ return `${round4(qty)} ${unit}`; }
 function addIngredientsToShoppingListForEntry(meal, entryChecked){
   let added = 0;
   meal.ingredients.forEach(ing=>{
-    if(entryChecked.includes(ing.id)) return; // skip checked items
+    if(entryChecked.includes(ing.id)) return;
     const scaledQty = getScaledQty(ing.qty, meal);
     const scaledCost = getScaledIngredientCost(ing.cost, meal);
     const cat = UNITS[ing.unit].cat;
@@ -669,8 +700,8 @@ function byType(a,b){ return TYPE_ORDER.indexOf(a.mealType)-TYPE_ORDER.indexOf(b
 function renderCalendarTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
-    <div style="display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.1); padding:4px 10px; border-radius:999px; border:1px solid rgba(244,241,233,.25);">
-      <span style="font-size:12px; font-weight:600; color:#F4F1E9;">Servings:</span>
+    <div style="display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.15); padding:4px 10px; border-radius:999px; border:1px solid rgba(255,249,245,.3);">
+      <span style="font-size:12px; font-weight:600; color:#FFF9F5;">Servings:</span>
       <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:44px; padding:2px 4px; font-size:13px; font-weight:700; text-align:center; border-radius:6px; border:none; background:#fff; color:var(--ink);">
     </div>
     <button class="pill ${state.calendarView==='week'?'active':''}" id="viewWeekBtn">Week</button>
@@ -850,7 +881,7 @@ function renderDayDetail(view){
       <div style="margin-top:8px;">${ingHtml}</div>
       <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
         <button class="btn btn-teal btn-sm" style="flex:1;" data-add-unchecked="${entry.id}">Add unchecked to list</button>
-        <button class="btn btn-ghost btn-sm ${entry.recurring?'active':''}" data-toggle-recurring="${entry.id}" style="${entry.recurring?'background:var(--gold);color:#3A2B04;border-color:var(--gold);':''}">${entry.recurring?'Recurring (On)':'Make Recurring'}</button>
+        <button class="btn btn-ghost btn-sm ${entry.recurring?'active':''}" data-toggle-recurring="${entry.id}" style="${entry.recurring?'background:var(--gold);color:#3A2A04;border-color:var(--gold);':''}">${entry.recurring?'Recurring (On)':'Make Recurring'}</button>
       </div>
     `;
     wrap.appendChild(card);
@@ -1013,11 +1044,56 @@ function renderMenuTab(view){
   controls.innerHTML = `<button class="pill active" id="newMealBtn">${ICONS.plus} New meal</button>`;
   controls.querySelector('#newMealBtn').onclick = ()=>openMealForm(null);
 
-  if(state.meals.length===0){
-    view.innerHTML = `<div class="empty">No meals in the recipe box yet.<br>Tap "New meal" to add your first one.</div>`;
+  // Search & Filter Box
+  const filterCard = document.createElement('div');
+  filterCard.className = 'card';
+  filterCard.style.padding = '10px 14px';
+  filterCard.innerHTML = `
+    <input type="text" id="menuSearchInput" placeholder="🔍 Search recipes or ingredients..." value="${state.menuSearchQuery}" style="margin-bottom:8px;">
+    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+      <button class="chip ${state.menuFilterType==='all'?'active':''}" data-mfilter="all">All</button>
+      <button class="chip ${state.menuFilterType==='breakfast'?'active':''}" data-mfilter="breakfast">Breakfast</button>
+      <button class="chip ${state.menuFilterType==='lunch'?'active':''}" data-mfilter="lunch">Lunch</button>
+      <button class="chip ${state.menuFilterType==='dinner'?'active':''}" data-mfilter="dinner">Dinner</button>
+    </div>
+  `;
+  view.appendChild(filterCard);
+
+  filterCard.querySelector('#menuSearchInput').oninput = (e)=>{
+    state.menuSearchQuery = e.target.value.toLowerCase();
+    save();
+    updateMealListContainer(listContainer);
+  };
+  filterCard.querySelectorAll('[data-mfilter]').forEach(b=>{
+    b.onclick = ()=>{
+      state.menuFilterType = b.dataset.mfilter;
+      save(); render();
+    };
+  });
+
+  const listContainer = document.createElement('div');
+  view.appendChild(listContainer);
+  updateMealListContainer(listContainer);
+}
+
+function updateMealListContainer(container){
+  container.innerHTML = '';
+  const q = state.menuSearchQuery.trim();
+  const filtered = state.meals.filter(m=>{
+    const matchType = (state.menuFilterType==='all' || m.type===state.menuFilterType);
+    if(!matchType) return false;
+    if(!q) return true;
+    const matchName = m.name.toLowerCase().includes(q);
+    const matchIng = m.ingredients.some(i=>i.name.toLowerCase().includes(q));
+    return matchName || matchIng;
+  });
+
+  if(filtered.length===0){
+    container.innerHTML = `<div class="empty">No matching recipes found.</div>`;
     return;
   }
-  state.meals.forEach(meal=>{
+
+  filtered.forEach(meal=>{
     const card = document.createElement('div');
     card.className='card meal-card';
     const scaledCost = getScaledMealCost(meal);
@@ -1025,7 +1101,10 @@ function renderMenuTab(view){
 
     card.innerHTML = `
       <div class="row-between">
-        <h3>${meal.name}</h3>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span class="type-badge" style="background:${TYPE_COLORS[meal.type||'dinner']}; width:16px;height:16px;font-size:9px;">${TYPE_LABELS[meal.type||'dinner']}</span>
+          <h3>${meal.name}</h3>
+        </div>
         <div style="display:flex; gap:4px;">
           <button class="iconbtn" title="Duplicate meal" data-duplicate-meal="${meal.id}">${ICONS.copy}</button>
           <button class="iconbtn" title="Edit meal" data-edit="${meal.id}">&#9998;</button>
@@ -1039,7 +1118,7 @@ function renderMenuTab(view){
         <button class="btn btn-danger btn-sm" data-del="${meal.id}">Delete</button>
       </div>
     `;
-    view.appendChild(card);
+    container.appendChild(card);
     card.querySelector('[data-edit]').onclick = ()=>openMealForm(meal.id);
     card.querySelector('[data-duplicate-meal]').onclick = ()=>{
       const dup = JSON.parse(JSON.stringify(meal));
@@ -1063,7 +1142,7 @@ function renderMenuTab(view){
 function openMealForm(mealId){
   const editing = !!mealId;
   const meal = editing ? state.meals.find(m=>m.id===mealId) : {
-    id:uid(), name:'', servings:4, costTotal:0, instructionsUrl:'', ingredients:[]
+    id:uid(), type:'dinner', name:'', servings:4, costTotal:0, instructionsUrl:'', ingredients:[]
   };
   let draftIngredients = meal.ingredients.map(i=>({...i}));
 
@@ -1089,14 +1168,21 @@ function openMealForm(mealId){
       <input type="text" id="mName" value="${meal.name}" placeholder="e.g. Pasta Bake">
       <div style="display:flex; gap:10px;">
         <div style="flex:1;">
+          <label class="field-label">Category</label>
+          <select id="mType">
+            <option value="breakfast" ${meal.type==='breakfast'?'selected':''}>Breakfast</option>
+            <option value="lunch" ${meal.type==='lunch'?'selected':''}>Lunch</option>
+            <option value="dinner" ${meal.type==='dinner'?'selected':''}>Dinner</option>
+            <option value="snack" ${meal.type==='snack'?'selected':''}>Snack</option>
+          </select>
+        </div>
+        <div style="flex:1;">
           <label class="field-label">Base Servings</label>
           <input type="number" id="mServings" value="${meal.servings||4}" min="1">
         </div>
-        <div style="flex:1;">
-          <label class="field-label">Total Cost ($)</label>
-          <input type="number" id="mCost" value="${meal.costTotal||''}" step="0.01" min="0">
-        </div>
       </div>
+      <label class="field-label">Total Cost ($)</label>
+      <input type="number" id="mCost" value="${meal.costTotal||''}" step="0.01" min="0">
       <label class="field-label">Instructions link</label>
       <input type="url" id="mLink" value="${meal.instructionsUrl}" placeholder="https://...">
       <label class="field-label">Ingredients <span style="font-weight:400; text-transform:none;">(name, qty, unit, cost)</span></label>
@@ -1126,6 +1212,7 @@ function openMealForm(mealId){
       const name = document.getElementById('mName').value.trim();
       if(!name){ alert('Give the meal a name first.'); return; }
       meal.name = name;
+      meal.type = document.getElementById('mType').value;
       meal.servings = parseFloat(document.getElementById('mServings').value) || 4;
       meal.costTotal = parseFloat(document.getElementById('mCost').value) || 0;
       meal.instructionsUrl = document.getElementById('mLink').value.trim();
@@ -1296,7 +1383,7 @@ function renderPantryTab(view){
 
   const listCard = document.createElement('div');
   listCard.className='card';
-  listCard.innerHTML = `<h2 class="section-title">On hand</h2>`;
+  listCard.innerHTML = `<h2 class="section-title">On hand inventory</h2>`;
   if(state.pantry.length===0){
     listCard.innerHTML += `<div class="empty">Pantry is empty. Add what you've got on hand.</div>`;
   } else {
@@ -1326,7 +1413,7 @@ function renderPantryTab(view){
       el.style.marginBottom='12px';
       el.innerHTML = `
         <div class="row-between"><strong style="font-size:14px;">${meal.name}</strong><span class="tag">${pct}% on hand</span></div>
-        <div class="match-bar-track"><div class="match-bar-fill" style="width:${pct}%; background:${pct>=75?'var(--teal)':pct>=40?'var(--gold)':'var(--persimmon)'}"></div></div>
+        <div class="match-bar-track"><div class="match-bar-fill" style="width:${pct}%; background:${pct>=75?'var(--accent)':pct>=40?'var(--gold)':'var(--primary)'}"></div></div>
       `;
       matchCard.appendChild(el);
     });
@@ -1338,7 +1425,7 @@ function openPantryAddForm(){
   openModal(`
     <h2>Add pantry item</h2>
     <label class="field-label">Item</label>
-    <input type="text" id="pName" placeholder="e.g. cream cheese">
+    <input type="text" id="pName" placeholder="e.g. olive oil">
     <div style="display:flex; gap:10px;">
       <div style="flex:1;"><label class="field-label">Qty</label><input type="number" id="pQty" step="0.25" value="1"></div>
       <div style="flex:1;"><label class="field-label">Unit</label><select id="pUnit">${UNIT_LIST.map(u=>`<option value="${u}">${u}</option>`).join('')}</select></div>
@@ -1363,8 +1450,8 @@ function openPantryAddForm(){
 function renderBudgetTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
-    <div style="display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.1); padding:4px 10px; border-radius:999px; border:1px solid rgba(244,241,233,.25);">
-      <span style="font-size:12px; font-weight:600; color:#F4F1E9;">Servings:</span>
+    <div style="display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.15); padding:4px 10px; border-radius:999px; border:1px solid rgba(255,249,245,.3);">
+      <span style="font-size:12px; font-weight:600; color:#FFF9F5;">Servings:</span>
       <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:44px; padding:2px 4px; font-size:13px; font-weight:700; text-align:center; border-radius:6px; border:none; background:#fff; color:var(--ink);">
     </div>
     <button class="pill ${state.calendarView==='week'?'active':''}" id="bWeek">This week</button>
@@ -1404,9 +1491,9 @@ function renderBudgetTab(view){
       <span>${rangeLabel} (${state.householdSize} people)</span>
       <span>Target: <input type="number" id="targetInput" value="${state.budgetTarget}" style="width:70px; display:inline-block; padding:3px 6px;"></span>
     </div>
-    <div class="budget-bar-track"><div class="budget-bar-fill" style="width:${pct}%; background:${over?'var(--persimmon)':'var(--teal)'}"></div></div>
+    <div class="budget-bar-track"><div class="budget-bar-fill" style="width:${pct}%; background:${over?'var(--primary)':'var(--accent)'}"></div></div>
     <div class="row-between" style="margin-top:6px;">
-      <span class="budget-target-num" style="color:${over?'var(--persimmon-dark)':'var(--teal-dark)'}">$${total.toFixed(2)} planned</span>
+      <span class="budget-target-num" style="color:${over?'var(--primary-dark)':'var(--accent-dark)'}">$${total.toFixed(2)} planned</span>
       <span style="font-size:12.5px; color:var(--ink-soft);">of $${state.budgetTarget.toFixed(2)}</span>
     </div>
   `;
