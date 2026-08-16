@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
-<title>Hearth 95 — 90s Retro Menu Builder</title>
-<meta name="theme-color" content="#FF007F">
+<title>Hearth 95 — Family Meal Planner</title>
+<meta name="theme-color" content="#000080">
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
@@ -12,38 +12,55 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-:root{
-  --win-bg:#C0C0C0;        /* Classic 95 Gray */
-  --win-blue:#000080;      /* Win95 Active Titlebar Blue */
+/* ================= THEME DEFINITIONS ================= */
+:root {
+  /* Default: Retro 95 (Wife's preference) */
+  --win-bg:#C0C0C0;
+  --win-blue:#000080;
   --win-blue-lt:#1084D0;
   --win-border-light:#FFFFFF;
   --win-border-dark:#808080;
   --win-border-darkest:#000000;
-  --neon-pink:#FF007F;
-  --neon-cyan:#00FFFF;
-  --neon-yellow:#FFFF00;
-  --neon-green:#39FF14;
-  --neon-purple:#9D00FF;
-  --paper-shadow: 3px 3px 0px #000000;
-  --disp: 'Press Start 2P', monospace;
-  --body: 'Space Mono', monospace;
-  --vt: 'VT323', monospace;
+  --card-bg:#FFFFFF;
+  --card-text:#000000;
+  --accent-btn:#C0C0C0;
+  --accent-active:#000080;
+  --accent-active-text:#FFFFFF;
+  --highlight:#FFFFCC;
+  --font-disp:'Press Start 2P', monospace;
+  --font-body:'Space Mono', monospace;
+  --font-vt:'VT323', monospace;
+  --pattern: linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%);
+  --pattern-size: 4px 4px;
 }
+
+[data-theme="cyber"] {
+  /* Cyber Neon 90s (Your preference) */
+  --win-bg:#00FFFF;
+  --win-blue:#9D00FF;
+  --win-blue-lt:#FF007F;
+  --win-border-light:#FFFF00;
+  --win-border-dark:#0A0A0A;
+  --win-border-darkest:#0A0A0A;
+  --card-bg:#FFFF00;
+  --card-text:#0A0A0A;
+  --accent-btn:#39FF14;
+  --accent-active:#FF007F;
+  --accent-active-text:#FFFF00;
+  --highlight:#FF99CC;
+  --pattern: radial-gradient(#9D00FF 15%, transparent 16%), radial-gradient(#FF007F 15%, transparent 16%);
+  --pattern-size: 30px 30px;
+}
+
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
 body{
   background: var(--win-bg);
-  color: #000;
-  font-family: var(--body);
-  -webkit-font-smoothing:none;
+  color: var(--card-text);
+  font-family: var(--font-body);
   overscroll-behavior-y:none;
-  background-image: 
-    linear-gradient(45deg, #808080 25%, transparent 25%), 
-    linear-gradient(-45deg, #808080 25%, transparent 25%), 
-    linear-gradient(45deg, transparent 75%, #808080 75%), 
-    linear-gradient(-45deg, transparent 75%, #808080 75%);
-  background-size: 4px 4px;
-  background-position: 0 0, 0 2px, 2px -2px, -2px 0px;
+  background-image: var(--pattern);
+  background-size: var(--pattern-size);
 }
 button{font-family:inherit;}
 #app{
@@ -59,7 +76,7 @@ button{font-family:inherit;}
   border-right: 3px solid var(--win-border-darkest);
 }
 
-/* ---------- 90s Win95 / Diner Titlebar ---------- */
+/* ---------- Titlebar ---------- */
 .topbar{
   position:sticky; top:0; z-index:20;
   background: linear-gradient(90deg, var(--win-blue), var(--win-blue-lt));
@@ -72,24 +89,37 @@ button{font-family:inherit;}
   display:flex; justify-content:space-between; align-items:center;
 }
 .topbar h1{
-  font-family: var(--disp);
-  font-size: 13px;
+  font-family: var(--font-disp);
+  font-size: 11px;
   margin: 0;
   letter-spacing: 1px;
   text-shadow: 2px 2px 0px #000;
 }
+.header-right{
+  display:flex; gap:4px; align-items:center;
+}
 .version-tag{
-  font-family: var(--vt);
-  font-size: 16px;
-  color: var(--neon-yellow);
+  font-family: var(--font-vt);
+  font-size: 15px;
+  color: #FFFF00;
   background: #000;
-  padding: 1px 6px;
+  padding: 1px 4px;
   border: 1px solid var(--win-border-light);
+}
+.theme-toggle-btn{
+  font-family: var(--font-vt);
+  font-size: 15px;
+  background: #C0C0C0;
+  color: #000;
+  border: 2px solid;
+  border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
+  padding: 0 6px;
+  cursor: pointer;
 }
 .topbar .sub{
   font-size: 10px;
-  color: var(--neon-cyan);
-  font-family: var(--vt);
+  color: #00FFFF;
+  font-family: var(--font-vt);
   letter-spacing: 1px;
   margin-top: 2px;
 }
@@ -99,27 +129,28 @@ button{font-family:inherit;}
   gap: 6px;
   flex-wrap: wrap;
   align-items: center;
-  background: #C0C0C0;
+  background: var(--win-bg);
   padding: 4px;
   border: 2px solid;
   border-color: var(--win-border-dark) var(--win-border-light) var(--win-border-light) var(--win-border-dark);
 }
 
-/* ---------- main views ---------- */
+/* ---------- Main Views ---------- */
 #view{
   flex:1;
   padding:12px 12px 88px;
   overflow-y:auto;
 }
 h2.section-title{
-  font-family: var(--disp);
-  font-size: 12px;
+  font-family: var(--font-disp);
+  font-size: 11px;
   margin: 0 0 8px;
   color: var(--win-blue);
   text-shadow: 1px 1px 0px #FFF;
 }
 .card{
-  background: #FFFFFF;
+  background: var(--card-bg);
+  color: var(--card-text);
   border: 3px solid;
   border-color: var(--win-border-dark) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-dark);
   box-shadow: 2px 2px 0px #000;
@@ -127,92 +158,72 @@ h2.section-title{
   margin-bottom: 12px;
 }
 .pill{
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-  padding: 4px 10px;
-  background: #C0C0C0;
-  color: #000;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
+  display:inline-flex; align-items:center; gap:4px;
+  padding: 4px 10px; background: var(--accent-btn); color: var(--card-text);
+  font-size: 11px; font-weight: 700; cursor: pointer;
   border: 2px solid;
   border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
-}
-.pill:active{
-  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
 }
 .pill.active{
   background: var(--win-blue);
   color: #FFF;
-  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
 }
 .chip{
   display:inline-flex; align-items:center; gap:4px;
-  padding: 4px 8px; background: #C0C0C0; color: #000;
+  padding: 4px 8px; background: var(--accent-btn); color: var(--card-text);
   font-size: 11px; font-weight: 700; cursor: pointer;
   border: 2px solid;
   border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
 }
 .chip.active{
-  background: var(--neon-pink);
+  background: var(--win-blue);
   color: #FFF;
-  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
 }
 .btn{
   display:inline-flex; align-items:center; justify-content:center; gap:6px;
-  background: #C0C0C0; color: #000;
+  background: var(--accent-btn); color: var(--card-text);
   border: 2px solid;
   border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
-  padding: 8px 12px;
-  font-weight: 700; font-size: 12px; cursor: pointer;
-  font-family: var(--body);
+  padding: 8px 12px; font-weight: 700; font-size: 11px; cursor: pointer;
+  font-family: var(--font-body);
   box-shadow: 1px 1px 0px #000;
 }
 .btn:active{
   border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
-  transform: translate(1px, 1px);
-  box-shadow: none;
+  transform: translate(1px, 1px); box-shadow: none;
 }
-.btn-primary{background: var(--neon-pink); color: #FFF; text-shadow: 1px 1px 0px #000;}
-.btn-teal{background: var(--neon-green); color: #000;}
-.btn-gold{background: var(--neon-yellow); color: #000;}
+.btn-primary{background: var(--win-blue); color: #FFF;}
+.btn-teal{background: #2E6F40; color: #FFF;}
+.btn-gold{background: #D99B26; color: #000;}
 .btn-ghost{background: #E0E0E0; color: #000;}
-.btn-danger{background: #FF0000; color: #FFF; text-shadow: 1px 1px 0px #000;}
+.btn-danger{background: #FF0000; color: #FFF;}
 .btn-block{width:100%;}
-.btn-sm{padding: 4px 8px; font-size: 11px;}
+.btn-sm{padding: 4px 8px; font-size: 10.5px;}
 
 input[type=text],input[type=number],input[type=url],input[type=date],select,textarea{
-  width:100%;
-  padding: 6px 8px;
+  width:100%; padding: 6px 8px;
   border: 2px solid;
   border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
-  background: #FFF;
-  color: #000;
-  font-family: var(--body);
-  font-size: 12px;
+  background: #FFF; color: #000; font-family: var(--font-body); font-size: 12px;
 }
 label.field-label{
-  display:block; font-size: 10.5px; font-weight:700; text-transform:uppercase;
-  color: var(--win-blue); margin: 8px 0 3px; font-family: var(--disp);
+  display:block; font-size: 10px; font-weight:700; text-transform:uppercase;
+  color: var(--win-blue); margin: 8px 0 3px; font-family: var(--font-disp);
 }
 
-/* ---------- 95 Win98 bottom taskbar ---------- */
+/* ---------- Taskbar ---------- */
 .tabbar{
   position:sticky; bottom:0; z-index:20;
-  display:flex;
-  background: var(--win-bg);
+  display:flex; background: var(--win-bg);
   border-top: 3px solid var(--win-border-light);
   padding: 4px;
-  box-shadow: inset 0 1px 0px var(--win-border-dark);
 }
 .tabbtn{
-  flex:1;
-  display:flex; flex-direction:column; align-items:center; gap:2px;
-  background: #C0C0C0; 
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;
+  background: var(--accent-btn);
   border: 2px solid;
   border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
-  color: #000; padding: 4px 2px; cursor: pointer;
+  color: var(--card-text); padding: 4px 2px; cursor: pointer;
 }
 .tabbtn svg{width:16px;height:16px;}
 .tabbtn span{font-size:9px; font-weight:700;}
@@ -220,131 +231,117 @@ label.field-label{
   background: #E0E0E0;
   border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
   box-shadow: inset 1px 1px 0px var(--win-border-dark);
+  color: var(--win-blue);
 }
-.tabbtn.active svg{color: var(--neon-pink);}
 
-/* ---------- calendar & planner UI ---------- */
+/* ---------- Calendar & Planner UI ---------- */
 .cal-grid-month{display:grid; grid-template-columns:repeat(7,1fr); gap:3px;}
-.cal-dow{font-family:var(--vt); font-size:14px; color: var(--win-blue); text-align:center; padding-bottom:2px; font-weight:bold;}
+.cal-dow{font-family:var(--font-vt); font-size:14px; color: var(--win-blue); text-align:center; padding-bottom:2px; font-weight:bold;}
 .cal-day-month{
   background: #FFF; border: 2px solid;
   border-color: var(--win-border-dark) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-dark);
   min-height:50px; padding:3px; cursor:pointer; position:relative;
 }
-.cal-day-month.today{border-color: var(--neon-pink); border-width: 2px;}
-.cal-day-month.selected{background: #FFFFCC;}
+.cal-day-month.today{border-color: var(--win-blue); border-width: 2px;}
+.cal-day-month.selected{background: var(--highlight);}
 .cal-day-month.other-month{opacity:.35;}
-.cal-daynum{font-family:var(--vt); font-size:14px; font-weight:bold;}
+.cal-daynum{font-family:var(--font-vt); font-size:14px; font-weight:bold; color:#000;}
 .badge-row{display:flex; flex-wrap:wrap; gap:1px; margin-top:2px;}
 .type-badge{
   width:12px; height:12px; border:1px solid #000; color:#000; font-size:7px; font-weight:bold;
-  display:inline-flex; align-items:center; justify-content:center; font-family:var(--vt);
+  display:inline-flex; align-items:center; justify-content:center; font-family:var(--font-vt);
 }
 .cal-week-row{display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; scroll-snap-type:x mandatory;}
 .cal-week-day{
-  flex:0 0 84%; scroll-snap-align:start; background: #FFF; border: 2px solid;
+  flex:0 0 84%; scroll-snap-align:start; background: var(--card-bg); color: var(--card-text); border: 2px solid;
   border-color: var(--win-border-dark) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-dark);
   padding:8px; min-height:160px; box-shadow: 2px 2px 0px #000;
 }
-.cal-week-day.today{border-color: var(--neon-pink); border-width: 3px;}
-.cal-week-day h3{font-family:var(--disp); font-size:11px; margin:0 0 6px; color: var(--win-blue);}
+.cal-week-day.today{border-color: var(--win-blue); border-width: 3px;}
+.cal-week-day h3{font-family:var(--font-disp); font-size:10px; margin:0 0 6px; color: var(--win-blue);}
 .week-meal-row{
   display:flex; justify-content:space-between; align-items:center; gap:6px;
-  padding:4px 6px; background:#FFFFEE; border: 1px solid var(--win-border-darkest);
+  padding:4px 6px; background:#FFFFEE; color:#000; border: 1px solid var(--win-border-darkest);
   border-left-width: 5px; border-left-style: solid;
-  margin-bottom:4px; font-size:11.5px; cursor:pointer; font-weight:700;
+  margin-bottom:4px; font-size:11px; cursor:pointer; font-weight:700;
 }
 .week-meal-row .mname{flex:1;}
-.week-meal-row .cost{font-family:var(--vt); font-size:14px; color:var(--win-blue);}
+.week-meal-row .cost{font-family:var(--font-vt); font-size:14px; color:var(--win-blue);}
 
 .day-detail{margin-top:12px;}
-.ing-row{display:flex; align-items:center; gap:6px; padding:4px 0; border-bottom:1px dotted var(--win-border-dark); font-size:12px; font-weight:700;}
+.ing-row{display:flex; align-items:center; gap:6px; padding:4px 0; border-bottom:1px dotted var(--win-border-dark); font-size:11.5px; font-weight:700;}
 .ing-row.checked{opacity:.4; text-decoration:line-through;}
-.ing-row input[type=checkbox]{width:16px; height:16px; accent-color: var(--neon-green); border:2px solid #000;}
-.ing-qty{font-family:var(--vt); font-size:15px; color:var(--win-blue); margin-left:auto;}
+.ing-row input[type=checkbox]{width:16px; height:16px; accent-color: var(--win-blue); border:2px solid #000;}
+.ing-qty{font-family:var(--font-vt); font-size:14px; color:var(--win-blue); margin-left:auto;}
 
-/* ---------- receipt ---------- */
+/* ---------- Receipt / Grocery List ---------- */
 .receipt{
-  background:#FFFFF0;
-  border: 3px solid;
-  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
-  padding:14px 12px 8px;
-  font-family:var(--vt);
-  font-size: 18px;
-  box-shadow: 2px 2px 0px #000;
+  background:#FFFFF0; color: #000;
+  border: 3px solid; border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
+  padding:14px 12px 8px; font-family:var(--font-vt); font-size: 18px; box-shadow: 2px 2px 0px #000;
   position:relative;
 }
 .receipt-head{text-align:center; margin-bottom:8px;}
-.receipt-head .store{font-family:var(--disp); font-size:13px; color: var(--neon-pink); letter-spacing: 1px;}
-.receipt-head .meta{font-size:13px; color:var(--win-blue);}
+.receipt-head .store{font-family:var(--font-disp); font-size:11px; color: var(--win-blue); letter-spacing: 1px;}
+.receipt-head .meta{font-size:13px; color:#333;}
 .receipt hr{border:none; border-top:2px dashed var(--win-border-darkest); margin:6px 0;}
 .receipt-line{display:flex; align-items:center; gap:6px; padding:3px 0;}
 .receipt-line .name{flex:1; font-weight:bold;}
 .receipt-line.purchased .name{text-decoration:line-through; opacity:.4;}
 .receipt-line .qty{white-space:nowrap;}
-.receipt-line .est{white-space:nowrap; color: var(--neon-purple); font-weight:bold;}
+.receipt-line .est{white-space:nowrap; color: var(--win-blue); font-weight:bold;}
 .step-btn{
   width:18px; height:18px; border: 1px solid #000; background:#C0C0C0;
-  font-weight:bold; cursor:pointer; font-family:var(--vt); line-height:1;
+  font-weight:bold; cursor:pointer; font-family:var(--font-vt); line-height:1;
 }
-.receipt-total{display:flex; justify-content:space-between; font-weight:bold; font-size:18px; padding-top:6px;}
-.receipt-total.est{color: var(--neon-purple); font-size:16px;}
+.receipt-total{display:flex; justify-content:space-between; font-weight:bold; font-size:17px; padding-top:6px;}
 
 .empty{
-  text-align:center; padding:24px 12px; color:var(--win-blue); font-family:var(--vt); font-size:18px;
+  text-align:center; padding:24px 12px; color:var(--win-blue); font-family:var(--font-vt); font-size:18px;
 }
 .tag{
-  display:inline-block; font-family:var(--vt); font-size:13px; padding:1px 5px;
-  border:1px solid #000; background:var(--neon-green); color:#000; margin-right:3px; font-weight:bold;
+  display:inline-block; font-family:var(--font-vt); font-size:13px; padding:1px 5px;
+  border:1px solid #000; background:#90EE90; color:#000; margin-right:3px; font-weight:bold;
 }
 .match-bar-track{background:#FFF; border:2px solid var(--win-border-darkest); height:8px; overflow:hidden; margin-top:4px;}
-.match-bar-fill{height:100%; background:var(--neon-green);}
+.match-bar-fill{height:100%; background: #2E6F40;}
 
 .modal-backdrop{
   position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:50;
   display:flex; align-items:center; justify-content:center; padding:12px;
 }
 .modal{
-  background: var(--win-bg); width:100%; max-width:500px; max-height:90vh; overflow-y:auto;
+  background: var(--win-bg); color: #000; width:100%; max-width:500px; max-height:90vh; overflow-y:auto;
   border: 3px solid; border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
-  padding: 14px;
-  box-shadow: 4px 4px 0px #000;
-  animation:slideup .12s ease-out;
+  padding: 14px; box-shadow: 4px 4px 0px #000;
 }
-@keyframes slideup{from{transform:translateY(16px); opacity:0;} to{transform:translateY(0); opacity:1;}}
-.modal h2{font-family: var(--disp); font-size: 11px; margin: 0 0 10px; color: var(--win-blue);}
+.modal h2{font-family: var(--font-disp); font-size: 10px; margin: 0 0 10px; color: var(--win-blue);}
 .ing-edit-row{margin-bottom:6px;}
 .ing-edit-subrow{display:flex; gap:4px; margin-top:3px; align-items:center;}
 .ing-edit-subrow input[type=number]{width:48px; flex:0 0 48px; padding:6px 4px;}
 .ing-edit-subrow select{flex:0 0 58px; padding:6px 2px;}
 .ing-edit-subrow .cost-input{flex:0 0 54px;}
 .iconbtn{background:#C0C0C0; border: 2px solid; border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light); cursor:pointer; font-size:14px; padding:2px 6px;}
-.iconbtn:active{border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);}
-.row-between{display:flex; justify-content:space-between; align-items:center;}
-.meal-card h3{font-family:var(--disp); font-size:11px; margin:0 0 4px;}
-.meal-card .costline{font-family:var(--vt); font-size:16px; color:var(--win-blue); font-weight:bold;}
-.budget-header{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px; font-weight:bold;}
-.budget-target-num{font-family:var(--vt); font-size:18px; font-weight:bold;}
-.budget-bar-track{background:#FFF; border:2px solid var(--win-border-darkest); height:12px; overflow:hidden;}
-.budget-bar-fill{height:100%;}
-a.link{color: var(--win-blue); font-size:11px; font-weight:bold; text-decoration:underline;}
 
 #toast{
   position:fixed; left:50%; bottom:72px; transform:translate(-50%,12px);
-  background: var(--win-blue); color: var(--neon-yellow); border:2px solid #FFF; padding:8px 14px;
-  font-family: var(--vt); font-size: 18px; opacity:0; pointer-events:none; transition:opacity .15s, transform .15s;
+  background: var(--win-blue); color: #FFFF00; border:2px solid #FFF; padding:8px 14px;
+  font-family: var(--font-vt); font-size: 18px; opacity:0; pointer-events:none; transition:opacity .15s, transform .15s;
   z-index:60; max-width:85%; text-align:center; box-shadow: 2px 2px 0px #000;
 }
 #toast.show{opacity:1; transform:translate(-50%,0);}
 ::-webkit-scrollbar{display:none;}
 </style>
 </head>
-<body>
+<body data-theme="retro">
 <div id="app">
   <header class="topbar">
     <div class="topbar-header">
       <h1 id="topTitle">HEARTH 95</h1>
-      <span class="version-tag">v9.4.7.5</span>
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle 90s Theme">🎨 Theme</button>
+        <span class="version-tag">v9.4.7.6</span>
+      </div>
     </div>
     <div class="sub" id="topSub">90s RETRO MENU BUILDER</div>
     <div class="topbar-controls" id="topControls"></div>
@@ -364,7 +361,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_builder';
+const STORE_KEY = 'hearth_v9_builder_v2';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -385,7 +382,7 @@ const TYPE_NAMES = {breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', snack
 const TYPE_COLORS = {breakfast:'#D99B26', lunch:'#2E6F40', dinner:'#8B263E', snack:'#6B4A7A'};
 
 function defaultState(){
-  // 10 Breakfasts with Links
+  // 10 Breakfasts with Real Links
   const b1 = { id:uid(), type:'breakfast', name:'Overnight Peanut Butter Oats', servings:4, costTotal:3.20, instructionsUrl:'https://www.budgetbytes.com/peanut-butter-overnight-oats/', ingredients:[
     {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'milk', qty:2, unit:'cup', cost:1.00}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:1.00}
   ]};
@@ -417,7 +414,7 @@ function defaultState(){
     {id:uid(), name:'potatoes', qty:4, unit:'ea', cost:2.00}, {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'onion', qty:1, unit:'ea', cost:0.80}
   ]};
 
-  // 10 Lunches with Links
+  // 10 Lunches with Real Links
   const l1 = { id:uid(), type:'lunch', name:'Classic Peanut Butter & Jelly', servings:4, costTotal:2.50, instructionsUrl:'https://www.allrecipes.com/recipe/238712/peanut-butter-and-jelly-sandwich/', ingredients:[
     {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:0.60}, {id:uid(), name:'jelly', qty:4, unit:'tbsp', cost:0.30}
   ]};
@@ -449,7 +446,7 @@ function defaultState(){
     {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'black beans', qty:1, unit:'ea', cost:0.60}
   ]};
 
-  // 40 Dinners with Real BudgetBytes/AllRecipes Links
+  // 40 Dinners with Real Links
   const dinners = [
     { name:'Cheesy Rice & Black Bean Skillet', cost:5.50, link:'https://www.budgetbytes.com/cheesy-black-bean-and-rice-skillet/', ing:[{n:'black beans',q:3,u:'ea',c:2.10},{n:'rice',q:2,u:'cup',c:0.80},{n:'cheddar cheese',q:8,u:'oz',c:2.20},{n:'salsa',q:1,u:'cup',c:0.40}] },
     { name:'Garlic Butter Pasta & Peas', cost:4.00, link:'https://www.budgetbytes.com/garlic-butter-pasta-with-parmesan-and-peas/', ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'butter',q:4,u:'tbsp',c:1.00},{n:'frozen peas',q:2,u:'cup',c:1.50}] },
@@ -507,7 +504,6 @@ function defaultState(){
   const lunches = [l1,l2,l3,l4,l5,l6,l7,l8,l9,l10];
 
   const t0 = new Date();
-  const t2 = new Date(); t2.setDate(t2.getDate()+2);
   return {
     activeTab:'calendar',
     calendarView:'week',
@@ -517,9 +513,10 @@ function defaultState(){
     budgetTarget: 150,
     menuSearchQuery: '',
     menuFilterType: 'all',
+    theme: 'retro',
     meals: [...breakfasts, ...lunches, ...dinnerMeals],
     entries: [
-      {id:uid(), date: t0.toISOString().slice(0,10), mealId: b1.id, mealType:'breakfast', servings:5, checked:[], recurring:false, daysOfWeek:[1,2,3,4,5]}
+      {id:uid(), date: t0.toISOString().slice(0,10), mealId: b1.id, mealType:'breakfast', servings:5, checked:[], recurring:true, daysOfWeek:[1,2,3,4,5]}
     ],
     entryStops: [],
     shoppingList:[],
@@ -535,8 +532,6 @@ function defaultState(){
       {id:uid(), key:'cheddar cheese', name:'cheddar cheese', qty:16, unit:'oz'},
       {id:uid(), key:'olive oil', name:'olive oil', qty:32, unit:'oz'},
       {id:uid(), key:'salt', name:'salt', qty:32, unit:'oz'},
-      {id:uid(), key:'black pepper', name:'black pepper', qty:8, unit:'oz'},
-      {id:uid(), key:'garlic powder', name:'garlic powder', qty:8, unit:'oz'},
       {id:uid(), key:'bread', name:'bread', qty:2, unit:'ea'},
       {id:uid(), key:'peanut butter', name:'peanut butter', qty:2, unit:'ea'},
       {id:uid(), key:'jelly', name:'jelly', qty:1, unit:'ea'},
@@ -561,6 +556,7 @@ function load(){
     merged.menuSearchQuery = merged.menuSearchQuery || '';
     merged.menuFilterType = merged.menuFilterType || 'all';
     merged.entryStops = merged.entryStops || [];
+    merged.theme = merged.theme || 'retro';
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, daysOfWeek:[], ...e}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
     return merged;
@@ -568,7 +564,35 @@ function load(){
 }
 function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
 
-/* ============================= ADVANCED RECURRENCE BUILDER ============================= */
+/* Apply Theme */
+function applyTheme(){
+  document.body.setAttribute('data-theme', state.theme || 'retro');
+}
+
+/* ============================= SCALING & RECURRING ENGINE ============================= */
+function getEntryServings(entry){
+  return entry.servings !== undefined ? entry.servings : state.householdSize;
+}
+function getScaledMealCostForEntry(meal, entry){
+  const baseServings = meal.servings || 4;
+  const costPerPerson = (meal.costTotal || 0) / baseServings;
+  return costPerPerson * getEntryServings(entry);
+}
+function getScaledQtyForEntry(qty, meal, entry){
+  const baseServings = meal.servings || 4;
+  return qty * (getEntryServings(entry) / baseServings);
+}
+function getScaledIngredientCostForEntry(ingCost, meal, entry){
+  const baseServings = meal.servings || 4;
+  const costPerPerson = (ingCost || 0) / baseServings;
+  return costPerPerson * getEntryServings(entry);
+}
+function getScaledMealCost(meal){
+  const baseServings = meal.servings || 4;
+  const costPerPerson = (meal.costTotal || 0) / baseServings;
+  return costPerPerson * state.householdSize;
+}
+
 function checkRecurringEntries(){
   let updated = false;
   state.entryStops = state.entryStops || [];
@@ -577,7 +601,7 @@ function checkRecurringEntries(){
       for(let i=1; i<=28; i++){
         const checkDate = new Date();
         checkDate.setDate(checkDate.getDate() + i);
-        const dow = checkDate.getDay(); // 0=Sun, 1=Mon...
+        const dow = checkDate.getDay();
         
         if(entry.daysOfWeek.includes(dow)){
           const checkIso = iso(checkDate);
@@ -606,31 +630,6 @@ function checkRecurringEntries(){
 }
 checkRecurringEntries();
 
-/* ============================= SCALING HELPERS ============================= */
-function getEntryServings(entry){
-  return entry.servings !== undefined ? entry.servings : state.householdSize;
-}
-function getScaledMealCostForEntry(meal, entry){
-  const baseServings = meal.servings || 4;
-  const costPerPerson = (meal.costTotal || 0) / baseServings;
-  return costPerPerson * getEntryServings(entry);
-}
-function getScaledQtyForEntry(qty, meal, entry){
-  const baseServings = meal.servings || 4;
-  return qty * (getEntryServings(entry) / baseServings);
-}
-function getScaledIngredientCostForEntry(ingCost, meal, entry){
-  const baseServings = meal.servings || 4;
-  const costPerPerson = (ingCost || 0) / baseServings;
-  return costPerPerson * getEntryServings(entry);
-}
-function getScaledMealCost(meal){
-  const baseServings = meal.servings || 4;
-  const costPerPerson = (meal.costTotal || 0) / baseServings;
-  return costPerPerson * state.householdSize;
-}
-
-/* ============================= TOAST ============================= */
 function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -639,7 +638,6 @@ function showToast(msg){
   t._hideTimer = setTimeout(()=>t.classList.remove('show'), 2000);
 }
 
-/* ============================= UNIT HELPERS ============================= */
 function toBase(qty, unit){ return qty * UNITS[unit].toBase; }
 function displayFromBase(cat, baseQty){
   if(cat==='count') return {qty: round4(baseQty), unit:'ea'};
@@ -658,7 +656,6 @@ function round4(n){
 }
 function fmtQtyUnit(qty, unit){ return `${round4(qty)} ${unit}`; }
 
-/* ============================= SHOPPING LIST AGGREGATION ============================= */
 function addIngredientsToShoppingListForEntry(meal, entry){
   let added = 0;
   meal.ingredients.forEach(ing=>{
@@ -681,7 +678,6 @@ function addIngredientsToShoppingListForEntry(meal, entry){
   return added;
 }
 
-/* ============================= PANTRY MATCH ============================= */
 function pantryHas(name){
   const key = name.trim().toLowerCase();
   return state.pantry.find(p=>(p.key||p.name.toLowerCase())===key);
@@ -703,7 +699,6 @@ const ICONS = {
   x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`
 };
 
-/* ============================= TAB BAR ============================= */
 const TABS = [
   {id:'calendar', label:'Calendar', icon:'calendar'},
   {id:'menu', label:'Menu', icon:'menu'},
@@ -722,8 +717,8 @@ function renderTabbar(){
   });
 }
 
-/* ============================= ROUTER ============================= */
 function render(){
+  applyTheme();
   renderTabbar();
   document.getElementById('topControls').innerHTML='';
   const view = document.getElementById('view');
@@ -741,6 +736,14 @@ function render(){
   };
   subEl.textContent = subs[state.activeTab];
   view.innerHTML='';
+
+  // Hook up theme toggle button
+  document.getElementById('themeToggleBtn').onclick = ()=>{
+    state.theme = state.theme === 'retro' ? 'cyber' : 'retro';
+    save(); render();
+    showToast(`Theme: ${state.theme.toUpperCase()}`);
+  };
+
   routes[state.activeTab](view);
 }
 
@@ -787,7 +790,7 @@ function renderWeekView(view){
   nav.style.marginBottom='10px';
   nav.innerHTML = `
     <button class="btn btn-ghost btn-sm" id="prevWeek">&larr; Prev</button>
-    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid #000; font-size:11px;">${niceDate(start)} – ${niceDate(addDays(start,6))}</strong>
+    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid #000; font-size:11px; color:#000;">${niceDate(start)} – ${niceDate(addDays(start,6))}</strong>
     <button class="btn btn-ghost btn-sm" id="nextWeek">Next &rarr;</button>
   `;
   wrap.appendChild(nav);
@@ -842,7 +845,7 @@ function renderMonthView(view){
   nav.style.marginBottom='10px';
   nav.innerHTML = `
     <button class="btn btn-ghost btn-sm" id="prevMonth">&larr;</button>
-    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid #000; font-size:11px;">${anchor.toLocaleDateString(undefined,{month:'long', year:'numeric'})}</strong>
+    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid #000; font-size:11px; color:#000;">${anchor.toLocaleDateString(undefined,{month:'long', year:'numeric'})}</strong>
     <button class="btn btn-ghost btn-sm" id="nextMonth">&rarr;</button>
   `;
   wrap.appendChild(nav);
@@ -924,7 +927,7 @@ function renderDayDetail(view){
       <div class="row-between">
         <div style="display:flex; align-items:center; gap:6px;">
           <span class="type-badge" style="background:${TYPE_COLORS[entry.mealType]}; width:16px;height:16px;font-size:9px;">${TYPE_LABELS[entry.mealType]}</span>
-          <h3 style="font-family:var(--disp); margin:0; font-size:11px;">${meal.name} ${entry.recurring?'<span style="font-size:12px;color:var(--neon-purple);" title="Recurring rule active">&#8635;</span>':''}</h3>
+          <h3 style="font-family:var(--font-disp); margin:0; font-size:10px;">${meal.name} ${entry.recurring?'<span style="font-size:11px;color:#9D00FF;" title="Recurring Rule Active">&#8635;</span>':''}</h3>
         </div>
         <button class="btn btn-danger btn-sm" style="padding:2px 6px;" title="Delete meal" data-remove-entry="${entry.id}">${ICONS.x}</button>
       </div>
@@ -965,7 +968,7 @@ function renderDayDetail(view){
       }
       state.entries = state.entries.filter(e=>e.id!==entry.id);
       save(); render();
-      showToast('Meal removed from day');
+      showToast('Meal removed');
     };
     card.querySelector('[data-add-unchecked]').onclick = ()=>{
       const addedCount = addIngredientsToShoppingListForEntry(meal, entry);
@@ -984,10 +987,10 @@ function renderDayDetail(view){
 
 function openStopRecurringModal(entry){
   openModal(`
-    <h2>Manage Recurring Meal</h2>
-    <p style="font-size:12px; font-weight:700; margin-bottom:12px;">This meal follows a recurring schedule. How would you like to delete it?</p>
+    <h2>Manage Recurring Rule</h2>
+    <p style="font-size:12px; font-weight:700; margin-bottom:12px;">This meal follows a custom recurring schedule. How would you like to delete it?</p>
     <button class="btn btn-ghost btn-block" id="delOnlyThis" style="margin-bottom:8px; background:#FFFF00;">Delete only this instance</button>
-    <button class="btn btn-danger btn-block" id="delForward" style="margin-bottom:12px;">Stop recurrence from this date forward</button>
+    <button class="btn btn-danger btn-block" id="delForward" style="margin-bottom:12px;">Stop rule from this date forward</button>
     <button class="btn btn-primary btn-block" id="cancelStop">Cancel</button>
   `);
   document.getElementById('cancelStop').onclick = closeModal;
@@ -1011,14 +1014,14 @@ function openStopRecurringModal(entry){
       return true;
     });
     save(); closeModal(); render();
-    showToast('Recurring series stopped from this date forward');
+    showToast('Recurring rule stopped from this date forward');
   };
 }
 
-/* ============================= ADVANCED PLANNER BUILDER MODAL ============================= */
+/* ============================= ADVANCED MENU PLANNER BUILDER ============================= */
 function openPlanModal({mealId=null, defaultDate=null}={}){
   if(state.meals.length===0){
-    openModal(`<h2>No meals yet</h2><p>Add a meal in the Menu tab first.</p><button class="btn btn-primary btn-block" id="closeM">Got it</button>`);
+    openModal(`<h2>No recipes yet</h2><p>Add a recipe in the Menu tab first.</p><button class="btn btn-primary btn-block" id="closeM">Got it</button>`);
     document.getElementById('closeM').onclick = closeModal;
     return;
   }
@@ -1027,10 +1030,8 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
   let selType = 'dinner';
   let mealServings = state.householdSize;
   let isRecurring = false;
-  let selectedDays = [new Date(d0+'T00:00:00').getDay()]; // default to clicked day's DOW
+  let selectedDays = [new Date(d0+'T00:00:00').getDay()]; // defaults to clicked day of week
 
-  const weekStart = startOfWeek(d0);
-  const weekDates = Array.from({length:7},(_,i)=>iso(addDays(weekStart,i)));
   const DOW_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   function bodyHtml(){
@@ -1053,10 +1054,10 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
         </div>
       </div>
 
-      <div style="margin:10px 0; background:#E0E0E0; padding:8px; border:2px solid var(--win-border-darkest);">
+      <div style="margin:10px 0; background:#E0E0E0; padding:8px; border:2px solid #000; color:#000;">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-          <input type="checkbox" id="planRecurringCb" ${isRecurring?'checked':''} style="width:16px;height:16px;accent-color:var(--neon-pink);">
-          <label for="planRecurringCb" style="font-size:11px;font-weight:700;cursor:pointer;margin:0;">Enable Recurring Schedule (e.g. M-F or Every Tuesday)</label>
+          <input type="checkbox" id="planRecurringCb" ${isRecurring?'checked':''} style="width:16px;height:16px;">
+          <label for="planRecurringCb" style="font-size:11px;font-weight:700;cursor:pointer;margin:0;">Enable Recurring Schedule (e.g. M-F or Tuesdays only)</label>
         </div>
         <div id="dowContainer" style="display:${isRecurring?'block':'none'}; margin-top:6px;">
           <label class="field-label" style="margin-bottom:4px;">Repeat on these days of the week:</label>
@@ -1068,12 +1069,12 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
         </div>
       </div>
 
-      <label class="field-label">Target Date (for single or initial start)</label>
+      <label class="field-label">Start Date</label>
       <input type="date" id="singleDateInput" value="${d0}">
 
       <div style="display:flex; gap:8px; margin-top:14px;">
         <button class="btn btn-ghost btn-block" id="cancelPlan">Cancel</button>
-        <button class="btn btn-primary btn-block" id="confirmPlan">Build & Add to Schedule</button>
+        <button class="btn btn-primary btn-block" id="confirmPlan">Build & Add Schedule</button>
       </div>
     `;
   }
@@ -1116,7 +1117,6 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
       const targetDateStr = document.getElementById('singleDateInput').value || d0;
       
       if(isRecurring && selectedDays.length > 0){
-        // Generate for selected DOWs over the next 4 weeks starting from target date
         const baseDate = new Date(targetDateStr+'T00:00:00');
         let addedCount = 0;
         
@@ -1147,7 +1147,6 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
         render();
         showToast(`Scheduled recurring rules for ${addedCount} dates`);
       } else {
-        // Single date entry
         state.entries.push({
           id: uid(),
           date: targetDateStr,
@@ -1407,11 +1406,11 @@ function renderShoppingTab(view){
       <div class="meta">${items.length} item${items.length===1?'':'s'} &middot; HH: ${state.householdSize}</div>
     </div>
     <hr>
-    ${items.length===0 ? `<div class="empty" style="font-family:var(--body); font-size:12px;">List is empty. Uncheck ingredients on a planned meal, or add items above.</div>` :
+    ${items.length===0 ? `<div class="empty" style="font-family:var(--font-body); font-size:12px;">List is empty. Uncheck ingredients on a planned meal, or add items above.</div>` :
       items.map(it=>{
         const disp = displayFromBase(it.category, it.base);
         return `<div class="receipt-line ${it.purchased?'purchased':''}" data-item="${it.id}">
-          <input type="checkbox" data-buy="${it.id}" ${it.purchased?'checked':''} style="width:16px;height:16px;accent-color:var(--neon-green);">
+          <input type="checkbox" data-buy="${it.id}" ${it.purchased?'checked':''} style="width:16px;height:16px;accent-color:var(--win-blue);">
           <span class="name">${it.name}</span>
           <button class="step-btn" data-step="-1" data-item="${it.id}">&minus;</button>
           <span class="qty">${disp.qty} ${disp.unit}</span>
@@ -1537,7 +1536,7 @@ function renderPantryTab(view){
       el.style.marginBottom='10px';
       el.innerHTML = `
         <div class="row-between"><strong style="font-size:12px;">${meal.name}</strong><span class="tag">${pct}% on hand</span></div>
-        <div class="match-bar-track"><div class="match-bar-fill" style="width:${pct}%; background:${pct>=75?'var(--neon-green)':pct>=40?'var(--neon-yellow)':'var(--neon-pink)'}"></div></div>
+        <div class="match-bar-track"><div class="match-bar-fill" style="width:${pct}%;"></div></div>
       `;
       matchCard.appendChild(el);
     });
@@ -1635,9 +1634,9 @@ function renderBudgetTab(view){
       <span>${rangeLabel}</span>
       <span>Target: <input type="number" id="targetInput" value="${state.budgetTarget}" style="width:64px; padding:2px;"></span>
     </div>
-    <div class="budget-bar-track"><div class="budget-bar-fill" style="width:${pct}%; background:${over?'var(--neon-pink)':'var(--neon-green)'}"></div></div>
+    <div class="budget-bar-track"><div class="budget-bar-fill" style="width:${pct}%; background:${over?'#FF0000':'#2E6F40'}"></div></div>
     <div class="row-between" style="margin-top:6px;">
-      <span class="budget-target-num" style="color:${over?'var(--neon-pink)':'var(--win-blue)'}">$${total.toFixed(2)} planned</span>
+      <span class="budget-target-num" style="color:${over?'#FF0000':'var(--win-blue)'}">$${total.toFixed(2)} planned</span>
       <span style="font-size:11.5px; color:#666;">of $${state.budgetTarget.toFixed(2)}</span>
     </div>
   `;
