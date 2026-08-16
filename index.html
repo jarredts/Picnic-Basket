@@ -419,7 +419,7 @@ label.field-label{
 ::-webkit-scrollbar{display:none;}
 </style>
 </head>
-<body>
+<body data-theme="retro">
 <div id="app">
   <header class="topbar">
     <div class="topbar-header">
@@ -447,6 +447,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= FIREBASE REALTIME SYNC CONFIG ============================= */
+// TODO: Replace with your actual Firebase project config credentials
 const firebaseConfig = {
   apiKey: "AIzaSyBKDHD7Q3GNzQMk_HdNfin3JNG5XIu0I50",
   authDomain: "picnic-basket-c0656.firebaseapp.com",
@@ -661,7 +662,7 @@ function load(){
     merged.menuFilterType = merged.menuFilterType || 'all';
     merged.entryStops = merged.entryStops || [];
     merged.ruleTemplates = merged.ruleTemplates || def.ruleTemplates;
-    merged.theme = parsed.theme || def.theme;
+    merged.theme = merged.theme || 'retro';
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, daysOfWeek:[], ...e}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
     return merged;
@@ -675,16 +676,13 @@ function save(){
   }
 }
 
-// Apply theme immediately before any render execution to prevent flashing
-applyTheme();
-
+// Listen for remote updates from Firebase in real-time
 db.ref('hearth_state').on('value', (snapshot) => {
   const remoteData = snapshot.val();
   if(remoteData){
     isRemoteUpdate = true;
     state = {...defaultState(), ...remoteData};
     localStorage.setItem(STORE_KEY, JSON.stringify(state));
-    applyTheme();
     render();
     isRemoteUpdate = false;
   }
@@ -1906,7 +1904,6 @@ function openModal(innerHtml){
 function closeModal(){ document.getElementById('modalRoot').innerHTML=''; }
 
 /* ============================= INIT ============================= */
-// Immediate render trigger ensuring local state and remote values match cleanly
 render();
 </script>
 </body>
