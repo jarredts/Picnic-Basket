@@ -1,6 +1,6 @@
 // Bump this version string any time you push a new deploy so old
 // clients pick up the change instead of serving a stale cached copy.
-const CACHE_NAME = 'hearth-v45-cache';
+const CACHE_NAME = 'hearth-v46-cache';
 const ASSETS = [
   './',
   './index.html',
