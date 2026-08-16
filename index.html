@@ -4,31 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
 <title>Hearth — Family Meal Planner</title>
-<meta name="theme-color" content="#8B263E">
+<meta name="theme-color" content="#FF007F">
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#2C221E;
-  --ink-soft:#6E5E57;
-  --bg:#FAF6F0;
-  --card:#FFFFFF;
-  --card-line:#EADFD6;
-  --primary:#8B263E;
-  --primary-dark:#691A2E;
-  --accent:#2E6F40;
-  --accent-dark:#1E4A2A;
-  --gold:#D99B26;
-  --gold-dark:#A67215;
-  --paper-shadow: 0 2px 8px rgba(44,34,30,.06), 0 8px 20px rgba(44,34,30,.04);
-  --radius: 16px;
-  --disp: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --body: 'Inter', system-ui, sans-serif;
-  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --ink:#0A0A0A;
+  --ink-soft:#333333;
+  --bg:#00FFFF;           /* 90s Neon Cyan */
+  --card:#FFFF00;         /* 90s Neon Yellow */
+  --card-line:#0A0A0A;
+  --primary:#FF007F;      /* 90s Hot Pink */
+  --primary-dark:#CC0066;
+  --accent:#39FF14;       /* Neon Lime Green */
+  --accent-dark:#28B80D;
+  --purple:#9D00FF;       /* Electric Purple */
+  --paper-shadow: 4px 4px 0px #0A0A0A;
+  --radius: 0px;          /* Sharp 90s geometric aesthetic */
+  --disp: 'Fredoka One', cursive, system-ui, sans-serif;
+  --body: 'Space Mono', monospace, system-ui;
+  --mono: 'Space Mono', monospace;
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
@@ -38,6 +37,9 @@ body{
   font-family:var(--body);
   -webkit-font-smoothing:antialiased;
   overscroll-behavior-y:none;
+  background-image: radial-gradient(#9D00FF 15%, transparent 16%), radial-gradient(#FF007F 15%, transparent 16%);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
 }
 button{font-family:inherit;}
 #app{
@@ -49,39 +51,44 @@ button{font-family:inherit;}
   flex-direction:column;
   background:var(--bg);
   position:relative;
+  border-left: 4px solid var(--ink);
+  border-right: 4px solid var(--ink);
 }
 /* ---------- topbar ---------- */
 .topbar{
   position:sticky; top:0; z-index:20;
   background:var(--primary);
-  color:#FFF9F5;
+  color:#FFFF00;
   padding:14px 16px 12px;
-  border-bottom:3px solid var(--gold);
+  border-bottom:4px solid var(--ink);
 }
 .topbar-header{
   display:flex; justify-content:space-between; align-items:baseline;
 }
 .topbar h1{
   font-family:var(--disp);
-  font-weight:800;
-  font-size:22px;
+  font-weight:400;
+  font-size:26px;
   margin:0 0 2px;
-  letter-spacing:.2px;
+  letter-spacing:1px;
+  text-shadow: 2px 2px 0px var(--ink);
 }
 .version-tag{
   font-family:var(--mono);
   font-size:11px;
-  color:rgba(255,249,245,.75);
-  background:rgba(0,0,0,.15);
+  color:#0A0A0A;
+  background:var(--accent);
   padding:2px 6px;
-  border-radius:6px;
+  border:2px solid var(--ink);
+  font-weight:700;
 }
 .topbar .sub{
   font-size:12px;
-  color:#F0D1D7;
+  color:#FFFF00;
   font-family:var(--mono);
   text-transform:uppercase;
   letter-spacing:.08em;
+  font-weight:700;
 }
 .topbar-controls{
   margin-top:10px;
@@ -98,201 +105,201 @@ button{font-family:inherit;}
 }
 h2.section-title{
   font-family:var(--disp);
-  font-weight:700;
-  font-size:18px;
+  font-weight:400;
+  font-size:20px;
   margin:0 0 10px;
   color:var(--ink);
+  letter-spacing:.5px;
 }
 .card{
   background:var(--card);
-  border:1px solid var(--card-line);
+  border:3px solid var(--ink);
   border-radius:var(--radius);
   box-shadow:var(--paper-shadow);
   padding:14px;
-  margin-bottom:12px;
+  margin-bottom:14px;
 }
 .pill{
   display:inline-flex;
   align-items:center;
   gap:6px;
   padding:6px 12px;
-  border-radius:999px;
-  border:1px solid rgba(255,249,245,.25);
-  background:rgba(255,255,255,.1);
-  color:#FFF9F5;
-  font-size:13px;
-  font-weight:600;
+  border-radius:0px;
+  border:2px solid var(--ink);
+  background:var(--purple);
+  color:#FFFF00;
+  font-size:12px;
+  font-weight:700;
   cursor:pointer;
-  transition:background .15s;
+  box-shadow: 2px 2px 0px var(--ink);
+  transition:transform .1s;
 }
+.pill:active{transform:translate(2px,2px); box-shadow:none;}
 .pill.active{
-  background:var(--gold);
-  border-color:var(--gold);
-  color:#3A2A04;
+  background:var(--accent);
+  color:var(--ink);
 }
 .chip{
   display:inline-flex; align-items:center; gap:4px;
-  padding:6px 12px; border-radius:999px;
-  border:1.5px solid var(--card-line); background:#fff; color:var(--ink);
-  font-size:13px; font-weight:600; cursor:pointer;
+  padding:6px 12px; border-radius:0px;
+  border:2px solid var(--ink); background:#fff; color:var(--ink);
+  font-size:12px; font-weight:700; cursor:pointer;
+  box-shadow: 2px 2px 0px var(--ink);
 }
-.chip.active{background:var(--primary); border-color:var(--primary); color:#fff;}
+.chip.active{background:var(--primary); color:#FFFF00;}
 .btn{
   display:inline-flex; align-items:center; justify-content:center; gap:6px;
-  border:none; border-radius:10px; padding:10px 14px;
-  font-weight:600; font-size:14px; cursor:pointer;
+  border:2px solid var(--ink); border-radius:0px; padding:10px 14px;
+  font-weight:700; font-size:13px; cursor:pointer;
   font-family:var(--body);
+  box-shadow: 3px 3px 0px var(--ink);
+  transition:transform .1s, box-shadow .1s;
 }
-.btn-primary{background:var(--primary); color:#fff;}
-.btn-primary:active{background:var(--primary-dark);}
-.btn-teal{background:var(--accent); color:#fff;}
-.btn-teal:active{background:var(--accent-dark);}
-.btn-gold{background:var(--gold); color:#3A2A04;}
-.btn-ghost{background:transparent; color:var(--ink); border:1.5px solid var(--card-line);}
-.btn-danger{background:transparent; color:var(--primary-dark); border:1.5px solid var(--primary-dark);}
+.btn:active{transform:translate(3px,3px); box-shadow:none;}
+.btn-primary{background:var(--primary); color:#FFFF00;}
+.btn-teal{background:var(--accent); color:var(--ink);}
+.btn-gold{background:var(--purple); color:#FFFF00;}
+.btn-ghost{background:#fff; color:var(--ink); border:2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);}
+.btn-danger{background:#FF0000; color:#FFFF00; border:2px solid var(--ink);}
 .btn-block{width:100%;}
-.btn-sm{padding:6px 10px; font-size:12.5px; border-radius:8px;}
+.btn-sm{padding:6px 10px; font-size:11.5px;}
 input[type=text],input[type=number],input[type=url],input[type=date],select,textarea{
   width:100%;
   padding:9px 10px;
-  border:1.5px solid var(--card-line);
-  border-radius:9px;
+  border:2px solid var(--ink);
+  border-radius:0px;
   font-family:var(--body);
-  font-size:14px;
+  font-size:13px;
   background:#fff;
   color:var(--ink);
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
 }
 label.field-label{
-  display:block; font-size:11.5px; font-weight:600; text-transform:uppercase;
-  letter-spacing:.06em; color:var(--ink-soft); margin:10px 0 4px;
+  display:block; font-size:11px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--ink); margin:10px 0 4px;
 }
 /* ---------- bottom tab bar ---------- */
 .tabbar{
   position:sticky; bottom:0; z-index:20;
   display:flex;
-  background:var(--primary);
-  border-top:3px solid var(--gold);
+  background:var(--purple);
+  border-top:4px solid var(--ink);
   padding:6px 4px calc(6px + env(safe-area-inset-bottom));
 }
 .tabbtn{
   flex:1;
   display:flex; flex-direction:column; align-items:center; gap:3px;
-  background:none; border:none; color:#E8B4BE; padding:6px 2px; cursor:pointer;
+  background:none; border:none; color:#FF99CC; padding:6px 2px; cursor:pointer;
 }
 .tabbtn svg{width:20px;height:20px;}
-.tabbtn span{font-size:10px; font-weight:600; letter-spacing:.02em;}
-.tabbtn.active{color:#FFF9F5;}
-.tabbtn.active svg{color:var(--gold);}
+.tabbtn span{font-size:10px; font-weight:700; letter-spacing:.02em;}
+.tabbtn.active{color:#FFFF00;}
+.tabbtn.active svg{color:var(--accent);}
 /* ---------- calendar ---------- */
 .cal-grid-month{display:grid; grid-template-columns:repeat(7,1fr); gap:4px;}
-.cal-dow{font-family:var(--mono); font-size:10px; color:var(--ink-soft); text-align:center; padding-bottom:4px;}
+.cal-dow{font-family:var(--mono); font-size:10px; color:var(--ink); font-weight:700; text-align:center; padding-bottom:4px;}
 .cal-day-month{
-  background:var(--card); border:1px solid var(--card-line); border-radius:8px;
+  background:var(--card); border:2px solid var(--ink); border-radius:0px;
   min-height:56px; padding:4px; cursor:pointer; position:relative;
 }
-.cal-day-month.today{border-color:var(--primary); border-width:2px;}
-.cal-day-month.selected{background:#F7EBEB;}
+.cal-day-month.today{border-color:var(--primary); border-width:3px;}
+.cal-day-month.selected{background:#FF99CC;}
 .cal-day-month.other-month{opacity:.35;}
-.cal-daynum{font-family:var(--mono); font-size:11px; font-weight:600;}
+.cal-daynum{font-family:var(--mono); font-size:11px; font-weight:700;}
 .badge-row{display:flex; flex-wrap:wrap; gap:2px; margin-top:3px;}
 .type-badge{
-  width:15px; height:15px; border-radius:4px; color:#fff; font-size:9px; font-weight:800;
+  width:15px; height:15px; border-radius:0px; border:1px solid var(--ink); color:#0A0A0A; font-size:9px; font-weight:800;
   display:inline-flex; align-items:center; justify-content:center; font-family:var(--mono); flex:0 0 auto;
 }
 .cal-week-row{display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; scroll-snap-type:x mandatory;}
 .cal-week-day{
-  flex:0 0 84%; scroll-snap-align:start; background:var(--card); border:1px solid var(--card-line);
-  border-radius:var(--radius); padding:10px; min-height:180px;
+  flex:0 0 84%; scroll-snap-align:start; background:var(--card); border:2px solid var(--ink);
+  border-radius:0px; padding:10px; min-height:180px; box-shadow: 3px 3px 0px var(--ink);
 }
-.cal-week-day.today{border-color:var(--primary); border-width:2px;}
+.cal-week-day.today{border-color:var(--primary); border-width:3px;}
 .cal-week-day h3{font-family:var(--disp); font-size:15px; margin:0 0 8px;}
 .week-meal-row{
   display:flex; justify-content:space-between; align-items:center; gap:8px;
-  padding:6px 8px; border-radius:8px; background:#fff; border:1px solid var(--card-line);
-  border-left-width:4px; border-left-style:solid;
-  margin-bottom:6px; font-size:13px; cursor:pointer;
+  padding:6px 8px; border-radius:0px; background:#fff; border:2px solid var(--ink);
+  border-left-width:6px; border-left-style:solid;
+  margin-bottom:6px; font-size:12.5px; cursor:pointer;
 }
-.week-meal-row .mname{flex:1;}
-.week-meal-row .cost{font-family:var(--mono); font-size:12px; color:var(--ink-soft);}
+.week-meal-row .mname{flex:1; font-weight:700;}
+.week-meal-row .cost{font-family:var(--mono); font-size:11.5px; font-weight:700; color:var(--ink);}
 .day-detail{margin-top:14px;}
-.ing-row{display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px dashed var(--card-line); font-size:14px;}
+.ing-row{display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px dashed var(--ink); font-size:13px; font-weight:700;}
 .ing-row.checked{opacity:.5; text-decoration:line-through;}
-.ing-row input[type=checkbox]{width:18px; height:18px; accent-color:var(--accent);}
-.ing-qty{font-family:var(--mono); color:var(--ink-soft); font-size:12.5px; margin-left:auto;}
+.ing-row input[type=checkbox]{width:18px; height:18px; accent-color:var(--accent); border:2px solid var(--ink); border-radius:0px;}
+.ing-qty{font-family:var(--mono); color:var(--ink); font-size:12px; margin-left:auto;}
 /* ---------- receipt (shopping list signature) ---------- */
 .receipt{
   background:#fff;
-  border:1px solid var(--card-line);
-  border-radius:2px;
+  border:3px solid var(--ink);
+  border-radius:0px;
   padding:18px 16px 8px;
   font-family:var(--mono);
   box-shadow:var(--paper-shadow);
   position:relative;
 }
-.receipt::before, .receipt::after{
-  content:""; position:absolute; left:0; right:0; height:10px;
-  background-image:radial-gradient(circle at 6px 5px, var(--bg) 5px, transparent 5.5px);
-  background-size:12px 10px; background-repeat:repeat-x;
-}
-.receipt::before{top:-6px;}
-.receipt::after{bottom:-6px; transform:rotate(180deg);}
 .receipt-head{text-align:center; margin-bottom:10px;}
-.receipt-head .store{font-family:var(--disp); font-weight:800; font-size:17px; letter-spacing:.03em;}
-.receipt-head .meta{font-size:10.5px; color:var(--ink-soft);}
-.receipt hr{border:none; border-top:1px dashed var(--card-line); margin:8px 0;}
-.receipt-line{display:flex; align-items:center; gap:6px; font-size:12.5px; padding:5px 0;}
-.receipt-line .name{flex:1; font-size:13px;}
+.receipt-head .store{font-family:var(--disp); font-weight:400; font-size:18px; letter-spacing:1px; color:var(--primary);}
+.receipt-head .meta{font-size:10px; font-weight:700; color:var(--ink-soft);}
+.receipt hr{border:none; border-top:2px dashed var(--ink); margin:8px 0;}
+.receipt-line{display:flex; align-items:center; gap:6px; font-size:12px; padding:5px 0;}
+.receipt-line .name{flex:1; font-size:12px; font-weight:700;}
 .receipt-line.purchased .name{text-decoration:line-through; opacity:.45;}
-.receipt-line .qty{white-space:nowrap; font-weight:600;}
-.receipt-line .est{white-space:nowrap; color:var(--gold-dark); font-size:11.5px;}
+.receipt-line .qty{white-space:nowrap; font-weight:700;}
+.receipt-line .est{white-space:nowrap; color:var(--purple); font-size:11px; font-weight:700;}
 .step-btn{
-  width:20px; height:20px; border-radius:5px; border:none; background:#F4ECE1;
+  width:20px; height:20px; border-radius:0px; border:2px solid var(--ink); background:var(--accent);
   font-weight:700; cursor:pointer; font-family:var(--mono); line-height:1; color:var(--ink);
 }
-.receipt-total{display:flex; justify-content:space-between; font-weight:700; font-size:14px; padding-top:8px;}
-.receipt-total.est{color:var(--gold-dark); font-size:13px; padding-top:2px;}
+.receipt-total{display:flex; justify-content:space-between; font-weight:700; font-size:13px; padding-top:8px;}
+.receipt-total.est{color:var(--purple); font-size:12px; padding-top:2px;}
 /* ---------- misc ---------- */
 .empty{
-  text-align:center; padding:32px 16px; color:var(--ink-soft);
-  font-size:14px;
+  text-align:center; padding:32px 16px; color:var(--ink); font-weight:700;
+  font-size:13px;
 }
 .tag{
-  display:inline-block; font-family:var(--mono); font-size:10.5px; padding:2px 7px;
-  border-radius:5px; background:#F4ECE1; color:var(--ink-soft); margin-right:4px;
+  display:inline-block; font-family:var(--mono); font-size:10px; font-weight:700; padding:2px 6px;
+  border:1px solid var(--ink); border-radius:0px; background:var(--accent); color:var(--ink); margin-right:4px;
 }
-.match-bar-track{background:#F4ECE1; border-radius:6px; height:8px; overflow:hidden; margin-top:6px;}
+.match-bar-track{background:#fff; border:2px solid var(--ink); border-radius:0px; height:10px; overflow:hidden; margin-top:6px;}
 .match-bar-fill{height:100%; background:var(--accent);}
 .modal-backdrop{
-  position:fixed; inset:0; background:rgba(44,34,30,.55); z-index:50;
+  position:fixed; inset:0; background:rgba(10,10,10,.7); z-index:50;
   display:flex; align-items:flex-end; justify-content:center;
 }
 .modal{
-  background:var(--bg); width:100%; max-width:520px; max-height:90vh; overflow-y:auto;
-  border-radius:18px 18px 0 0; padding:18px 16px calc(18px + env(safe-area-inset-bottom));
+  background:var(--card); width:100%; max-width:520px; max-height:90vh; overflow-y:auto;
+  border:4px solid var(--ink); border-radius:0px; padding:18px 16px calc(18px + env(safe-area-inset-bottom));
+  box-shadow: 0px -6px 0px var(--primary);
   animation:slideup .18s ease-out;
 }
 @keyframes slideup{from{transform:translateY(24px); opacity:0;} to{transform:translateY(0); opacity:1;}}
-.modal h2{font-family:var(--disp); margin:0 0 12px;}
+.modal h2{font-family:var(--disp); margin:0 0 12px; color:var(--primary); text-shadow: 1px 1px 0px var(--ink);}
 .ing-edit-row{margin-bottom:8px;}
 .ing-edit-subrow{display:flex; gap:6px; margin-top:4px; align-items:center;}
 .ing-edit-subrow input[type=number]{width:52px; flex:0 0 52px; padding:9px 6px;}
 .ing-edit-subrow select{flex:0 0 62px; padding:9px 4px;}
 .ing-edit-subrow .cost-input{flex:0 0 58px;}
 .ing-edit-subrow .iconbtn{margin-left:auto;}
-.iconbtn{background:none;border:none;color:var(--primary-dark);cursor:pointer;font-size:18px;padding:4px 8px;}
+.iconbtn{background:var(--accent); border:2px solid var(--ink); color:var(--ink); cursor:pointer; font-size:16px; padding:2px 6px; box-shadow: 2px 2px 0px var(--ink);}
+.iconbtn:active{transform:translate(2px,2px); box-shadow:none;}
 .row-between{display:flex; justify-content:space-between; align-items:center;}
-.meal-card h3{font-family:var(--disp); font-size:16px; margin:0 0 4px;}
-.meal-card .costline{font-family:var(--mono); font-size:13px; color:var(--accent-dark); font-weight:600;}
-.budget-header{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;}
+.meal-card h3{font-family:var(--disp); font-size:16px; margin:0 0 4px; font-weight:400; letter-spacing:.5px;}
+.meal-card .costline{font-family:var(--mono); font-size:12px; color:var(--primary); font-weight:700;}
+.budget-header{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; font-weight:700;}
 .budget-target-num{font-family:var(--mono); font-weight:700;}
-.budget-bar-track{background:#F4ECE1; border-radius:8px; height:14px; overflow:hidden;}
+.budget-bar-track{background:#fff; border:2px solid var(--ink); border-radius:0px; height:14px; overflow:hidden;}
 .budget-bar-fill{height:100%;}
-a.link{color:var(--accent-dark); font-size:12.5px;}
+a.link{color:var(--purple); font-size:12px; font-weight:700; text-decoration:underline;}
 #toast{
   position:fixed; left:50%; bottom:82px; transform:translate(-50%,12px);
-  background:var(--ink); color:#FFF9F5; padding:10px 16px; border-radius:10px;
-  font-size:13px; font-weight:600; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
-  z-index:60; max-width:80%; text-align:center; box-shadow:var(--paper-shadow);
+  background:var(--primary); color:#FFFF00; padding:10px 16px; border:2px solid var(--ink); border-radius:0px;
+  font-size:12px; font-weight:700; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
+  z-index:60; max-width:80%; text-align:center; box-shadow: 3px 3px 0px var(--ink);
 }
 #toast.show{opacity:1; transform:translate(-50%,0);}
 ::-webkit-scrollbar{display:none;}
@@ -302,8 +309,8 @@ a.link{color:var(--accent-dark); font-size:12.5px;}
 <div id="app">
   <header class="topbar">
     <div class="topbar-header">
-      <h1 id="topTitle">Hearth</h1>
-      <span class="version-tag">v9.4.7.9</span>
+      <h1 id="topTitle">HEARTH 95</h1>
+      <span class="version-tag">v9.4.7.5</span>
     </div>
     <div class="sub" id="topSub">FAMILY MEAL PLANNER</div>
     <div class="topbar-controls" id="topControls"></div>
@@ -323,7 +330,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_10';
+const STORE_KEY = 'hearth_v9_retro';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -527,7 +534,7 @@ function load(){
     const parsed = JSON.parse(raw);
     const merged = {...def, ...parsed};
     
-    // Force reset meals if empty or missing preloads
+    // Always guarantee preloaded meals are present
     if(!merged.meals || merged.meals.length < 10){
       merged.meals = def.meals;
     }
@@ -559,6 +566,11 @@ function getScaledIngredientCostForEntry(ingCost, meal, entry){
   const baseServings = meal.servings || 4;
   const costPerPerson = (ingCost || 0) / baseServings;
   return costPerPerson * getEntryServings(entry);
+}
+function getScaledMealCost(meal){
+  const baseServings = meal.servings || 4;
+  const costPerPerson = (meal.costTotal || 0) / baseServings;
+  return costPerPerson * state.householdSize;
 }
 
 /* ============================= RECURRING AUTO-GENERATOR ============================= */
@@ -663,14 +675,14 @@ function mealMatchPct(meal){
 
 /* ============================= ICONS ============================= */
 const ICONS = {
-  calendar:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>`,
-  menu:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5h16M4 5v14a1 1 0 0 0 1 1h6M4 5l2-2h5l2 2"/><path d="M14 14l3 3 5-6"/></svg>`,
-  list:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="7" r="2"/><circle cx="9" cy="17" r="2"/><path d="M14 7h6M14 17h6"/></svg>`,
-  pantry:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8l8-5 8 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8z"/><path d="M9 21v-6h6v6"/></svg>`,
-  budget:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 15c.5 1 1.5 1.5 2.7 1.5 1.7 0 2.8-.9 2.8-2.1 0-3-5.5-1.4-5.5-4.3 0-1.2 1.1-2.1 2.8-2.1 1.2 0 2.2.5 2.7 1.5M12 6.5v11"/></svg>`,
-  plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
-  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
-  copy:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`
+  calendar:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="0"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>`,
+  menu:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 5h16M4 5v14a1 1 0 0 0 1 1h6M4 5l2-2h5l2 2"/><path d="M14 14l3 3 5-6"/></svg>`,
+  list:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="9" cy="7" r="2"/><circle cx="9" cy="17" r="2"/><path d="M14 7h6M14 17h6"/></svg>`,
+  pantry:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 8l8-5 8 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8z"/><path d="M9 21v-6h6v6"/></svg>`,
+  budget:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 15c.5 1 1.5 1.5 2.7 1.5 1.7 0 2.8-.9 2.8-2.1 0-3-5.5-1.4-5.5-4.3 0-1.2 1.1-2.1 2.8-2.1 1.2 0 2.2.5 2.7 1.5M12 6.5v11"/></svg>`,
+  plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
+  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
+  copy:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="0"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`
 };
 
 /* ============================= TAB BAR ============================= */
@@ -729,9 +741,9 @@ function byType(a,b){ return TYPE_ORDER.indexOf(a.mealType)-TYPE_ORDER.indexOf(b
 function renderCalendarTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
-    <div style="display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.15); padding:4px 10px; border-radius:999px; border:1px solid rgba(255,249,245,.3);">
-      <span style="font-size:12px; font-weight:600; color:#FFF9F5;">Default Servings:</span>
-      <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:44px; padding:2px 4px; font-size:13px; font-weight:700; text-align:center; border-radius:6px; border:none; background:#fff; color:var(--ink);">
+    <div style="display:flex; align-items:center; gap:6px; background:#FFFF00; padding:4px 10px; border:2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);">
+      <span style="font-size:11px; font-weight:700; color:var(--ink);">Servings:</span>
+      <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:40px; padding:2px 4px; font-size:12px; font-weight:700; text-align:center; border:2px solid var(--ink); background:#fff; color:var(--ink);">
     </div>
     <button class="pill ${state.calendarView==='week'?'active':''}" id="viewWeekBtn">Week</button>
     <button class="pill ${state.calendarView==='month'?'active':''}" id="viewMonthBtn">Month</button>
@@ -757,7 +769,7 @@ function renderWeekView(view){
   nav.style.marginBottom='10px';
   nav.innerHTML = `
     <button class="btn btn-ghost btn-sm" id="prevWeek">&larr; Prev</button>
-    <strong>${niceDate(start)} – ${niceDate(addDays(start,6))}</strong>
+    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid var(--ink);">${niceDate(start)} – ${niceDate(addDays(start,6))}</strong>
     <button class="btn btn-ghost btn-sm" id="nextWeek">Next &rarr;</button>
   `;
   wrap.appendChild(nav);
@@ -770,9 +782,9 @@ function renderWeekView(view){
     const dayEntries = state.entries.filter(e=>e.date===ds).slice().sort(byType);
     const col = document.createElement('div');
     col.className = 'cal-week-day' + (ds===todayISO()?' today':'');
-    col.innerHTML = `<h3>${d.toLocaleDateString(undefined,{weekday:'short'})} <span style="color:var(--ink-soft); font-weight:400;">${d.getDate()}</span></h3>`;
+    col.innerHTML = `<h3>${d.toLocaleDateString(undefined,{weekday:'short'})} <span style="color:var(--ink-soft); font-weight:700;">${d.getDate()}</span></h3>`;
     if(dayEntries.length===0){
-      col.innerHTML += `<div style="font-size:12px;color:var(--ink-soft);">No meals planned</div>`;
+      col.innerHTML += `<div style="font-size:11.5px;color:var(--ink-soft); font-weight:700;">No meals planned</div>`;
     } else {
       dayEntries.forEach(e=>{
         const meal = state.meals.find(m=>m.id===e.mealId);
@@ -781,7 +793,7 @@ function renderWeekView(view){
         const r = document.createElement('div');
         r.className='week-meal-row';
         r.style.borderLeftColor = TYPE_COLORS[e.mealType];
-        r.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span><span class="mname">${meal.name} (${getEntryServings(e)}p) ${e.recurring?'<span style="font-size:10px;color:var(--gold-dark);">&#8635;</span>':''}</span><span class="cost">$${scaledCost.toFixed(2)}</span>`;
+        r.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span><span class="mname">${meal.name} (${getEntryServings(e)}p) ${e.recurring?'<span style="font-size:10px;color:var(--purple);">&#8635;</span>':''}</span><span class="cost">$${scaledCost.toFixed(2)}</span>`;
         r.onclick = ()=>{ state.selectedDate = ds; save(); render(); };
         col.appendChild(r);
       });
@@ -812,14 +824,14 @@ function renderMonthView(view){
   nav.style.marginBottom='10px';
   nav.innerHTML = `
     <button class="btn btn-ghost btn-sm" id="prevMonth">&larr;</button>
-    <strong>${anchor.toLocaleDateString(undefined,{month:'long', year:'numeric'})}</strong>
+    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid var(--ink);">${anchor.toLocaleDateString(undefined,{month:'long', year:'numeric'})}</strong>
     <button class="btn btn-ghost btn-sm" id="nextMonth">&rarr;</button>
   `;
   wrap.appendChild(nav);
 
   const legend = document.createElement('div');
-  legend.style.cssText='display:flex; gap:10px; margin-bottom:8px; font-size:11px; color:var(--ink-soft); flex-wrap:wrap;';
-  legend.innerHTML = TYPE_ORDER.map(t=>`<span style="display:inline-flex;align-items:center;gap:4px;"><span class="type-badge" style="background:${TYPE_COLORS[t]}; width:13px;height:13px;font-size:8px;">${TYPE_LABELS[t]}</span>${TYPE_NAMES[t]}</span>`).join('');
+  legend.style.cssText='display:flex; gap:10px; margin-bottom:8px; font-size:11px; color:var(--ink); font-weight:700; flex-wrap:wrap;';
+  legend.innerHTML = TYPE_ORDER.map(t=>`<span style="display:inline-flex;align-items:center;gap:4px; background:#FFFF00; padding:2px 6px; border:1px solid var(--ink);"><span class="type-badge" style="background:${TYPE_COLORS[t]}; width:12px;height:12px;font-size:7px;">${TYPE_LABELS[t]}</span>${TYPE_NAMES[t]}</span>`).join('');
   wrap.appendChild(legend);
 
   const grid = document.createElement('div');
@@ -899,7 +911,7 @@ function renderDayDetail(view){
       <div class="row-between">
         <div style="display:flex; align-items:center; gap:8px;">
           <span class="type-badge" style="background:${TYPE_COLORS[entry.mealType]}; width:18px;height:18px;font-size:10px;">${TYPE_LABELS[entry.mealType]}</span>
-          <h3 style="font-family:var(--disp); margin:0;">${meal.name} ${entry.recurring?'<span style="font-size:12px;color:var(--gold-dark);" title="Recurring weekly">&#8635;</span>':''}</h3>
+          <h3 style="font-family:var(--disp); margin:0;">${meal.name} ${entry.recurring?'<span style="font-size:12px;color:var(--purple);" title="Recurring weekly">&#8635;</span>':''}</h3>
         </div>
         <div style="display:flex; gap:4px; align-items:center;">
           <button class="iconbtn" title="Duplicate record" data-duplicate-entry="${entry.id}">${ICONS.copy}</button>
@@ -909,15 +921,15 @@ function renderDayDetail(view){
       <div class="costline" style="margin-top:4px; display:flex; justify-content:space-between; align-items:center;">
         <span>$${scaledCost.toFixed(2)} total &middot; $${costPerPerson.toFixed(2)}/person</span>
         <div style="display:flex; align-items:center; gap:4px;">
-          <span style="font-size:11px; font-weight:600; color:var(--ink-soft);">Servings:</span>
-          <input type="number" min="1" value="${currentServings}" data-entry-servings="${entry.id}" style="width:42px; padding:2px 4px; font-size:12px; font-weight:700; text-align:center;">
+          <span style="font-size:11px; font-weight:700; color:var(--ink);">Servings:</span>
+          <input type="number" min="1" value="${currentServings}" data-entry-servings="${entry.id}" style="width:44px; padding:2px 4px; font-size:12px; font-weight:700; text-align:center; border:2px solid var(--ink);">
         </div>
       </div>
       ${meal.instructionsUrl?`<a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener" style="display:block; margin-top:4px;">Instructions &rarr;</a>`:''}
       <div style="margin-top:8px;">${ingHtml}</div>
       <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
         <button class="btn btn-teal btn-sm" style="flex:1;" data-add-unchecked="${entry.id}">Add unchecked to list</button>
-        <button class="btn btn-ghost btn-sm ${entry.recurring?'active':''}" data-toggle-recurring="${entry.id}" style="${entry.recurring?'background:var(--gold);color:#3A2A04;border-color:var(--gold);':''}">${entry.recurring?'Recurring (On)':'Make Recurring'}</button>
+        <button class="btn btn-ghost btn-sm ${entry.recurring?'active':''}" data-toggle-recurring="${entry.id}" style="${entry.recurring?'background:var(--accent);color:var(--ink);border-color:var(--ink);':''}">${entry.recurring?'Recurring (On)':'Make Recurring'}</button>
       </div>
     `;
     wrap.appendChild(card);
@@ -983,8 +995,8 @@ function renderDayDetail(view){
 function openStopRecurringModal(entry){
   openModal(`
     <h2>Manage Recurring Meal</h2>
-    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:14px;">This is part of a recurring series. How would you like to remove it?</p>
-    <button class="btn btn-ghost btn-block" id="delOnlyThis" style="margin-bottom:8px;">Delete only this instance</button>
+    <p style="font-size:12px; color:var(--ink); font-weight:700; margin-bottom:14px;">This is part of a recurring series. How would you like to remove it?</p>
+    <button class="btn btn-ghost btn-block" id="delOnlyThis" style="margin-bottom:8px; background:#FFFF00;">Delete only this instance</button>
     <button class="btn btn-danger btn-block" id="delForward" style="margin-bottom:12px;">Stop recurrence from this date forward</button>
     <button class="btn btn-primary btn-block" id="cancelStop">Cancel</button>
   `);
@@ -1055,8 +1067,8 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
         </div>
       </div>
       <div style="margin:12px 0; display:flex; align-items:center; gap:8px;">
-        <input type="checkbox" id="planRecurringCb" ${isRecurring?'checked':''} style="width:18px;height:18px;accent-color:var(--gold);">
-        <label for="planRecurringCb" style="font-size:13px;font-weight:600;cursor:pointer;margin:0;">Make this a recurring weekly meal (e.g. Taco Tuesday)</label>
+        <input type="checkbox" id="planRecurringCb" ${isRecurring?'checked':''} style="width:18px;height:18px;accent-color:var(--accent);">
+        <label for="planRecurringCb" style="font-size:12px;font-weight:700;cursor:pointer;margin:0;">Make this a recurring weekly meal (e.g. Taco Tuesday)</label>
       </div>
       <label class="field-label">Days this week</label>
       <div id="dayToggle" style="display:flex; gap:6px; flex-wrap:wrap;">
@@ -1571,9 +1583,9 @@ function openPantryForm(pantryId){
 function renderBudgetTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
-    <div style="display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.15); padding:4px 10px; border-radius:999px; border:1px solid rgba(255,249,245,.3);">
-      <span style="font-size:12px; font-weight:600; color:#FFF9F5;">Servings:</span>
-      <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:44px; padding:2px 4px; font-size:13px; font-weight:700; text-align:center; border-radius:6px; border:none; background:#fff; color:var(--ink);">
+    <div style="display:flex; align-items:center; gap:6px; background:#FFFF00; padding:4px 10px; border:2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);">
+      <span style="font-size:11px; font-weight:700; color:var(--ink);">Servings:</span>
+      <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:40px; padding:2px 4px; font-size:12px; font-weight:700; text-align:center; border:2px solid var(--ink); background:#fff; color:var(--ink);">
     </div>
     <button class="pill ${state.calendarView==='week'?'active':''}" id="bWeek">This week</button>
     <button class="pill ${state.calendarView==='month'?'active':''}" id="bMonth">This month</button>
