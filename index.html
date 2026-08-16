@@ -402,12 +402,9 @@ label.field-label{
   padding: 14px; box-shadow: 4px 4px 0px #000;
 }
 .modal h2{font-family: var(--font-disp); font-size: 10px; margin: 0 0 10px; color: var(--win-blue);}
-.ing-edit-row{margin-bottom:6px;}
-.ing-edit-subrow{display:flex; gap:4px; margin-top:3px; align-items:center;}
-.ing-edit-subrow input[type=number]{width:48px; flex:0 0 48px; padding:6px 4px;}
-.ing-edit-subrow select{flex:0 0 58px; padding:6px 2px;}
-.ing-edit-subrow .cost-input{flex:0 0 64px;}
-.iconbtn{background:#C0C0C0; border: 2px solid; border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light); cursor:pointer; font-size:14px; padding:2px 6px;}
+.ing-edit-row{margin-bottom:8px; background: rgba(0,0,0,0.03); padding: 6px; border: 1px solid var(--win-border-dark);}
+.ing-edit-subrow{display:flex; gap:6px; margin-top:4px; align-items:center;}
+.iconbtn{background:#C0C0C0; border: 2px solid; border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light); cursor:pointer; font-size:14px; padding:4px 8px;}
 
 #toast{
   position:fixed; left:50%; bottom:72px; transform:translate(-50%,12px);
@@ -429,7 +426,7 @@ label.field-label{
       <h1 id="topTitle">HEARTH 95</h1>
       <div class="header-right">
         <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle 90s Theme">🖥️ Win95</button>
-        <span class="version-tag">v9.4.8.0</span>
+        <span class="version-tag">v9.4.8.1</span>
       </div>
     </div>
     <div class="sub" id="topSub">90s RETRO MENU BUILDER</div>
@@ -595,7 +592,7 @@ function defaultState(){
     { name:'Minestrone Soup & Crackers', cost:5.80, link:'https://www.budgetbytes.com/copycat-olive-garden-minestrone-soup/', ing:[{n:'canned diced tomatoes',q:2,u:'ea',c:1.80},{n:'kidney beans',q:1,u:'ea',c:0.70},{n:'pasta',q:0.5,u:'cup',c:0.50},{n:'frozen vegetables',q:1,u:'cup',c:1.20},{n:'crackers',q:1,u:'ea',c:1.60}] },
     { name:'Ham & Cheese Pasta Bake', cost:6.50, link:'https://www.allrecipes.com/recipe/219985/ham-and-cheese-pasta-bake/', ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'diced ham',q:8,u:'oz',c:3.00},{n:'cheddar cheese',q:4,u:'oz',c:1.20},{n:'milk',q:0.5,u:'cup',c:0.80}] },
     { name:'Smoky Black Bean & Corn Chili', cost:5.40, link:'https://www.budgetbytes.com/slow-cooker-black-bean-quinoa-chili/', ing:[{n:'black beans',q:2,u:'ea',c:1.40},{n:'kidney beans',q:1,u:'ea',c:0.70},{n:'canned diced tomatoes',q:2,u:'ea',c:1.80},{n:'corn',q:1,u:'ea',c:0.60},{n:'onion',q:1,u:'ea',c:0.90}] },
-    { name:'Crispy Baked Pork Chops & Applesauce', cost:8.10, link:'https://www.allrecipes.com/recipe/222247/crispy-baked-pork-chops/', ing:[{n:'pork chops',q:4,u:'ea',c:6.00},{n:'applesauce',q:1,u:'cup',c:1.50},{n:'bread crumbs',q:0.5,u:'cup',c:0.60}] },
+    { name:'Crispy Baked Pork Chops & Applesauce', totalCost:8.10, link:'https://www.allrecipes.com/recipe/222247/crispy-baked-pork-chops/', ing:[{n:'pork chops',q:4,u:'ea',c:6.00},{n:'applesauce',q:1,u:'cup',c:1.50},{n:'bread crumbs',q:0.5,u:'cup',c:0.60}] },
     { name:'Loaded Potato Soup', cost:6.10, link:'https://www.budgetbytes.com/potato-soup/', ing:[{n:'potatoes',q:5,u:'ea',c:2.50},{n:'milk',q:2,u:'cup',c:1.00},{n:'cheddar cheese',q:6,u:'oz',c:1.80},{n:'butter',q:2,u:'tbsp',c:0.80}] },
     { name:'One-Pot Spanish Rice & Ground Beef', cost:7.10, link:'https://www.budgetbytes.com/one-pot-spanish-rice/', ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'canned diced tomatoes',q:1,u:'ea',c:0.90},{n:'onion',q:1,u:'ea',c:1.40}] },
     { name:'Chicken Salad Lettuce Wraps', cost:6.90, link:'https://www.allrecipes.com/recipe/215309/chicken-salad-lettuce-wraps/', ing:[{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'mayo',q:4,u:'tbsp',c:0.80},{n:'lettuce',q:1,u:'ea',c:1.50},{n:'celery',q:2,u:'ea',c:0.60}] },
@@ -649,8 +646,8 @@ function defaultState(){
       {id:uid(), key:'olive oil', name:'olive oil', qty:32, unit:'oz', costPrice:0},
       {id:uid(), key:'salt', name:'salt', qty:32, unit:'oz', costPrice:0},
       {id:uid(), key:'bread', name:'bread', qty:2, unit:'ea', costPrice:0},
-      {id:uid(), key:'peanut butter', name:'peanut butter', qty:2, unit:'ea', costPrice:0},
-      {id:uid(), key:'jelly', name:'jelly', qty:1, unit:'ea', costPrice:0},
+      {id:uid(), name:'peanut butter', name:'peanut butter', qty:2, unit:'ea', costPrice:0},
+      {id:uid(), name:'jelly', name:'jelly', qty:1, unit:'ea', costPrice:0},
       {id:uid(), key:'potatoes', name:'potatoes', qty:10, unit:'lb', costPrice:0},
       {id:uid(), key:'onion', name:'onion', qty:5, unit:'ea', costPrice:0}
     ]
@@ -746,7 +743,6 @@ function getScaledMealCostForEntry(meal, entry){
     const scaledQty = ing.qty * scale;
     if(pantryMatch && pantryMatch.costPrice > 0) {
       useManual = true;
-      // Convert ingredient unit base to pantry unit base if possible or calculate directly
       const ingBase = toBase(scaledQty, ing.unit);
       const pantryUnitObj = UNITS[pantryMatch.unit] || {toBase:1};
       const pantryQtyEquivalent = ingBase / pantryUnitObj.toBase;
@@ -1578,14 +1574,14 @@ function openMealForm(mealId){
   function ingredientRowHtml(ing){
     return `
       <div class="ing-edit-row" data-row="${ing.id}">
-        <input type="text" placeholder="ingredient name" value="${ing.name}" data-ing-name="${ing.id}">
+        <input type="text" placeholder="Ingredient name (e.g. rolled oats)" value="${ing.name}" data-ing-name="${ing.id}" style="margin-bottom:4px;">
         <div class="ing-edit-subrow">
-          <input type="number" step="0.25" min="0" value="${ing.qty}" data-ing-qty="${ing.id}">
-          <select data-ing-unit="${ing.id}">
+          <input type="number" step="0.25" min="0" value="${ing.qty}" data-ing-qty="${ing.id}" title="Quantity" style="width:70px;">
+          <select data-ing-unit="${ing.id}" title="Unit" style="width:90px;">
             ${UNIT_LIST.map(u=>`<option value="${u}" ${u===ing.unit?'selected':''}>${u}</option>`).join('')}
           </select>
-          <input type="number" class="cost-input" step="0.01" min="0" placeholder="total $" value="${ing.cost||''}" data-ing-cost="${ing.id}">
-          <button class="iconbtn" data-ing-remove="${ing.id}">${ICONS.x}</button>
+          <span style="font-size:10px; color:#555; flex:1; text-align:right;" data-ing-cost-display="${ing.id}">Cost pulls from Pantry</span>
+          <button class="iconbtn" data-ing-remove="${ing.id}" title="Remove Ingredient" style="background:#FF0000; color:#FFF;">${ICONS.x}</button>
         </div>
       </div>`;
   }
@@ -1610,14 +1606,12 @@ function openMealForm(mealId){
           <input type="number" id="mServings" value="${meal.servings||4}" min="1">
         </div>
       </div>
-      <label class="field-label">Total Cost ($) [Fallback]</label>
-      <input type="number" id="mCost" value="${meal.costTotal||''}" step="0.01" min="0">
       <label class="field-label">Recipe Source Link</label>
       <input type="url" id="mLink" value="${meal.instructionsUrl}" placeholder="https://...">
-      <label class="field-label">Ingredients (Costs pull from Pantry unit prices)</label>
+      <label class="field-label" style="margin-top:12px;">Ingredients (Costs calculated automatically from Pantry unit prices)</label>
       <div id="ingRows">${draftIngredients.map(ingredientRowHtml).join('')}</div>
-      <button class="btn btn-ghost btn-sm" id="addIngRow" style="margin-top:4px;">${ICONS.plus} Add ingredient</button>
-      <div style="display:flex; gap:8px; margin-top:14px;">
+      <button class="btn btn-ghost btn-sm" id="addIngRow" style="margin-top:6px; width:100%;">${ICONS.plus} Add Ingredient</button>
+      <div style="display:flex; gap:8px; margin-top:16px;">
         <button class="btn btn-ghost btn-block" id="cancelMeal">Cancel</button>
         <button class="btn btn-primary btn-block" id="saveMeal">Save Recipe</button>
       </div>
@@ -1643,28 +1637,62 @@ function openMealForm(mealId){
       meal.name = name;
       meal.type = document.getElementById('mType').value;
       meal.servings = parseFloat(document.getElementById('mServings').value) || 4;
-      meal.costTotal = parseFloat(document.getElementById('mCost').value) || 0;
       meal.instructionsUrl = document.getElementById('mLink').value.trim();
       meal.ingredients = draftIngredients.filter(i=>i.name.trim()!=='');
+      
+      // Calculate total cost automatically based on pantry unit costs
+      let calcTotal = 0;
+      meal.ingredients.forEach(ing => {
+        const p = getPantryItem(ing.name);
+        if(p && p.costPrice > 0) {
+          const ingBase = toBase(ing.qty, ing.unit);
+          const pantryUnitObj = UNITS[p.unit] || {toBase:1};
+          calcTotal += (ingBase / pantryUnitObj.toBase) * p.costPrice;
+        } else if(ing.cost > 0) {
+          calcTotal += ing.cost;
+        }
+      });
+      meal.costTotal = calcTotal;
+
       if(!editing) state.meals.push(meal);
       save(); closeModal(); render();
+      showToast('Recipe saved successfully');
     };
   }
+
+  function updateIngCostDisplays(){
+    draftIngredients.forEach(ing => {
+      const displayEl = document.querySelector(`[data-ing-cost-display="${ing.id}"]`);
+      if(!displayEl) return;
+      const p = getPantryItem(ing.name);
+      if(p && p.costPrice > 0) {
+        const ingBase = toBase(ing.qty, ing.unit);
+        const pantryUnitObj = UNITS[p.unit] || {toBase:1};
+        const c = (ingBase / pantryUnitObj.toBase) * p.costPrice;
+        displayEl.textContent = `Est. $${c.toFixed(2)} ($${p.costPrice}/${p.unit})`;
+        displayEl.style.color = '#2E6F40';
+      } else {
+        displayEl.textContent = 'Set unit cost in Pantry tab';
+        displayEl.style.color = '#777';
+      }
+    });
+  }
+
   function wireIngRow(id){
     const nameEl = document.querySelector(`[data-ing-name="${id}"]`);
     const qtyEl = document.querySelector(`[data-ing-qty="${id}"]`);
     const unitEl = document.querySelector(`[data-ing-unit="${id}"]`);
-    const costEl = document.querySelector(`[data-ing-cost="${id}"]`);
     const rmEl = document.querySelector(`[data-ing-remove="${id}"]`);
     const target = ()=>draftIngredients.find(i=>i.id===id);
-    nameEl.oninput = ()=>{ target().name = nameEl.value; };
-    qtyEl.oninput = ()=>{ target().qty = parseFloat(qtyEl.value)||0; };
-    unitEl.onchange = ()=>{ target().unit = unitEl.value; };
-    costEl.oninput = ()=>{ target().cost = parseFloat(costEl.value)||0; };
+    
+    nameEl.oninput = ()=>{ target().name = nameEl.value; updateIngCostDisplays(); };
+    qtyEl.oninput = ()=>{ target().qty = parseFloat(qtyEl.value)||0; updateIngCostDisplays(); };
+    unitEl.onchange = ()=>{ target().unit = unitEl.value; updateIngCostDisplays(); };
     rmEl.onclick = ()=>{
       draftIngredients = draftIngredients.filter(i=>i.id!==id);
       document.querySelector(`[data-row="${id}"]`).remove();
     };
+    updateIngCostDisplays();
   }
 }
 
@@ -1688,11 +1716,11 @@ function renderShoppingTab(view){
   addRow.innerHTML = `
     <label class="field-label">Add item manually</label>
     <input type="text" id="manName" placeholder="item name">
-    <div class="ing-edit-subrow">
-      <input type="number" id="manQty" step="0.25" value="1">
-      <select id="manUnit">${UNIT_LIST.map(u=>`<option value="${u}">${u}</option>`).join('')}</select>
-      <input type="number" class="cost-input" id="manCost" step="0.01" min="0" placeholder="$">
-      <button class="iconbtn" id="manAdd">${ICONS.plus}</button>
+    <div class="ing-edit-subrow" style="display:flex; gap:6px; margin-top:4px;">
+      <input type="number" id="manQty" step="0.25" value="1" style="width:70px;">
+      <select id="manUnit" style="width:90px;">${UNIT_LIST.map(u=>`<option value="${u}">${u}</option>`).join('')}</select>
+      <input type="number" class="cost-input" id="manCost" step="0.01" min="0" placeholder="$" style="flex:1;">
+      <button class="btn btn-primary btn-sm" id="manAdd">${ICONS.plus} Add</button>
     </div>
   `;
   view.appendChild(addRow);
@@ -1812,25 +1840,28 @@ function renderPantryTab(view){
 
   const listCard = document.createElement('div');
   listCard.className='card';
-  listCard.innerHTML = `<h2 class="section-title">On Hand Inventory & Cost Prices</h2>`;
+  listCard.innerHTML = `<h2 class="section-title">On-Hand Inventory & Unit Costs</h2>`;
   if(state.pantry.length===0){
     listCard.innerHTML += `<div class="empty">Pantry is empty.</div>`;
   } else {
     state.pantry.forEach(p=>{
       const row = document.createElement('div');
       row.className='ing-row';
+      row.style.padding = '8px 0';
       row.innerHTML = `
-        <span style="flex:1;">
+        <div style="flex:1;">
           <strong>${p.name}</strong><br>
-          <span style="font-size:10px; color:#555;">Cost: $${(p.costPrice||0).toFixed(3)}/${p.unit}</span>
-        </span>
-        <span class="ing-qty" style="display:flex; align-items:center; gap:4px;">
-          <input type="number" step="0.25" value="${p.qty}" data-quick-qty="${p.id}" style="width:52px; padding:2px; font-size:11px; text-align:center;">
-          <span>${p.unit}</span>
-        </span>
-        <button class="iconbtn" title="Add restock to shopping list" style="background:#2E6F40; color:#FFF;" data-add-list="${p.id}">${ICONS.plus}</button>
-        <button class="iconbtn" title="Edit item & unit cost" data-edit-pantry="${p.id}">&#9998;</button>
-        <button class="iconbtn" title="Delete item" style="background:#FF0000; color:#FFF;" data-rm="${p.id}">${ICONS.x}</button>
+          <span style="font-size:10px; color:#555;">Unit Cost: $${(p.costPrice||0).toFixed(3)} / ${p.unit}</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:4px;">
+          <input type="number" step="0.25" value="${p.qty}" data-quick-qty="${p.id}" title="Manual amount on hand override" style="width:58px; padding:4px; font-size:11px; text-align:center;">
+          <span style="font-size:11px; font-weight:700;">${p.unit}</span>
+        </div>
+        <div style="display:flex; gap:2px; margin-left:4px;">
+          <button class="iconbtn" title="Add restock to shopping list" style="background:#2E6F40; color:#FFF;" data-add-list="${p.id}">${ICONS.plus}</button>
+          <button class="iconbtn" title="Edit item & unit cost" data-edit-pantry="${p.id}">&#9998;</button>
+          <button class="iconbtn" title="Delete item" style="background:#FF0000; color:#FFF;" data-rm="${p.id}">${ICONS.x}</button>
+        </div>
       `;
       row.querySelector(`[data-quick-qty="${p.id}"]`).onchange = (e)=>{
         const val = parseFloat(e.target.value);
@@ -1883,7 +1914,7 @@ function openPantryForm(pantryId){
       <div style="flex:1;"><label class="field-label">On-Hand Qty</label><input type="number" id="pQty" step="0.25" value="${item.qty}"></div>
       <div style="flex:1;"><label class="field-label">Unit</label><select id="pUnit">${UNIT_LIST.map(u=>`<option value="${u}" ${u===item.unit?'selected':''}>${u}</option>`).join('')}</select></div>
     </div>
-    <label class="field-label">Cost Price per Unit (e.g. $0.083 / oz)</label>
+    <label class="field-label">Cost Price per Unit (e.g. $0.083 for oz)</label>
     <input type="number" id="pCostPrice" step="0.001" min="0" value="${item.costPrice||0}">
     <div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--win-border-dark);">
       <label class="field-label">Default Restock Amount Added to Shopping List</label>
@@ -2052,7 +2083,7 @@ function renderBudgetTab(view){
     </div>
     <div class="budget-bar-track"><div class="budget-bar-fill" style="width:${pct}%; background:${over?'#FF0000':'#2E6F40'}"></div></div>
     <div class="row-between" style="margin-top:6px;">
-      <span class="budget-target-num" style="color:${over?'#FF0000':'var(--win-blue)'}">$${combinedTotal.toFixed(2)} projected</span>
+      <span class="budget-target-num" style="color:${over?'#FF0000':'var(--win-blue)'}">${combinedTotal.toFixed(2)} projected</span>
       <span style="font-size:11.5px; color:#666;">of $${state.budgetTarget.toFixed(2)}</span>
     </div>
     <div style="font-size:11px; color:#555; margin-top:6px; font-family:var(--font-body);">
@@ -2198,7 +2229,7 @@ function openBudgetPlanBuilder(planId){
     document.getElementById('savePlanBuilder').onclick = ()=>{
       plan.name = document.getElementById('planName').value.trim() || 'Untitled Plan';
       plan.startDate = document.getElementById('planStart').value || plan.startDate;
-      plan.endDate = document.getElementById('planEnd').value || plan.endDate;
+      plan.endDate = document.getElementById('planEnd':value || plan.endDate;
       plan.targetBudget = parseFloat(document.getElementById('planTarget').value)||0;
 
       if(!state.budgetPlans) state.budgetPlans = [];
@@ -2226,7 +2257,7 @@ function openPlanItemPicker(plan, onDone){
     <label class="field-label">Select Recipe</label>
     <select id="itemMealSelect">${state.meals.map(m=>`<option value="${m.id}">${m.name} (${m.type})</option>`).join('')}</select>
 
-    <label class="field-label">Times During This Plan</label>
+    <label class="field-label">Times During This Plan</i></label>
     <input type="number" id="itemTimesInput" value="${times}" min="1" max="60">
 
     <label class="field-label">Servings Per Time</label>
@@ -2263,3 +2294,4 @@ render();
 </script>
 </body>
 </html>
+```[cite: 1]
