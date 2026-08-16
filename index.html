@@ -303,7 +303,7 @@ a.link{color:var(--accent-dark); font-size:12.5px;}
   <header class="topbar">
     <div class="topbar-header">
       <h1 id="topTitle">Hearth</h1>
-      <span class="version-tag">v9.4.7.5</span>
+      <span class="version-tag">v9.4.7.9</span>
     </div>
     <div class="sub" id="topSub">FAMILY MEAL PLANNER</div>
     <div class="topbar-controls" id="topControls"></div>
@@ -323,7 +323,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_9';
+const STORE_KEY = 'hearth_v9_10';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -526,7 +526,9 @@ function load(){
     if(!raw) return def;
     const parsed = JSON.parse(raw);
     const merged = {...def, ...parsed};
-    if(!merged.meals || merged.meals.length === 0){
+    
+    // Force reset meals if empty or missing preloads
+    if(!merged.meals || merged.meals.length < 10){
       merged.meals = def.meals;
     }
     merged.householdSize = merged.householdSize || 5;
