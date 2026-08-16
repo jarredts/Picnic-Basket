@@ -303,7 +303,7 @@ a.link{color:var(--accent-dark); font-size:12.5px;}
   <header class="topbar">
     <div class="topbar-header">
       <h1 id="topTitle">Hearth</h1>
-      <span class="version-tag">v9.4.7.3</span>
+      <span class="version-tag">v9.4.8.0</span>
     </div>
     <div class="sub" id="topSub">FAMILY MEAL PLANNER</div>
     <div class="topbar-controls" id="topControls"></div>
@@ -323,7 +323,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_5';
+const STORE_KEY = 'hearth_v9_6';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -344,7 +344,6 @@ const TYPE_NAMES = {breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', snack
 const TYPE_COLORS = {breakfast:'#D99B26', lunch:'#2E6F40', dinner:'#8B263E', snack:'#6B4A7A'};
 
 function defaultState(){
-  // --- 10 BREAKFASTS ---
   const b1 = { id:uid(), type:'breakfast', name:'Overnight Peanut Butter Oats', servings:4, costTotal:3.20, instructionsUrl:'', ingredients:[
     {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'milk', qty:2, unit:'cup', cost:1.00}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:1.00}
   ]};
@@ -376,7 +375,6 @@ function defaultState(){
     {id:uid(), name:'potatoes', qty:4, unit:'ea', cost:2.00}, {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'onion', qty:1, unit:'ea', cost:0.80}
   ]};
 
-  // --- 10 LUNCHES ---
   const l1 = { id:uid(), type:'lunch', name:'Classic Peanut Butter & Jelly', servings:4, costTotal:2.50, instructionsUrl:'', ingredients:[
     {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:0.60}, {id:uid(), name:'jelly', qty:4, unit:'tbsp', cost:0.30}
   ]};
@@ -408,7 +406,6 @@ function defaultState(){
     {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'black beans', qty:1, unit:'ea', cost:0.60}
   ]};
 
-  // --- 40 DINNERS ---
   const dinners = [
     { name:'Cheesy Rice & Black Bean Skillet', cost:5.50, ing:[{n:'black beans',q:3,u:'ea',c:2.10},{n:'rice',q:2,u:'cup',c:0.80},{n:'cheddar cheese',q:8,u:'oz',c:2.20},{n:'salsa',q:1,u:'cup',c:0.40}] },
     { name:'Garlic Butter Pasta & Peas', cost:4.00, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'butter',q:4,u:'tbsp',c:1.00},{n:'frozen peas',q:2,u:'cup',c:1.50}] },
@@ -478,8 +475,8 @@ function defaultState(){
     menuFilterType: 'all',
     meals: [...breakfasts, ...lunches, ...dinnerMeals],
     entries: [
-      {id:uid(), date: t0.toISOString().slice(0,10), mealId: b1.id, mealType:'breakfast', checked:[], recurring:false},
-      {id:uid(), date: t2.toISOString().slice(0,10), mealId: dinnerMeals[0].id, mealType:'dinner', checked:[], recurring:true},
+      {id:uid(), date: t0.toISOString().slice(0,10), mealId: b1.id, mealType:'breakfast', servings:5, checked:[], recurring:false},
+      {id:uid(), date: t2.toISOString().slice(0,10), mealId: dinnerMeals[0].id, mealType:'dinner', servings:5, checked:[], recurring:false},
     ],
     shoppingList:[],
     pantry:[
@@ -530,7 +527,7 @@ function load(){
     merged.householdSize = merged.householdSize || 5;
     merged.menuSearchQuery = merged.menuSearchQuery || '';
     merged.menuFilterType = merged.menuFilterType || 'all';
-    merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', checked:[], recurring:false, ...e}));
+    merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, ...e}));
     merged.meals = (merged.meals||[]).map(m=>({type:'dinner', ...m, ingredients:(m.ingredients||[]).map(i=>({cost:0, ...i}))}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
     return merged;
@@ -539,19 +536,22 @@ function load(){
 function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
 
 /* ============================= SCALING HELPERS ============================= */
-function getScaledMealCost(meal){
+function getEntryServings(entry){
+  return entry.servings !== undefined ? entry.servings : state.householdSize;
+}
+function getScaledMealCostForEntry(meal, entry){
   const baseServings = meal.servings || 4;
   const costPerPerson = (meal.costTotal || 0) / baseServings;
-  return costPerPerson * state.householdSize;
+  return costPerPerson * getEntryServings(entry);
 }
-function getScaledQty(qty, meal){
+function getScaledQtyForEntry(qty, meal, entry){
   const baseServings = meal.servings || 4;
-  return qty * (state.householdSize / baseServings);
+  return qty * (getEntryServings(entry) / baseServings);
 }
-function getScaledIngredientCost(ingCost, meal){
+function getScaledIngredientCostForEntry(ingCost, meal, entry){
   const baseServings = meal.servings || 4;
   const costPerPerson = (ingCost || 0) / baseServings;
-  return costPerPerson * state.householdSize;
+  return costPerPerson * getEntryServings(entry);
 }
 
 /* ============================= RECURRING AUTO-GENERATOR ============================= */
@@ -566,6 +566,11 @@ function checkRecurringEntries(){
         checkDate.setDate(checkDate.getDate() + i);
         if(checkDate.getDay() === dayOfWeek){
           const checkIso = iso(checkDate);
+          
+          // Check if there is an explicit stop record for this specific date/series
+          const isStopped = state.entryStops && state.entryStops.some(s => s.mealId === entry.mealId && s.date === checkIso);
+          if(isStopped) continue;
+
           const exists = state.entries.some(e => e.date === checkIso && e.mealId === entry.mealId && e.mealType === entry.mealType);
           if(!exists){
             state.entries.push({
@@ -573,6 +578,7 @@ function checkRecurringEntries(){
               date: checkIso,
               mealId: entry.mealId,
               mealType: entry.mealType,
+              servings: entry.servings,
               checked: [],
               recurring: true
             });
@@ -615,12 +621,12 @@ function round4(n){
 function fmtQtyUnit(qty, unit){ return `${round4(qty)} ${unit}`; }
 
 /* ============================= SHOPPING LIST AGGREGATION ============================= */
-function addIngredientsToShoppingListForEntry(meal, entryChecked){
+function addIngredientsToShoppingListForEntry(meal, entry){
   let added = 0;
   meal.ingredients.forEach(ing=>{
-    if(entryChecked.includes(ing.id)) return;
-    const scaledQty = getScaledQty(ing.qty, meal);
-    const scaledCost = getScaledIngredientCost(ing.cost, meal);
+    if(entry.checked.includes(ing.id)) return;
+    const scaledQty = getScaledQtyForEntry(ing.qty, meal, entry);
+    const scaledCost = getScaledIngredientCostForEntry(ing.cost, meal, entry);
     const cat = UNITS[ing.unit].cat;
     const base = toBase(scaledQty, ing.unit);
     const key = ing.name.trim().toLowerCase();
@@ -717,7 +723,7 @@ function renderCalendarTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
     <div style="display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.15); padding:4px 10px; border-radius:999px; border:1px solid rgba(255,249,245,.3);">
-      <span style="font-size:12px; font-weight:600; color:#FFF9F5;">Servings:</span>
+      <span style="font-size:12px; font-weight:600; color:#FFF9F5;">Default Servings:</span>
       <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:44px; padding:2px 4px; font-size:13px; font-weight:700; text-align:center; border-radius:6px; border:none; background:#fff; color:var(--ink);">
     </div>
     <button class="pill ${state.calendarView==='week'?'active':''}" id="viewWeekBtn">Week</button>
@@ -764,11 +770,11 @@ function renderWeekView(view){
       dayEntries.forEach(e=>{
         const meal = state.meals.find(m=>m.id===e.mealId);
         if(!meal) return;
-        const scaledCost = getScaledMealCost(meal);
+        const scaledCost = getScaledMealCostForEntry(meal, e);
         const r = document.createElement('div');
         r.className='week-meal-row';
         r.style.borderLeftColor = TYPE_COLORS[e.mealType];
-        r.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span><span class="mname">${meal.name} ${e.recurring?'<span style="font-size:10px;color:var(--gold-dark);">&#8635;</span>':''}</span><span class="cost">$${scaledCost.toFixed(2)}</span>`;
+        r.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span><span class="mname">${meal.name} (${getEntryServings(e)}p) ${e.recurring?'<span style="font-size:10px;color:var(--gold-dark);">&#8635;</span>':''}</span><span class="cost">$${scaledCost.toFixed(2)}</span>`;
         r.onclick = ()=>{ state.selectedDate = ds; save(); render(); };
         col.appendChild(r);
       });
@@ -864,15 +870,16 @@ function renderDayDetail(view){
   entries.forEach(entry=>{
     const meal = state.meals.find(m=>m.id===entry.mealId);
     if(!meal) return;
-    const scaledCost = getScaledMealCost(meal);
-    const costPerPerson = scaledCost / state.householdSize;
+    const currentServings = getEntryServings(entry);
+    const scaledCost = getScaledMealCostForEntry(meal, entry);
+    const costPerPerson = scaledCost / currentServings;
 
     const card = document.createElement('div');
     card.className='card';
     let ingHtml = meal.ingredients.map(ing=>{
       const checked = entry.checked.includes(ing.id);
-      const scaledQty = getScaledQty(ing.qty, meal);
-      const scaledIngCost = getScaledIngredientCost(ing.cost, meal);
+      const scaledQty = getScaledQtyForEntry(ing.qty, meal, entry);
+      const scaledIngCost = getScaledIngredientCostForEntry(ing.cost, meal, entry);
       return `
         <div class="ing-row ${checked?'checked':''}" data-ing="${ing.id}">
           <input type="checkbox" ${checked?'checked':''} data-ing-cb="${ing.id}">
@@ -892,8 +899,14 @@ function renderDayDetail(view){
           <button class="iconbtn" title="Remove" data-remove-entry="${entry.id}">${ICONS.x}</button>
         </div>
       </div>
-      <div class="costline">$${scaledCost.toFixed(2)} total (${state.householdSize} people) &middot; $${costPerPerson.toFixed(2)}/person</div>
-      ${meal.instructionsUrl?`<a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener">Instructions &rarr;</a>`:''}
+      <div class="costline" style="margin-top:4px; display:flex; justify-content:space-between; align-items:center;">
+        <span>$${scaledCost.toFixed(2)} total &middot; $${costPerPerson.toFixed(2)}/person</span>
+        <div style="display:flex; align-items:center; gap:4px;">
+          <span style="font-size:11px; font-weight:600; color:var(--ink-soft);">Servings:</span>
+          <input type="number" min="1" value="${currentServings}" data-entry-servings="${entry.id}" style="width:42px; padding:2px 4px; font-size:12px; font-weight:700; text-align:center;">
+        </div>
+      </div>
+      ${meal.instructionsUrl?`<a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener" style="display:block; margin-top:4px;">Instructions &rarr;</a>`:''}
       <div style="margin-top:8px;">${ingHtml}</div>
       <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
         <button class="btn btn-teal btn-sm" style="flex:1;" data-add-unchecked="${entry.id}">Add unchecked to list</button>
@@ -902,6 +915,13 @@ function renderDayDetail(view){
     `;
     wrap.appendChild(card);
 
+    card.querySelector(`[data-entry-servings="${entry.id}"]`).onchange = (e)=>{
+      const newS = parseInt(e.target.value, 10);
+      if(newS > 0){
+        entry.servings = newS;
+        save(); render();
+      }
+    };
     card.querySelectorAll('[data-ing-cb]').forEach(cb=>{
       cb.onchange = ()=>{
         const ingId = cb.dataset.ingCb;
@@ -911,8 +931,15 @@ function renderDayDetail(view){
       };
     });
     card.querySelector('[data-remove-entry]').onclick = ()=>{
+      if(entry.recurring){
+        if(confirm('This is a recurring meal. Do you want to delete just this single instance, or stop this recurring series from this date forward?')){
+          openStopRecurringModal(entry);
+          return;
+        }
+      }
       state.entries = state.entries.filter(e=>e.id!==entry.id);
       save(); render();
+      showToast('Meal removed from day');
     };
     card.querySelector('[data-duplicate-entry]').onclick = ()=>{
       state.entries.push({
@@ -920,8 +947,9 @@ function renderDayDetail(view){
         date: entry.date,
         mealId: entry.mealId,
         mealType: entry.mealType,
+        servings: entry.servings,
         checked: [...entry.checked],
-        recurring: entry.recurring
+        recurring: false
       });
       save(); render();
       showToast('Meal record duplicated');
@@ -933,7 +961,7 @@ function renderDayDetail(view){
       showToast(entry.recurring ? 'Set as recurring weekly!' : 'Recurring turned off');
     };
     card.querySelector('[data-add-unchecked]').onclick = ()=>{
-      const addedCount = addIngredientsToShoppingListForEntry(meal, entry.checked);
+      const addedCount = addIngredientsToShoppingListForEntry(meal, entry);
       if(addedCount === 0){ showToast('Already added — nothing unchecked left.'); return; }
       meal.ingredients.forEach(ing => {
         if(!entry.checked.includes(ing.id)) entry.checked.push(ing.id);
@@ -947,6 +975,39 @@ function renderDayDetail(view){
   view.appendChild(wrap);
 }
 
+function openStopRecurringModal(entry){
+  openModal(`
+    <h2>Stop Recurring Meal</h2>
+    <p style="font-size:13px; color:var(--ink-soft);">Choose how you want to handle this recurring series:</p>
+    <button class="btn btn-ghost btn-block" id="delOnlyThis" style="margin-bottom:8px;">Delete only this instance</button>
+    <button class="btn btn-danger btn-block" id="delForward" style="margin-bottom:12px;">Stop recurrence from this date forward</button>
+    <button class="btn btn-primary btn-block" id="cancelStop">Cancel</button>
+  `);
+  document.getElementById('cancelStop').onclick = closeModal;
+  document.getElementById('delOnlyThis').onclick = ()=>{
+    state.entries = state.entries.filter(e=>e.id!==entry.id);
+    save(); closeModal(); render();
+    showToast('Single instance removed');
+  };
+  document.getElementById('delForward').onclick = ()=>{
+    if(!state.entryStops) state.entryStops = [];
+    state.entryStops.push({ mealId: entry.mealId, date: entry.date });
+    // Remove this and all future occurrences of this meal on this day-of-week starting from entry.date
+    const targetDateObj = new Date(entry.date+'T00:00:00');
+    const dayOfWeek = targetDateObj.getDay();
+    state.entries = state.entries.filter(e => {
+      const eDateObj = new Date(e.date+'T00:00:00');
+      const isSameMeal = e.mealId === entry.mealId;
+      const isSameDayOfWeek = eDateObj.getDay() === dayOfWeek;
+      const isFutureOrToday = eDateObj >= targetDateObj;
+      if(isSameMeal && isSameDayOfWeek && isFutureOrToday) return false;
+      return true;
+    });
+    save(); closeModal(); render();
+    showToast('Recurring series stopped from this date forward');
+  };
+}
+
 /* ============================= PLAN MODAL ============================= */
 function openPlanModal({mealId=null, defaultDate=null}={}){
   if(state.meals.length===0){
@@ -958,11 +1019,18 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
   const d0 = defaultDate || state.selectedDate;
   let selMeal = mealId || state.meals[0].id;
   let selType = 'dinner';
+  let mealServings = state.householdSize;
   let isRecurring = false;
   const weekStart = startOfWeek(d0);
   const weekDates = Array.from({length:7},(_,i)=>iso(addDays(weekStart,i)));
   let chosen = new Set([d0]);
   let extra = [];
+
+  function updateMealServingsDefault(){
+    const m = state.meals.find(x=>x.id===selMeal);
+    if(m) mealServings = state.householdSize;
+  }
+  updateMealServingsDefault();
 
   function bodyHtml(){
     const fixedMealName = mealId ? (state.meals.find(m=>m.id===mealId)||{}).name : null;
@@ -974,6 +1042,12 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
       <label class="field-label">Meal type</label>
       <div id="typeToggle" style="display:flex; gap:6px; flex-wrap:wrap;">
         ${TYPE_ORDER.map(t=>`<button type="button" class="chip ${t===selType?'active':''}" data-type="${t}">${TYPE_LABELS[t]} ${TYPE_NAMES[t]}</button>`).join('')}
+      </div>
+      <div style="display:flex; gap:10px; margin-top:10px; align-items:center;">
+        <div style="flex:1;">
+          <label class="field-label" style="margin:0 0 4px;">Servings for this meal</label>
+          <input type="number" id="planServingsInput" value="${mealServings}" min="1" max="100">
+        </div>
       </div>
       <div style="margin:12px 0; display:flex; align-items:center; gap:8px;">
         <input type="checkbox" id="planRecurringCb" ${isRecurring?'checked':''} style="width:18px;height:18px;accent-color:var(--gold);">
@@ -1009,7 +1083,9 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
   function wire(){
     document.getElementById('cancelPlan').onclick = closeModal;
     const mealSel = document.getElementById('planMealSelect');
-    if(mealSel) mealSel.onchange = ()=>{ selMeal = mealSel.value; };
+    if(mealSel) mealSel.onchange = ()=>{ selMeal = mealSel.value; updateMealServingsDefault(); refresh(); };
+    const servIn = document.getElementById('planServingsInput');
+    if(servIn) servIn.onchange = ()=>{ mealServings = parseInt(servIn.value, 10) || state.householdSize; };
     const recCb = document.getElementById('planRecurringCb');
     if(recCb) recCb.onchange = ()=>{ isRecurring = recCb.checked; };
     document.querySelectorAll('#typeToggle .chip').forEach(b=>{
@@ -1040,7 +1116,7 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
     document.getElementById('confirmPlan').onclick = ()=>{
       if(chosen.size===0){ alert('Pick at least one day.'); return; }
       chosen.forEach(d=>{
-        state.entries.push({id:uid(), date:d, mealId:selMeal, mealType:selType, checked:[], recurring:isRecurring});
+        state.entries.push({id:uid(), date:d, mealId:selMeal, mealType:selType, servings:mealServings, checked:[], recurring:isRecurring});
       });
       if(isRecurring) checkRecurringEntries();
       save(); closeModal();
@@ -1060,7 +1136,6 @@ function renderMenuTab(view){
   controls.innerHTML = `<button class="pill active" id="newMealBtn">${ICONS.plus} New meal</button>`;
   controls.querySelector('#newMealBtn').onclick = ()=>openMealForm(null);
 
-  // Search & Filter Box
   const filterCard = document.createElement('div');
   filterCard.className = 'card';
   filterCard.style.padding = '10px 14px';
@@ -1520,7 +1595,7 @@ function renderBudgetTab(view){
 
   const total = rangeEntries.reduce((sum,e)=>{
     const meal = state.meals.find(m=>m.id===e.mealId);
-    return sum + (meal ? getScaledMealCost(meal) : 0);
+    return sum + (meal ? getScaledMealCostForEntry(meal, e) : 0);
   },0);
   const pct = state.budgetTarget>0 ? Math.min(100, Math.round((total/state.budgetTarget)*100)) : 0;
   const over = total > state.budgetTarget;
@@ -1529,7 +1604,7 @@ function renderBudgetTab(view){
   targetCard.className='card';
   targetCard.innerHTML = `
     <div class="budget-header">
-      <span>${rangeLabel} (${state.householdSize} people)</span>
+      <span>${rangeLabel}</span>
       <span>Target: <input type="number" id="targetInput" value="${state.budgetTarget}" style="width:70px; display:inline-block; padding:3px 6px;"></span>
     </div>
     <div class="budget-bar-track"><div class="budget-bar-fill" style="width:${pct}%; background:${over?'var(--primary)':'var(--accent)'}"></div></div>
@@ -1552,14 +1627,18 @@ function renderBudgetTab(view){
     rangeEntries.slice().sort((a,b)=> a.date.localeCompare(b.date) || byType(a,b)).forEach(e=>{
       const meal = state.meals.find(m=>m.id===e.mealId);
       if(!meal) return;
-      const scaledCost = getScaledMealCost(meal);
+      const scaledCost = getScaledMealCostForEntry(meal, e);
       const row = document.createElement('div');
       row.className='ing-row';
       row.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span>
-        <span>${meal.name} ${e.recurring?'&#8635;':''} <span class="tag">${e.date}</span></span>
+        <span>${meal.name} (${getEntryServings(e)}p) ${e.recurring?'&#8635;':''} <span class="tag">${e.date}</span></span>
         <span class="ing-qty">$${scaledCost.toFixed(2)}</span>
         <button class="iconbtn" data-rm="${e.id}">${ICONS.x}</button>`;
       row.querySelector('[data-rm]').onclick=()=>{
+        if(e.recurring){
+          openStopRecurringModal(e);
+          return;
+        }
         state.entries = state.entries.filter(x=>x.id!==e.id);
         save(); render();
       };
