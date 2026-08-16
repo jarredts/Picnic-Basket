@@ -303,7 +303,7 @@ a.link{color:var(--accent-dark); font-size:12.5px;}
   <header class="topbar">
     <div class="topbar-header">
       <h1 id="topTitle">Hearth</h1>
-      <span class="version-tag">v9.4.8.0</span>
+      <span class="version-tag">v9.4.7.5</span>
     </div>
     <div class="sub" id="topSub">FAMILY MEAL PLANNER</div>
     <div class="topbar-controls" id="topControls"></div>
@@ -323,7 +323,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_6';
+const STORE_KEY = 'hearth_v9_7';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -478,6 +478,7 @@ function defaultState(){
       {id:uid(), date: t0.toISOString().slice(0,10), mealId: b1.id, mealType:'breakfast', servings:5, checked:[], recurring:false},
       {id:uid(), date: t2.toISOString().slice(0,10), mealId: dinnerMeals[0].id, mealType:'dinner', servings:5, checked:[], recurring:false},
     ],
+    entryStops: [],
     shoppingList:[],
     pantry:[
       {id:uid(), key:'rice', name:'rice', qty:10, unit:'lb'},
@@ -527,6 +528,7 @@ function load(){
     merged.householdSize = merged.householdSize || 5;
     merged.menuSearchQuery = merged.menuSearchQuery || '';
     merged.menuFilterType = merged.menuFilterType || 'all';
+    merged.entryStops = merged.entryStops || [];
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, ...e}));
     merged.meals = (merged.meals||[]).map(m=>({type:'dinner', ...m, ingredients:(m.ingredients||[]).map(i=>({cost:0, ...i}))}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
@@ -557,6 +559,7 @@ function getScaledIngredientCostForEntry(ingCost, meal, entry){
 /* ============================= RECURRING AUTO-GENERATOR ============================= */
 function checkRecurringEntries(){
   let updated = false;
+  state.entryStops = state.entryStops || [];
   state.entries.forEach(entry => {
     if(entry.recurring){
       const originalDate = new Date(entry.date+'T00:00:00');
@@ -567,8 +570,7 @@ function checkRecurringEntries(){
         if(checkDate.getDay() === dayOfWeek){
           const checkIso = iso(checkDate);
           
-          // Check if there is an explicit stop record for this specific date/series
-          const isStopped = state.entryStops && state.entryStops.some(s => s.mealId === entry.mealId && s.date === checkIso);
+          const isStopped = state.entryStops.some(s => s.mealId === entry.mealId && s.date === checkIso);
           if(isStopped) continue;
 
           const exists = state.entries.some(e => e.date === checkIso && e.mealId === entry.mealId && e.mealType === entry.mealType);
@@ -932,10 +934,8 @@ function renderDayDetail(view){
     });
     card.querySelector('[data-remove-entry]').onclick = ()=>{
       if(entry.recurring){
-        if(confirm('This is a recurring meal. Do you want to delete just this single instance, or stop this recurring series from this date forward?')){
-          openStopRecurringModal(entry);
-          return;
-        }
+        openStopRecurringModal(entry);
+        return;
       }
       state.entries = state.entries.filter(e=>e.id!==entry.id);
       save(); render();
@@ -977,8 +977,8 @@ function renderDayDetail(view){
 
 function openStopRecurringModal(entry){
   openModal(`
-    <h2>Stop Recurring Meal</h2>
-    <p style="font-size:13px; color:var(--ink-soft);">Choose how you want to handle this recurring series:</p>
+    <h2>Manage Recurring Meal</h2>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:14px;">This is part of a recurring series. How would you like to remove it?</p>
     <button class="btn btn-ghost btn-block" id="delOnlyThis" style="margin-bottom:8px;">Delete only this instance</button>
     <button class="btn btn-danger btn-block" id="delForward" style="margin-bottom:12px;">Stop recurrence from this date forward</button>
     <button class="btn btn-primary btn-block" id="cancelStop">Cancel</button>
@@ -992,7 +992,7 @@ function openStopRecurringModal(entry){
   document.getElementById('delForward').onclick = ()=>{
     if(!state.entryStops) state.entryStops = [];
     state.entryStops.push({ mealId: entry.mealId, date: entry.date });
-    // Remove this and all future occurrences of this meal on this day-of-week starting from entry.date
+    
     const targetDateObj = new Date(entry.date+'T00:00:00');
     const dayOfWeek = targetDateObj.getDay();
     state.entries = state.entries.filter(e => {
