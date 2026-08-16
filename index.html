@@ -75,7 +75,7 @@
 }
 
 *{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
+html,body{margin:0;padding:0;height:100%;}
 body{
   background: var(--win-bg);
   color: var(--card-text);
@@ -173,7 +173,7 @@ button{font-family:inherit;}
 
 #view{
   flex:1;
-  padding:12px 12px 88px;
+  padding:12px 12px 100px;
   overflow-y:auto;
 }
 h2.section-title{
@@ -311,30 +311,30 @@ label.field-label{
   color: var(--win-blue);
 }
 
-.cal-grid-month{display:grid; grid-template-columns:repeat(7,1fr); gap:3px;}
-.cal-dow{font-family:var(--font-vt); font-size:16px; color: var(--win-blue); text-align:center; padding-bottom:2px; font-weight:bold;}
+.cal-grid-month{display:grid; grid-template-columns:repeat(7,1fr); gap:2px;}
+.cal-dow{font-family:var(--font-vt); font-size:15px; color: var(--win-blue); text-align:center; padding-bottom:2px; font-weight:bold;}
 .cal-day-month{
   background: #FFF; border: 2px solid;
   border-color: var(--win-border-dark) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-dark);
-  min-height:56px; padding:3px; cursor:pointer; position:relative;
+  min-height:44px; padding:2px; cursor:pointer; position:relative;
   display: flex;
   flex-direction: column;
 }
 .cal-day-month.today{border-color: var(--win-blue); border-width: 2px;}
 .cal-day-month.selected{background: var(--highlight);}
 .cal-day-month.other-month{opacity:.35;}
-.cal-daynum{font-family:var(--font-vt); font-size:16px; font-weight:bold; color:#000;}
+.cal-daynum{font-family:var(--font-vt); font-size:14px; font-weight:bold; color:#000;}
 .badge-row{
   display:flex; 
   flex-wrap:wrap; 
-  gap:2px; 
+  gap:1px; 
   margin-top:auto; 
   margin-bottom:auto;
   justify-content: center;
   align-items: center;
 }
 .type-badge{
-  width:16px; height:16px; border:1px solid #000; color:#FFF; font-size:10px; font-weight:bold;
+  width:14px; height:14px; border:1px solid #000; color:#FFF; font-size:9px; font-weight:bold;
   display:inline-flex; align-items:center; justify-content:center; font-family:var(--font-vt);
   text-shadow: 1px 1px 0px #000;
 }
@@ -355,7 +355,7 @@ label.field-label{
 .week-meal-row .mname{flex:1;}
 .week-meal-row .cost{font-family:var(--font-vt); font-size:16px; font-weight:bold; color:#000;}
 
-.day-detail{margin-top:12px;}
+.day-detail{margin-top:12px; padding-bottom:20px;}
 .ing-row{display:flex; align-items:center; gap:6px; padding:4px 0; border-bottom:1px dotted var(--win-border-dark); font-size:11.5px; font-weight:700;}
 .ing-row.checked{opacity:.4; text-decoration:line-through;}
 .ing-row input[type=checkbox]{width:16px; height:16px; accent-color: var(--win-blue); border:2px solid #000;}
@@ -416,10 +416,13 @@ label.field-label{
   z-index:60; max-width:85%; text-align:center; box-shadow: 2px 2px 0px #000;
 }
 #toast.show{opacity:1; transform:translate(-50%,0);}
-::-webkit-scrollbar{display:none;}
+
+/* Custom scrollbar to make scrolling visible */
+::-webkit-scrollbar { width: 6px; display: block; }
+::-webkit-scrollbar-thumb { background: var(--win-border-dark); border: 1px solid var(--win-border-darkest); }
 </style>
 </head>
-<body data-theme="retro">
+<body>
 <div id="app">
   <header class="topbar">
     <div class="topbar-header">
@@ -447,7 +450,6 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= FIREBASE REALTIME SYNC CONFIG ============================= */
-// TODO: Replace with your actual Firebase project config credentials
 const firebaseConfig = {
   apiKey: "AIzaSyBKDHD7Q3GNzQMk_HdNfin3JNG5XIu0I50",
   authDomain: "picnic-basket-c0656.firebaseapp.com",
@@ -461,6 +463,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 let isRemoteUpdate = false;
+let initialSyncDone = false;
 
 /* ============================= STATE ============================= */
 const STORE_KEY = 'hearth_v9_legibility';
@@ -662,7 +665,7 @@ function load(){
     merged.menuFilterType = merged.menuFilterType || 'all';
     merged.entryStops = merged.entryStops || [];
     merged.ruleTemplates = merged.ruleTemplates || def.ruleTemplates;
-    merged.theme = merged.theme || 'retro';
+    merged.theme = parsed.theme || def.theme;
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, daysOfWeek:[], ...e}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
     return merged;
@@ -676,13 +679,19 @@ function save(){
   }
 }
 
-// Listen for remote updates from Firebase in real-time
+// Immediate theme application before initial render
+applyTheme();
+
+// Firebase listener with theme preservation check
 db.ref('hearth_state').on('value', (snapshot) => {
   const remoteData = snapshot.val();
   if(remoteData){
     isRemoteUpdate = true;
+    const currentTheme = state.theme; // preserve local theme choice
     state = {...defaultState(), ...remoteData};
+    state.theme = currentTheme; // keep local theme preference on initial pull
     localStorage.setItem(STORE_KEY, JSON.stringify(state));
+    applyTheme();
     render();
     isRemoteUpdate = false;
   }
@@ -1059,8 +1068,8 @@ function renderDayDetail(view){
       <div class="win-titlebar">
         <span>${meal.name} ${entry.recurring?'<span style="color:#00FFFF;" title="Recurring Rule Active">&#8635;</span>':''}</span>
         <div class="win-titlebar-controls">
-          <button class="win-btn" title="Edit or Manage Rule" data-edit-entry="${entry.id}">${ICONS.minus}</button>
-          <button class="win-btn" title="Delete Meal" data-remove-entry="${entry.id}">${ICONS.x}</button>
+          <button class="win-btn" title="Edit or Manage Rule" data-edit-entry="${entry.id}">-</button>
+          <button class="win-btn" title="Delete Meal" data-remove-entry="${entry.id}">X</button>
         </div>
       </div>
       <div class="costline" style="margin-top:2px; display:flex; justify-content:space-between; align-items:center;">
