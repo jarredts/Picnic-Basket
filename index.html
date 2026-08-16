@@ -14,7 +14,6 @@
 <style>
 /* ================= THEME DEFINITIONS ================= */
 :root {
-  /* Mode 1: Win95 Retro Computer (Clean Gray & Titlebar Blue) */
   --win-bg:#C0C0C0;
   --win-blue:#000080;
   --win-blue-lt:#1084D0;
@@ -40,7 +39,6 @@
 }
 
 [data-theme="cyber"] {
-  /* Mode 2: 90s Arcade Neon (Hot Pink, Electric Cyan & Acid Green) */
   --win-bg:#00FFFF;
   --win-blue:#9D00FF;
   --win-blue-lt:#FF007F;
@@ -306,20 +304,21 @@ label.field-label{
 
 /* ---------- Calendar & Planner UI ---------- */
 .cal-grid-month{display:grid; grid-template-columns:repeat(7,1fr); gap:3px;}
-.cal-dow{font-family:var(--font-vt); font-size:14px; color: var(--win-blue); text-align:center; padding-bottom:2px; font-weight:bold;}
+.cal-dow{font-family:var(--font-vt); font-size:16px; color: var(--win-blue); text-align:center; padding-bottom:2px; font-weight:bold;}
 .cal-day-month{
   background: #FFF; border: 2px solid;
   border-color: var(--win-border-dark) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-dark);
-  min-height:50px; padding:3px; cursor:pointer; position:relative;
+  min-height:56px; padding:3px; cursor:pointer; position:relative;
 }
 .cal-day-month.today{border-color: var(--win-blue); border-width: 2px;}
 .cal-day-month.selected{background: var(--highlight);}
 .cal-day-month.other-month{opacity:.35;}
-.cal-daynum{font-family:var(--font-vt); font-size:14px; font-weight:bold; color:#000;}
-.badge-row{display:flex; flex-wrap:wrap; gap:1px; margin-top:2px;}
+.cal-daynum{font-family:var(--font-vt); font-size:16px; font-weight:bold; color:#000;}
+.badge-row{display:flex; flex-wrap:wrap; gap:2px; margin-top:3px;}
 .type-badge{
-  width:12px; height:12px; border:1px solid #000; color:#000; font-size:7px; font-weight:bold;
+  width:16px; height:16px; border:1px solid #000; color:#FFF; font-size:10px; font-weight:bold;
   display:inline-flex; align-items:center; justify-content:center; font-family:var(--font-vt);
+  text-shadow: 1px 1px 0px #000;
 }
 .cal-week-row{display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; scroll-snap-type:x mandatory;}
 .cal-week-day{
@@ -331,12 +330,12 @@ label.field-label{
 .cal-week-day h3{font-family:var(--font-disp); font-size:9px; margin:0 0 6px; color: var(--win-blue);}
 .week-meal-row{
   display:flex; justify-content:space-between; align-items:center; gap:6px;
-  padding:4px 6px; background:#FFFFEE; color:#000; border: 1px solid var(--win-border-darkest);
-  border-left-width: 5px; border-left-style: solid;
-  margin-bottom:4px; font-size:11px; cursor:pointer; font-weight:700;
+  padding:5px 6px; background:#FFFFEE; color:#000; border: 1px solid var(--win-border-darkest);
+  border-left-width: 6px; border-left-style: solid;
+  margin-bottom:4px; font-size:11.5px; cursor:pointer; font-weight:700;
 }
 .week-meal-row .mname{flex:1;}
-.week-meal-row .cost{font-family:var(--font-vt); font-size:14px; color:var(--win-blue);}
+.week-meal-row .cost{font-family:var(--font-vt); font-size:16px; font-weight:bold; color:#000;}
 
 .day-detail{margin-top:12px;}
 .ing-row{display:flex; align-items:center; gap:6px; padding:4px 0; border-bottom:1px dotted var(--win-border-dark); font-size:11.5px; font-weight:700;}
@@ -431,7 +430,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_rule_engine';
+const STORE_KEY = 'hearth_v9_legibility';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -585,7 +584,9 @@ function defaultState(){
     entries: [
       {id:uid(), date: t0.toISOString().slice(0,10), mealId: b1.id, mealType:'breakfast', servings:5, checked:[], recurring:true, daysOfWeek:[1,2,3,4,5]}
     ],
-    ruleTemplates: [], // User-defined weekly rule templates for the Budget tab
+    ruleTemplates: [
+      { id: uid(), mealId: b1.id, frequency: 5, servings: 3 } // e.g. Cereal 5 times a week at 3 servings
+    ],
     entryStops: [],
     shoppingList:[],
     pantry:[
@@ -624,7 +625,7 @@ function load(){
     merged.menuSearchQuery = merged.menuSearchQuery || '';
     merged.menuFilterType = merged.menuFilterType || 'all';
     merged.entryStops = merged.entryStops || [];
-    merged.ruleTemplates = merged.ruleTemplates || [];
+    merged.ruleTemplates = merged.ruleTemplates || def.ruleTemplates;
     merged.theme = merged.theme || 'retro';
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, daysOfWeek:[], ...e}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
@@ -772,8 +773,8 @@ const ICONS = {
   pantry:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 8l8-5 8 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8z"/><path d="M9 21v-6h6v6"/></svg>`,
   budget:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 15c.5 1 1.5 1.5 2.7 1.5 1.7 0 2.8-.9 2.8-2.1 0-3-5.5-1.4-5.5-4.3 0-1.2 1.1-2.1 2.8-2.1 1.2 0 2.2.5 2.7 1.5M12 6.5v11"/></svg>`,
   plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
-  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
-  minus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>`
+  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>`,
+  minus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M4 12h16"/></svg>`
 };
 
 const TABS = [
@@ -1003,8 +1004,8 @@ function renderDayDetail(view){
       <div class="win-titlebar">
         <span>${meal.name} ${entry.recurring?'<span style="color:#00FFFF;" title="Recurring Rule Active">&#8635;</span>':''}</span>
         <div class="win-titlebar-controls">
-          <button class="win-btn" title="Edit or Manage Rule" data-edit-entry="${entry.id}">-</button>
-          <button class="win-btn" title="Delete Meal" data-remove-entry="${entry.id}">×</button>
+          <button class="win-btn" title="Edit or Manage Rule" data-edit-entry="${entry.id}">${ICONS.minus}</button>
+          <button class="win-btn" title="Delete Meal" data-remove-entry="${entry.id}">${ICONS.x}</button>
         </div>
       </div>
       <div class="costline" style="margin-top:2px; display:flex; justify-content:space-between; align-items:center;">
@@ -1017,7 +1018,7 @@ function renderDayDetail(view){
       ${meal.instructionsUrl?`<a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener" style="display:block; margin-top:4px;">Recipe Source &rarr;</a>`:''}
       <div style="margin-top:8px;">${ingHtml}</div>
       <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
-        <button class="btn btn-primary btn-sm" style="flex:1;" data-add-unchecked="${entry.id}">Add unchecked to list</button>
+        <button class="btn btn-teal btn-sm" style="flex:1;" data-add-unchecked="${entry.id}">Add unchecked to list</button>
       </div>
     `;
     wrap.appendChild(card);
@@ -1328,8 +1329,8 @@ function updateMealListContainer(container){
       <div class="win-titlebar">
         <span>${meal.name}</span>
         <div class="win-titlebar-controls">
-          <button class="win-btn" title="Edit Recipe" data-edit="${meal.id}">-</button>
-          <button class="win-btn" title="Delete Recipe" data-del="${meal.id}">×</button>
+          <button class="win-btn" title="Edit Recipe" data-edit="${meal.id}">${ICONS.minus}</button>
+          <button class="win-btn" title="Delete Recipe" data-del="${meal.id}">${ICONS.x}</button>
         </div>
       </div>
       <div class="costline">$${scaledCost.toFixed(2)} for ${state.householdSize} people &middot; $${costPerPerson.toFixed(2)}/p</div>
@@ -1696,7 +1697,7 @@ function renderBudgetTab(view){
   ruleCard.innerHTML = `<h2 class="section-title">Recurring Rule Templates</h2>`;
   
   if(!state.ruleTemplates || state.ruleTemplates.length === 0){
-    ruleCard.innerHTML += `<div class="empty" style="font-size:14px; padding:12px;">No recurring rules created yet. Click above to add items like Cereal (5 times/wk at 3 servings) to project into your budget!</div>`;
+    ruleCard.innerHTML += `<div class="empty" style="font-size:13px; padding:12px; font-family:var(--font-body);">No recurring rules created yet. Click above to add items like Cereal (5 times/wk at 3 servings) to project into your budget!</div>`;
   } else {
     state.ruleTemplates.forEach(r => {
       const meal = state.meals.find(m => m.id === r.mealId);
@@ -1722,7 +1723,6 @@ function renderBudgetTab(view){
   }
   view.appendChild(ruleCard);
 
-  // Calculate projected budget from rules + calendar entries
   let ruleWeeklyTotal = 0;
   if(state.ruleTemplates){
     state.ruleTemplates.forEach(r => {
@@ -1759,7 +1759,7 @@ function renderBudgetTab(view){
       <span class="budget-target-num" style="color:${over?'#FF0000':'var(--win-blue)'}">$${combinedTotal.toFixed(2)} projected</span>
       <span style="font-size:11.5px; color:#666;">of $${state.budgetTarget.toFixed(2)}</span>
     </div>
-    <div style="font-size:11px; color:#555; margin-top:6px;">
+    <div style="font-size:11px; color:#555; margin-top:6px; font-family:var(--font-body);">
       &bull; Calendar meals: $${calendarTotal.toFixed(2)}<br>
       &bull; Recurring rule templates: $${ruleWeeklyTotal.toFixed(2)}
     </div>
@@ -1777,8 +1777,8 @@ function openRuleBuilderModal(){
     return;
   }
   let selMeal = state.meals[0].id;
-  let frequency = 5; // e.g. 5 times a week
-  let servings = state.householdSize; // e.g. 3 servings
+  let frequency = 5; 
+  let servings = 3; 
 
   openModal(`
     <h2>Recurring Budget Rule Builder</h2>
