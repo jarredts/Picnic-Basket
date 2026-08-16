@@ -3,43 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
-<title>Hearth — Family Meal Planner</title>
+<title>Hearth 95 — 90s Retro Menu Builder</title>
 <meta name="theme-color" content="#FF007F">
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#0A0A0A;
-  --ink-soft:#333333;
-  --bg:#00FFFF;           /* 90s Neon Cyan */
-  --card:#FFFF00;         /* 90s Neon Yellow */
-  --card-line:#0A0A0A;
-  --primary:#FF007F;      /* 90s Hot Pink */
-  --primary-dark:#CC0066;
-  --accent:#39FF14;       /* Neon Lime Green */
-  --accent-dark:#28B80D;
-  --purple:#9D00FF;       /* Electric Purple */
-  --paper-shadow: 4px 4px 0px #0A0A0A;
-  --radius: 0px;          /* Sharp 90s geometric aesthetic */
-  --disp: 'Fredoka One', cursive, system-ui, sans-serif;
-  --body: 'Space Mono', monospace, system-ui;
-  --mono: 'Space Mono', monospace;
+  --win-bg:#C0C0C0;        /* Classic 95 Gray */
+  --win-blue:#000080;      /* Win95 Active Titlebar Blue */
+  --win-blue-lt:#1084D0;
+  --win-border-light:#FFFFFF;
+  --win-border-dark:#808080;
+  --win-border-darkest:#000000;
+  --neon-pink:#FF007F;
+  --neon-cyan:#00FFFF;
+  --neon-yellow:#FFFF00;
+  --neon-green:#39FF14;
+  --neon-purple:#9D00FF;
+  --paper-shadow: 3px 3px 0px #000000;
+  --disp: 'Press Start 2P', monospace;
+  --body: 'Space Mono', monospace;
+  --vt: 'VT323', monospace;
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
 body{
-  background:var(--bg);
-  color:var(--ink);
-  font-family:var(--body);
-  -webkit-font-smoothing:antialiased;
+  background: var(--win-bg);
+  color: #000;
+  font-family: var(--body);
+  -webkit-font-smoothing:none;
   overscroll-behavior-y:none;
-  background-image: radial-gradient(#9D00FF 15%, transparent 16%), radial-gradient(#FF007F 15%, transparent 16%);
-  background-size: 30px 30px;
-  background-position: 0 0, 15px 15px;
+  background-image: 
+    linear-gradient(45deg, #808080 25%, transparent 25%), 
+    linear-gradient(-45deg, #808080 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #808080 75%), 
+    linear-gradient(-45deg, transparent 75%, #808080 75%);
+  background-size: 4px 4px;
+  background-position: 0 0, 0 2px, 2px -2px, -2px 0px;
 }
 button{font-family:inherit;}
 #app{
@@ -49,257 +53,287 @@ button{font-family:inherit;}
   min-height:100dvh;
   display:flex;
   flex-direction:column;
-  background:var(--bg);
+  background: var(--win-bg);
   position:relative;
-  border-left: 4px solid var(--ink);
-  border-right: 4px solid var(--ink);
+  border-left: 3px solid var(--win-border-darkest);
+  border-right: 3px solid var(--win-border-darkest);
 }
-/* ---------- topbar ---------- */
+
+/* ---------- 90s Win95 / Diner Titlebar ---------- */
 .topbar{
   position:sticky; top:0; z-index:20;
-  background:var(--primary);
-  color:#FFFF00;
-  padding:14px 16px 12px;
-  border-bottom:4px solid var(--ink);
+  background: linear-gradient(90deg, var(--win-blue), var(--win-blue-lt));
+  color: #FFF;
+  padding: 6px 8px;
+  border-bottom: 3px solid var(--win-border-darkest);
+  box-shadow: inset 1px 1px 0px var(--win-border-light), inset -1px -1px 0px var(--win-border-dark);
 }
 .topbar-header{
-  display:flex; justify-content:space-between; align-items:baseline;
+  display:flex; justify-content:space-between; align-items:center;
 }
 .topbar h1{
-  font-family:var(--disp);
-  font-weight:400;
-  font-size:26px;
-  margin:0 0 2px;
-  letter-spacing:1px;
-  text-shadow: 2px 2px 0px var(--ink);
+  font-family: var(--disp);
+  font-size: 13px;
+  margin: 0;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0px #000;
 }
 .version-tag{
-  font-family:var(--mono);
-  font-size:11px;
-  color:#0A0A0A;
-  background:var(--accent);
-  padding:2px 6px;
-  border:2px solid var(--ink);
-  font-weight:700;
+  font-family: var(--vt);
+  font-size: 16px;
+  color: var(--neon-yellow);
+  background: #000;
+  padding: 1px 6px;
+  border: 1px solid var(--win-border-light);
 }
 .topbar .sub{
-  font-size:12px;
-  color:#FFFF00;
-  font-family:var(--mono);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  font-weight:700;
+  font-size: 10px;
+  color: var(--neon-cyan);
+  font-family: var(--vt);
+  letter-spacing: 1px;
+  margin-top: 2px;
 }
 .topbar-controls{
-  margin-top:10px;
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  align-items:center;
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  background: #C0C0C0;
+  padding: 4px;
+  border: 2px solid;
+  border-color: var(--win-border-dark) var(--win-border-light) var(--win-border-light) var(--win-border-dark);
 }
-/* ---------- main ---------- */
+
+/* ---------- main views ---------- */
 #view{
   flex:1;
-  padding:14px 14px 96px;
+  padding:12px 12px 88px;
   overflow-y:auto;
 }
 h2.section-title{
-  font-family:var(--disp);
-  font-weight:400;
-  font-size:20px;
-  margin:0 0 10px;
-  color:var(--ink);
-  letter-spacing:.5px;
+  font-family: var(--disp);
+  font-size: 12px;
+  margin: 0 0 8px;
+  color: var(--win-blue);
+  text-shadow: 1px 1px 0px #FFF;
 }
 .card{
-  background:var(--card);
-  border:3px solid var(--ink);
-  border-radius:var(--radius);
-  box-shadow:var(--paper-shadow);
-  padding:14px;
-  margin-bottom:14px;
+  background: #FFFFFF;
+  border: 3px solid;
+  border-color: var(--win-border-dark) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-dark);
+  box-shadow: 2px 2px 0px #000;
+  padding: 12px;
+  margin-bottom: 12px;
 }
 .pill{
   display:inline-flex;
   align-items:center;
-  gap:6px;
-  padding:6px 12px;
-  border-radius:0px;
-  border:2px solid var(--ink);
-  background:var(--purple);
-  color:#FFFF00;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
-  box-shadow: 2px 2px 0px var(--ink);
-  transition:transform .1s;
+  gap:4px;
+  padding: 4px 10px;
+  background: #C0C0C0;
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 2px solid;
+  border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
 }
-.pill:active{transform:translate(2px,2px); box-shadow:none;}
+.pill:active{
+  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
+}
 .pill.active{
-  background:var(--accent);
-  color:var(--ink);
+  background: var(--win-blue);
+  color: #FFF;
+  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
 }
 .chip{
   display:inline-flex; align-items:center; gap:4px;
-  padding:6px 12px; border-radius:0px;
-  border:2px solid var(--ink); background:#fff; color:var(--ink);
-  font-size:12px; font-weight:700; cursor:pointer;
-  box-shadow: 2px 2px 0px var(--ink);
+  padding: 4px 8px; background: #C0C0C0; color: #000;
+  font-size: 11px; font-weight: 700; cursor: pointer;
+  border: 2px solid;
+  border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
 }
-.chip.active{background:var(--primary); color:#FFFF00;}
+.chip.active{
+  background: var(--neon-pink);
+  color: #FFF;
+  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
+}
 .btn{
   display:inline-flex; align-items:center; justify-content:center; gap:6px;
-  border:2px solid var(--ink); border-radius:0px; padding:10px 14px;
-  font-weight:700; font-size:13px; cursor:pointer;
-  font-family:var(--body);
-  box-shadow: 3px 3px 0px var(--ink);
-  transition:transform .1s, box-shadow .1s;
+  background: #C0C0C0; color: #000;
+  border: 2px solid;
+  border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
+  padding: 8px 12px;
+  font-weight: 700; font-size: 12px; cursor: pointer;
+  font-family: var(--body);
+  box-shadow: 1px 1px 0px #000;
 }
-.btn:active{transform:translate(3px,3px); box-shadow:none;}
-.btn-primary{background:var(--primary); color:#FFFF00;}
-.btn-teal{background:var(--accent); color:var(--ink);}
-.btn-gold{background:var(--purple); color:#FFFF00;}
-.btn-ghost{background:#fff; color:var(--ink); border:2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);}
-.btn-danger{background:#FF0000; color:#FFFF00; border:2px solid var(--ink);}
+.btn:active{
+  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
+  transform: translate(1px, 1px);
+  box-shadow: none;
+}
+.btn-primary{background: var(--neon-pink); color: #FFF; text-shadow: 1px 1px 0px #000;}
+.btn-teal{background: var(--neon-green); color: #000;}
+.btn-gold{background: var(--neon-yellow); color: #000;}
+.btn-ghost{background: #E0E0E0; color: #000;}
+.btn-danger{background: #FF0000; color: #FFF; text-shadow: 1px 1px 0px #000;}
 .btn-block{width:100%;}
-.btn-sm{padding:6px 10px; font-size:11.5px;}
+.btn-sm{padding: 4px 8px; font-size: 11px;}
+
 input[type=text],input[type=number],input[type=url],input[type=date],select,textarea{
   width:100%;
-  padding:9px 10px;
-  border:2px solid var(--ink);
-  border-radius:0px;
-  font-family:var(--body);
-  font-size:13px;
-  background:#fff;
-  color:var(--ink);
-  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
+  padding: 6px 8px;
+  border: 2px solid;
+  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
+  background: #FFF;
+  color: #000;
+  font-family: var(--body);
+  font-size: 12px;
 }
 label.field-label{
-  display:block; font-size:11px; font-weight:700; text-transform:uppercase;
-  letter-spacing:.06em; color:var(--ink); margin:10px 0 4px;
+  display:block; font-size: 10.5px; font-weight:700; text-transform:uppercase;
+  color: var(--win-blue); margin: 8px 0 3px; font-family: var(--disp);
 }
-/* ---------- bottom tab bar ---------- */
+
+/* ---------- 95 Win98 bottom taskbar ---------- */
 .tabbar{
   position:sticky; bottom:0; z-index:20;
   display:flex;
-  background:var(--purple);
-  border-top:4px solid var(--ink);
-  padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+  background: var(--win-bg);
+  border-top: 3px solid var(--win-border-light);
+  padding: 4px;
+  box-shadow: inset 0 1px 0px var(--win-border-dark);
 }
 .tabbtn{
   flex:1;
-  display:flex; flex-direction:column; align-items:center; gap:3px;
-  background:none; border:none; color:#FF99CC; padding:6px 2px; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  background: #C0C0C0; 
+  border: 2px solid;
+  border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
+  color: #000; padding: 4px 2px; cursor: pointer;
 }
-.tabbtn svg{width:20px;height:20px;}
-.tabbtn span{font-size:10px; font-weight:700; letter-spacing:.02em;}
-.tabbtn.active{color:#FFFF00;}
-.tabbtn.active svg{color:var(--accent);}
-/* ---------- calendar ---------- */
-.cal-grid-month{display:grid; grid-template-columns:repeat(7,1fr); gap:4px;}
-.cal-dow{font-family:var(--mono); font-size:10px; color:var(--ink); font-weight:700; text-align:center; padding-bottom:4px;}
+.tabbtn svg{width:16px;height:16px;}
+.tabbtn span{font-size:9px; font-weight:700;}
+.tabbtn.active{
+  background: #E0E0E0;
+  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
+  box-shadow: inset 1px 1px 0px var(--win-border-dark);
+}
+.tabbtn.active svg{color: var(--neon-pink);}
+
+/* ---------- calendar & planner UI ---------- */
+.cal-grid-month{display:grid; grid-template-columns:repeat(7,1fr); gap:3px;}
+.cal-dow{font-family:var(--vt); font-size:14px; color: var(--win-blue); text-align:center; padding-bottom:2px; font-weight:bold;}
 .cal-day-month{
-  background:var(--card); border:2px solid var(--ink); border-radius:0px;
-  min-height:56px; padding:4px; cursor:pointer; position:relative;
+  background: #FFF; border: 2px solid;
+  border-color: var(--win-border-dark) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-dark);
+  min-height:50px; padding:3px; cursor:pointer; position:relative;
 }
-.cal-day-month.today{border-color:var(--primary); border-width:3px;}
-.cal-day-month.selected{background:#FF99CC;}
+.cal-day-month.today{border-color: var(--neon-pink); border-width: 2px;}
+.cal-day-month.selected{background: #FFFFCC;}
 .cal-day-month.other-month{opacity:.35;}
-.cal-daynum{font-family:var(--mono); font-size:11px; font-weight:700;}
-.badge-row{display:flex; flex-wrap:wrap; gap:2px; margin-top:3px;}
+.cal-daynum{font-family:var(--vt); font-size:14px; font-weight:bold;}
+.badge-row{display:flex; flex-wrap:wrap; gap:1px; margin-top:2px;}
 .type-badge{
-  width:15px; height:15px; border-radius:0px; border:1px solid var(--ink); color:#0A0A0A; font-size:9px; font-weight:800;
-  display:inline-flex; align-items:center; justify-content:center; font-family:var(--mono); flex:0 0 auto;
+  width:12px; height:12px; border:1px solid #000; color:#000; font-size:7px; font-weight:bold;
+  display:inline-flex; align-items:center; justify-content:center; font-family:var(--vt);
 }
 .cal-week-row{display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; scroll-snap-type:x mandatory;}
 .cal-week-day{
-  flex:0 0 84%; scroll-snap-align:start; background:var(--card); border:2px solid var(--ink);
-  border-radius:0px; padding:10px; min-height:180px; box-shadow: 3px 3px 0px var(--ink);
+  flex:0 0 84%; scroll-snap-align:start; background: #FFF; border: 2px solid;
+  border-color: var(--win-border-dark) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-dark);
+  padding:8px; min-height:160px; box-shadow: 2px 2px 0px #000;
 }
-.cal-week-day.today{border-color:var(--primary); border-width:3px;}
-.cal-week-day h3{font-family:var(--disp); font-size:15px; margin:0 0 8px;}
+.cal-week-day.today{border-color: var(--neon-pink); border-width: 3px;}
+.cal-week-day h3{font-family:var(--disp); font-size:11px; margin:0 0 6px; color: var(--win-blue);}
 .week-meal-row{
-  display:flex; justify-content:space-between; align-items:center; gap:8px;
-  padding:6px 8px; border-radius:0px; background:#fff; border:2px solid var(--ink);
-  border-left-width:6px; border-left-style:solid;
-  margin-bottom:6px; font-size:12.5px; cursor:pointer;
+  display:flex; justify-content:space-between; align-items:center; gap:6px;
+  padding:4px 6px; background:#FFFFEE; border: 1px solid var(--win-border-darkest);
+  border-left-width: 5px; border-left-style: solid;
+  margin-bottom:4px; font-size:11.5px; cursor:pointer; font-weight:700;
 }
-.week-meal-row .mname{flex:1; font-weight:700;}
-.week-meal-row .cost{font-family:var(--mono); font-size:11.5px; font-weight:700; color:var(--ink);}
-.day-detail{margin-top:14px;}
-.ing-row{display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px dashed var(--ink); font-size:13px; font-weight:700;}
-.ing-row.checked{opacity:.5; text-decoration:line-through;}
-.ing-row input[type=checkbox]{width:18px; height:18px; accent-color:var(--accent); border:2px solid var(--ink); border-radius:0px;}
-.ing-qty{font-family:var(--mono); color:var(--ink); font-size:12px; margin-left:auto;}
-/* ---------- receipt (shopping list signature) ---------- */
+.week-meal-row .mname{flex:1;}
+.week-meal-row .cost{font-family:var(--vt); font-size:14px; color:var(--win-blue);}
+
+.day-detail{margin-top:12px;}
+.ing-row{display:flex; align-items:center; gap:6px; padding:4px 0; border-bottom:1px dotted var(--win-border-dark); font-size:12px; font-weight:700;}
+.ing-row.checked{opacity:.4; text-decoration:line-through;}
+.ing-row input[type=checkbox]{width:16px; height:16px; accent-color: var(--neon-green); border:2px solid #000;}
+.ing-qty{font-family:var(--vt); font-size:15px; color:var(--win-blue); margin-left:auto;}
+
+/* ---------- receipt ---------- */
 .receipt{
-  background:#fff;
-  border:3px solid var(--ink);
-  border-radius:0px;
-  padding:18px 16px 8px;
-  font-family:var(--mono);
-  box-shadow:var(--paper-shadow);
+  background:#FFFFF0;
+  border: 3px solid;
+  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
+  padding:14px 12px 8px;
+  font-family:var(--vt);
+  font-size: 18px;
+  box-shadow: 2px 2px 0px #000;
   position:relative;
 }
-.receipt-head{text-align:center; margin-bottom:10px;}
-.receipt-head .store{font-family:var(--disp); font-weight:400; font-size:18px; letter-spacing:1px; color:var(--primary);}
-.receipt-head .meta{font-size:10px; font-weight:700; color:var(--ink-soft);}
-.receipt hr{border:none; border-top:2px dashed var(--ink); margin:8px 0;}
-.receipt-line{display:flex; align-items:center; gap:6px; font-size:12px; padding:5px 0;}
-.receipt-line .name{flex:1; font-size:12px; font-weight:700;}
-.receipt-line.purchased .name{text-decoration:line-through; opacity:.45;}
-.receipt-line .qty{white-space:nowrap; font-weight:700;}
-.receipt-line .est{white-space:nowrap; color:var(--purple); font-size:11px; font-weight:700;}
+.receipt-head{text-align:center; margin-bottom:8px;}
+.receipt-head .store{font-family:var(--disp); font-size:13px; color: var(--neon-pink); letter-spacing: 1px;}
+.receipt-head .meta{font-size:13px; color:var(--win-blue);}
+.receipt hr{border:none; border-top:2px dashed var(--win-border-darkest); margin:6px 0;}
+.receipt-line{display:flex; align-items:center; gap:6px; padding:3px 0;}
+.receipt-line .name{flex:1; font-weight:bold;}
+.receipt-line.purchased .name{text-decoration:line-through; opacity:.4;}
+.receipt-line .qty{white-space:nowrap;}
+.receipt-line .est{white-space:nowrap; color: var(--neon-purple); font-weight:bold;}
 .step-btn{
-  width:20px; height:20px; border-radius:0px; border:2px solid var(--ink); background:var(--accent);
-  font-weight:700; cursor:pointer; font-family:var(--mono); line-height:1; color:var(--ink);
+  width:18px; height:18px; border: 1px solid #000; background:#C0C0C0;
+  font-weight:bold; cursor:pointer; font-family:var(--vt); line-height:1;
 }
-.receipt-total{display:flex; justify-content:space-between; font-weight:700; font-size:13px; padding-top:8px;}
-.receipt-total.est{color:var(--purple); font-size:12px; padding-top:2px;}
-/* ---------- misc ---------- */
+.receipt-total{display:flex; justify-content:space-between; font-weight:bold; font-size:18px; padding-top:6px;}
+.receipt-total.est{color: var(--neon-purple); font-size:16px;}
+
 .empty{
-  text-align:center; padding:32px 16px; color:var(--ink); font-weight:700;
-  font-size:13px;
+  text-align:center; padding:24px 12px; color:var(--win-blue); font-family:var(--vt); font-size:18px;
 }
 .tag{
-  display:inline-block; font-family:var(--mono); font-size:10px; font-weight:700; padding:2px 6px;
-  border:1px solid var(--ink); border-radius:0px; background:var(--accent); color:var(--ink); margin-right:4px;
+  display:inline-block; font-family:var(--vt); font-size:13px; padding:1px 5px;
+  border:1px solid #000; background:var(--neon-green); color:#000; margin-right:3px; font-weight:bold;
 }
-.match-bar-track{background:#fff; border:2px solid var(--ink); border-radius:0px; height:10px; overflow:hidden; margin-top:6px;}
-.match-bar-fill{height:100%; background:var(--accent);}
+.match-bar-track{background:#FFF; border:2px solid var(--win-border-darkest); height:8px; overflow:hidden; margin-top:4px;}
+.match-bar-fill{height:100%; background:var(--neon-green);}
+
 .modal-backdrop{
-  position:fixed; inset:0; background:rgba(10,10,10,.7); z-index:50;
-  display:flex; align-items:flex-end; justify-content:center;
+  position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:50;
+  display:flex; align-items:center; justify-content:center; padding:12px;
 }
 .modal{
-  background:var(--card); width:100%; max-width:520px; max-height:90vh; overflow-y:auto;
-  border:4px solid var(--ink); border-radius:0px; padding:18px 16px calc(18px + env(safe-area-inset-bottom));
-  box-shadow: 0px -6px 0px var(--primary);
-  animation:slideup .18s ease-out;
+  background: var(--win-bg); width:100%; max-width:500px; max-height:90vh; overflow-y:auto;
+  border: 3px solid; border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
+  padding: 14px;
+  box-shadow: 4px 4px 0px #000;
+  animation:slideup .12s ease-out;
 }
-@keyframes slideup{from{transform:translateY(24px); opacity:0;} to{transform:translateY(0); opacity:1;}}
-.modal h2{font-family:var(--disp); margin:0 0 12px; color:var(--primary); text-shadow: 1px 1px 0px var(--ink);}
-.ing-edit-row{margin-bottom:8px;}
-.ing-edit-subrow{display:flex; gap:6px; margin-top:4px; align-items:center;}
-.ing-edit-subrow input[type=number]{width:52px; flex:0 0 52px; padding:9px 6px;}
-.ing-edit-subrow select{flex:0 0 62px; padding:9px 4px;}
-.ing-edit-subrow .cost-input{flex:0 0 58px;}
-.ing-edit-subrow .iconbtn{margin-left:auto;}
-.iconbtn{background:var(--accent); border:2px solid var(--ink); color:var(--ink); cursor:pointer; font-size:16px; padding:2px 6px; box-shadow: 2px 2px 0px var(--ink);}
-.iconbtn:active{transform:translate(2px,2px); box-shadow:none;}
+@keyframes slideup{from{transform:translateY(16px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+.modal h2{font-family: var(--disp); font-size: 11px; margin: 0 0 10px; color: var(--win-blue);}
+.ing-edit-row{margin-bottom:6px;}
+.ing-edit-subrow{display:flex; gap:4px; margin-top:3px; align-items:center;}
+.ing-edit-subrow input[type=number]{width:48px; flex:0 0 48px; padding:6px 4px;}
+.ing-edit-subrow select{flex:0 0 58px; padding:6px 2px;}
+.ing-edit-subrow .cost-input{flex:0 0 54px;}
+.iconbtn{background:#C0C0C0; border: 2px solid; border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light); cursor:pointer; font-size:14px; padding:2px 6px;}
+.iconbtn:active{border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);}
 .row-between{display:flex; justify-content:space-between; align-items:center;}
-.meal-card h3{font-family:var(--disp); font-size:16px; margin:0 0 4px; font-weight:400; letter-spacing:.5px;}
-.meal-card .costline{font-family:var(--mono); font-size:12px; color:var(--primary); font-weight:700;}
-.budget-header{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; font-weight:700;}
-.budget-target-num{font-family:var(--mono); font-weight:700;}
-.budget-bar-track{background:#fff; border:2px solid var(--ink); border-radius:0px; height:14px; overflow:hidden;}
+.meal-card h3{font-family:var(--disp); font-size:11px; margin:0 0 4px;}
+.meal-card .costline{font-family:var(--vt); font-size:16px; color:var(--win-blue); font-weight:bold;}
+.budget-header{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px; font-weight:bold;}
+.budget-target-num{font-family:var(--vt); font-size:18px; font-weight:bold;}
+.budget-bar-track{background:#FFF; border:2px solid var(--win-border-darkest); height:12px; overflow:hidden;}
 .budget-bar-fill{height:100%;}
-a.link{color:var(--purple); font-size:12px; font-weight:700; text-decoration:underline;}
+a.link{color: var(--win-blue); font-size:11px; font-weight:bold; text-decoration:underline;}
+
 #toast{
-  position:fixed; left:50%; bottom:82px; transform:translate(-50%,12px);
-  background:var(--primary); color:#FFFF00; padding:10px 16px; border:2px solid var(--ink); border-radius:0px;
-  font-size:12px; font-weight:700; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
-  z-index:60; max-width:80%; text-align:center; box-shadow: 3px 3px 0px var(--ink);
+  position:fixed; left:50%; bottom:72px; transform:translate(-50%,12px);
+  background: var(--win-blue); color: var(--neon-yellow); border:2px solid #FFF; padding:8px 14px;
+  font-family: var(--vt); font-size: 18px; opacity:0; pointer-events:none; transition:opacity .15s, transform .15s;
+  z-index:60; max-width:85%; text-align:center; box-shadow: 2px 2px 0px #000;
 }
 #toast.show{opacity:1; transform:translate(-50%,0);}
 ::-webkit-scrollbar{display:none;}
@@ -312,7 +346,7 @@ a.link{color:var(--purple); font-size:12px; font-weight:700; text-decoration:und
       <h1 id="topTitle">HEARTH 95</h1>
       <span class="version-tag">v9.4.7.5</span>
     </div>
-    <div class="sub" id="topSub">FAMILY MEAL PLANNER</div>
+    <div class="sub" id="topSub">90s RETRO MENU BUILDER</div>
     <div class="topbar-controls" id="topControls"></div>
   </header>
   <main id="view"></main>
@@ -322,7 +356,7 @@ a.link{color:var(--purple); font-size:12px; font-weight:700; text-decoration:und
 <div id="modalRoot"></div>
 
 <script>
-/* ============================= SERVICE WORKER REGISTRATION ============================= */
+/* ============================= SERVICE WORKER ============================= */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed: ', err));
@@ -330,7 +364,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_retro';
+const STORE_KEY = 'hearth_v9_builder';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -351,109 +385,112 @@ const TYPE_NAMES = {breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', snack
 const TYPE_COLORS = {breakfast:'#D99B26', lunch:'#2E6F40', dinner:'#8B263E', snack:'#6B4A7A'};
 
 function defaultState(){
-  const b1 = { id:uid(), type:'breakfast', name:'Overnight Peanut Butter Oats', servings:4, costTotal:3.20, instructionsUrl:'', ingredients:[
+  // 10 Breakfasts with Links
+  const b1 = { id:uid(), type:'breakfast', name:'Overnight Peanut Butter Oats', servings:4, costTotal:3.20, instructionsUrl:'https://www.budgetbytes.com/peanut-butter-overnight-oats/', ingredients:[
     {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'milk', qty:2, unit:'cup', cost:1.00}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:1.00}
   ]};
-  const b2 = { id:uid(), type:'breakfast', name:'Scrambled Eggs & Toast', servings:4, costTotal:2.80, instructionsUrl:'', ingredients:[
+  const b2 = { id:uid(), type:'breakfast', name:'Scrambled Eggs & Toast', servings:4, costTotal:2.80, instructionsUrl:'https://www.allrecipes.com/recipe/23971/fluffy-scrambled-eggs/', ingredients:[
     {id:uid(), name:'eggs', qty:8, unit:'ea', cost:2.00}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80}
   ]};
-  const b3 = { id:uid(), type:'breakfast', name:'Classic Pancakes', servings:4, costTotal:2.20, instructionsUrl:'', ingredients:[
+  const b3 = { id:uid(), type:'breakfast', name:'Classic Pancakes', servings:4, costTotal:2.20, instructionsUrl:'https://www.allrecipes.com/recipe/21014/good-old-fashioned-pancakes/', ingredients:[
     {id:uid(), name:'flour', qty:2, unit:'cup', cost:0.80}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50}, {id:uid(), name:'sugar', qty:2, unit:'tbsp', cost:0.40}
   ]};
-  const b4 = { id:uid(), type:'breakfast', name:'Cinnamon French Toast', servings:4, costTotal:3.10, instructionsUrl:'', ingredients:[
+  const b4 = { id:uid(), type:'breakfast', name:'Cinnamon French Toast', servings:4, costTotal:3.10, instructionsUrl:'https://www.allrecipes.com/recipe/7018/french-toast-i/', ingredients:[
     {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'eggs', qty:3, unit:'ea', cost:0.75}, {id:uid(), name:'milk', qty:0.5, unit:'cup', cost:0.50}, {id:uid(), name:'cinnamon', qty:1, unit:'tbsp', cost:0.25}
   ]};
-  const b5 = { id:uid(), type:'breakfast', name:'Banana Oatmeal Porridge', servings:4, costTotal:2.00, instructionsUrl:'', ingredients:[
+  const b5 = { id:uid(), type:'breakfast', name:'Banana Oatmeal Porridge', servings:4, costTotal:2.00, instructionsUrl:'https://www.budgetbytes.com/cinnamon-apple-oatmeal/', ingredients:[
     {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'bananas', qty:2, unit:'ea', cost:0.60}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.20}
   ]};
-  const b6 = { id:uid(), type:'breakfast', name:'Breakfast Egg & Cheese Burritos', servings:4, costTotal:4.50, instructionsUrl:'', ingredients:[
+  const b6 = { id:uid(), type:'breakfast', name:'Breakfast Egg & Cheese Burritos', servings:4, costTotal:4.50, instructionsUrl:'https://www.budgetbytes.com/freezer-breakfast-burritos/', ingredients:[
     {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50}, {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50}, {id:uid(), name:'salsa', qty:0.5, unit:'cup', cost:0.50}
   ]};
-  const b7 = { id:uid(), type:'breakfast', name:'Cheesy Scrambled Egg Toast', servings:2, costTotal:2.10, instructionsUrl:'', ingredients:[
+  const b7 = { id:uid(), type:'breakfast', name:'Cheesy Scrambled Egg Toast', servings:2, costTotal:2.10, instructionsUrl:'https://www.allrecipes.com/recipe/23971/fluffy-scrambled-eggs/', ingredients:[
     {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.80}, {id:uid(), name:'bread', qty:2, unit:'ea', cost:0.30}
   ]};
-  const b8 = { id:uid(), type:'breakfast', name:'Bagels & Cream Cheese', servings:4, costTotal:3.50, instructionsUrl:'', ingredients:[
+  const b8 = { id:uid(), type:'breakfast', name:'Bagels & Cream Cheese', servings:4, costTotal:3.50, instructionsUrl:'https://www.seriouseats.com/homemade-bagels-recipe', ingredients:[
     {id:uid(), name:'bagels', qty:4, unit:'ea', cost:2.50}, {id:uid(), name:'cream cheese', qty:4, unit:'oz', cost:1.00}
   ]};
-  const b9 = { id:uid(), type:'breakfast', name:'Yogurt & Honey Granola Bowl', servings:3, costTotal:4.20, instructionsUrl:'', ingredients:[
+  const b9 = { id:uid(), type:'breakfast', name:'Yogurt & Honey Granola Bowl', servings:3, costTotal:4.20, instructionsUrl:'https://www.budgetbytes.com/yogurt-parfait/', ingredients:[
     {id:uid(), name:'yogurt', qty:3, unit:'cup', cost:2.50}, {id:uid(), name:'granola', qty:1.5, unit:'cup', cost:1.20}, {id:uid(), name:'honey', qty:2, unit:'tbsp', cost:0.50}
   ]};
-  const b10 = { id:uid(), type:'breakfast', name:'Loaded Breakfast Potato Hash', servings:4, costTotal:3.80, instructionsUrl:'', ingredients:[
+  const b10 = { id:uid(), type:'breakfast', name:'Loaded Breakfast Potato Hash', servings:4, costTotal:3.80, instructionsUrl:'https://www.budgetbytes.com/skillet-breakfast-hash/', ingredients:[
     {id:uid(), name:'potatoes', qty:4, unit:'ea', cost:2.00}, {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'onion', qty:1, unit:'ea', cost:0.80}
   ]};
 
-  const l1 = { id:uid(), type:'lunch', name:'Classic Peanut Butter & Jelly', servings:4, costTotal:2.50, instructionsUrl:'', ingredients:[
+  // 10 Lunches with Links
+  const l1 = { id:uid(), type:'lunch', name:'Classic Peanut Butter & Jelly', servings:4, costTotal:2.50, instructionsUrl:'https://www.allrecipes.com/recipe/238712/peanut-butter-and-jelly-sandwich/', ingredients:[
     {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:0.60}, {id:uid(), name:'jelly', qty:4, unit:'tbsp', cost:0.30}
   ]};
-  const l2 = { id:uid(), type:'lunch', name:'Tuna Salad Sandwiches', servings:4, costTotal:4.20, instructionsUrl:'', ingredients:[
+  const l2 = { id:uid(), type:'lunch', name:'Tuna Salad Sandwiches', servings:4, costTotal:4.20, instructionsUrl:'https://www.allrecipes.com/recipe/14352/classic-tuna-salad/', ingredients:[
     {id:uid(), name:'canned tuna', qty:2, unit:'ea', cost:3.00}, {id:uid(), name:'mayo', qty:4, unit:'tbsp', cost:0.80}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.40}
   ]};
-  const l3 = { id:uid(), type:'lunch', name:'Grilled Cheese & Tomato Soup', servings:4, costTotal:4.80, instructionsUrl:'', ingredients:[
+  const l3 = { id:uid(), type:'lunch', name:'Grilled Cheese & Tomato Soup', servings:4, costTotal:4.80, instructionsUrl:'https://www.budgetbytes.com/classic-grilled-cheese-tomato-soup/', ingredients:[
     {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'canned tomato soup', qty:2, unit:'ea', cost:1.00}
   ]};
-  const l4 = { id:uid(), type:'lunch', name:'Black Bean & Rice Bowls', servings:4, costTotal:3.60, instructionsUrl:'', ingredients:[
+  const l4 = { id:uid(), type:'lunch', name:'Black Bean & Rice Bowls', servings:4, costTotal:3.60, instructionsUrl:'https://www.budgetbytes.com/southwest-black-bean-rice-bowls/', ingredients:[
     {id:uid(), name:'black beans', qty:2, unit:'ea', cost:1.40}, {id:uid(), name:'rice', qty:2, unit:'cup', cost:0.80}, {id:uid(), name:'salsa', qty:1, unit:'cup', cost:0.80}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.60}
   ]};
-  const l5 = { id:uid(), type:'lunch', name:'Egg Salad Sandwiches', servings:4, costTotal:3.20, instructionsUrl:'', ingredients:[
+  const l5 = { id:uid(), type:'lunch', name:'Egg Salad Sandwiches', servings:4, costTotal:3.20, instructionsUrl:'https://www.allrecipes.com/recipe/14725/classic-egg-salad/', ingredients:[
     {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50}, {id:uid(), name:'mayo', qty:3, unit:'tbsp', cost:0.60}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80}, {id:uid(), name:'mustard', qty:1, unit:'tbsp', cost:0.30}
   ]};
-  const l6 = { id:uid(), type:'lunch', name:'Turkey & Cheese Wraps', servings:4, costTotal:5.50, instructionsUrl:'', ingredients:[
+  const l6 = { id:uid(), type:'lunch', name:'Turkey & Cheese Wraps', servings:4, costTotal:5.50, instructionsUrl:'https://www.allrecipes.com/recipe/222146/turkey-wrap/', ingredients:[
     {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'sliced turkey', qty:8, unit:'oz', cost:3.00}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50}
   ]};
-  const l7 = { id:uid(), type:'lunch', name:'Quick Ramen & Soft Egg', servings:2, costTotal:2.20, instructionsUrl:'', ingredients:[
+  const l7 = { id:uid(), type:'lunch', name:'Quick Ramen & Soft Egg', servings:2, costTotal:2.20, instructionsUrl:'https://www.budgetbytes.com/upgraded-ramen/', ingredients:[
     {id:uid(), name:'instant ramen', qty:2, unit:'ea', cost:1.00}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50}, {id:uid(), name:'frozen vegetables', qty:1, unit:'cup', cost:0.70}
   ]};
-  const l8 = { id:uid(), type:'lunch', name:'Hummus & Veggie Pita Pockets', servings:3, costTotal:4.50, instructionsUrl:'', ingredients:[
+  const l8 = { id:uid(), type:'lunch', name:'Hummus & Veggie Pita Pockets', servings:3, costTotal:4.50, instructionsUrl:'https://www.budgetbytes.com/mediterranean-veggie-pitas/', ingredients:[
     {id:uid(), name:'pita bread', qty:3, unit:'ea', cost:1.80}, {id:uid(), name:'hummus', qty:1, unit:'cup', cost:2.00}, {id:uid(), name:'cucumber', qty:1, unit:'ea', cost:0.70}
   ]};
-  const l9 = { id:uid(), type:'lunch', name:'Loaded Macaroni & Cheese', servings:4, costTotal:3.40, instructionsUrl:'', ingredients:[
+  const l9 = { id:uid(), type:'lunch', name:'Loaded Macaroni & Cheese', servings:4, costTotal:3.40, instructionsUrl:'https://www.budgetbytes.com/extra-creamy-homemade-mac-and-cheese/', ingredients:[
     {id:uid(), name:'macaroni pasta', qty:12, unit:'oz', cost:1.20}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:1.70}
   ]};
-  const l10 = { id:uid(), type:'lunch', name:'Quesadillas with Beans & Cheese', servings:4, costTotal:3.80, instructionsUrl:'', ingredients:[
+  const l10 = { id:uid(), type:'lunch', name:'Quesadillas with Beans & Cheese', servings:4, costTotal:3.80, instructionsUrl:'https://www.budgetbytes.com/cheesy-black-bean-quesadillas/', ingredients:[
     {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'black beans', qty:1, unit:'ea', cost:0.60}
   ]};
 
+  // 40 Dinners with Real BudgetBytes/AllRecipes Links
   const dinners = [
-    { name:'Cheesy Rice & Black Bean Skillet', cost:5.50, ing:[{n:'black beans',q:3,u:'ea',c:2.10},{n:'rice',q:2,u:'cup',c:0.80},{n:'cheddar cheese',q:8,u:'oz',c:2.20},{n:'salsa',q:1,u:'cup',c:0.40}] },
-    { name:'Garlic Butter Pasta & Peas', cost:4.00, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'butter',q:4,u:'tbsp',c:1.00},{n:'frozen peas',q:2,u:'cup',c:1.50}] },
-    { name:'Sheet Pan Chicken & Roasted Potatoes', cost:8.20, ing:[{n:'chicken thighs',q:4,u:'ea',c:5.00},{n:'potatoes',q:4,u:'ea',c:2.00},{n:'olive oil',q:2,u:'tbsp',c:1.20}] },
-    { name:'Hearty Beef & Bean Chili', cost:9.50, ing:[{n:'ground beef',q:1,u:'lb',c:5.00},{n:'kidney beans',q:2,u:'ea',c:1.40},{n:'canned diced tomatoes',q:2,u:'ea',c:1.80},{n:'onion',q:1,u:'ea',c:1.30}] },
-    { name:'Spaghetti with Marinara & Meat Sauce', cost:7.00, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'ground beef',q:0.5,u:'lb',c:2.50},{n:'marinara sauce',q:1,u:'ea',c:2.00},{n:'parmesan cheese',q:2,u:'oz',c:1.00}] },
-    { name:'Creamy Garlic Parmesan Chicken Pasta', cost:9.20, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'milk',q:1.5,u:'cup',c:1.00},{n:'parmesan cheese',q:4,u:'oz',c:2.00},{n:'butter',q:2,u:'tbsp',c:0.70}] },
-    { name:'Loaded Pork Carnitas Tacos', cost:8.80, ing:[{n:'pork shoulder',q:1.5,u:'lb',c:5.00},{n:'tortillas',q:8,u:'ea',c:2.00},{n:'salsa',q:1,u:'cup',c:1.00},{n:'onion',q:1,u:'ea',c:0.80}] },
-    { name:'Sheet Pan Sausage & Bell Peppers', cost:7.50, ing:[{n:'sausage links',q:4,u:'ea',c:4.50},{n:'bell peppers',q:3,u:'ea',c:2.20},{n:'onion',q:1,u:'ea',c:0.80}] },
-    { name:'Creamy Tuna Noodle Casserole', cost:5.20, ing:[{n:'egg noodles',q:12,u:'oz',c:1.50},{n:'canned tuna',q:3,u:'ea',c:2.20},{n:'frozen peas',q:1,u:'cup',c:0.70},{n:'milk',q:1,u:'cup',c:0.80}] },
-    { name:'Homemade Chicken Fried Rice', cost:6.80, ing:[{n:'rice',q:3,u:'cup',c:1.20},{n:'shredded chicken',q:1.5,u:'cup',c:3.00},{n:'eggs',q:3,u:'ea',c:0.80},{n:'frozen vegetables',q:1.5,u:'cup',c:1.80}] },
-    { name:'Classic Sloppy Joes', cost:6.50, ing:[{n:'ground beef',q:1,u:'lb',c:5.00},{n:'hamburger buns',q:5,u:'ea',c:1.50}] },
-    { name:'Vegetable & Chickpea Curry', cost:6.20, ing:[{n:'chickpeas',q:2,u:'ea',c:1.40},{n:'coconut milk',q:1,u:'ea',c:2.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'spinach',q:2,u:'cup',c:2.00}] },
-    { name:'Crispy Baked Fish Tacos', cost:8.50, ing:[{n:'frozen fish fillets',q:1,u:'lb',c:5.50},{n:'tortillas',q:8,u:'ea',c:2.00},{n:'salsa',q:0.5,u:'cup',c:1.00}] },
-    { name:'Stuffed Baked Potatoes with Chili', cost:7.20, ing:[{n:'potatoes',q:4,u:'ea',c:2.00},{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'cheddar cheese',q:4,u:'oz',c:1.20}] },
-    { name:'Sweet Potato & Black Bean Burrito Bowls', cost:6.00, ing:[{n:'sweet potatoes',q:2,u:'ea',c:2.00},{n:'black beans',q:2,u:'ea',c:1.40},{n:'rice',q:2,u:'cup',c:0.80},{n:'salsa',q:1,u:'cup',c:1.80}] },
-    { name:'Honey Mustard Chicken & Rice', cost:7.80, ing:[{n:'chicken thighs',q:4,u:'ea',c:5.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'honey',q:2,u:'tbsp',c:0.80},{n:'mustard',q:2,u:'tbsp',c:1.20}] },
-    { name:'Broccoli Cheddar Soup with Bread', cost:6.40, ing:[{n:'broccoli',q:2,u:'ea',c:3.00},{n:'cheddar cheese',q:6,u:'oz',c:2.00},{n:'milk',q:2,u:'cup',c:1.00},{n:'bread',q:4,u:'ea',c:0.40}] },
-    { name:'Pesto Butter Penne Pasta', cost:5.00, ing:[{n:'penne pasta',q:16,u:'oz',c:1.50},{n:'pesto sauce',q:1,u:'ea',c:3.00},{n:'butter',q:1,u:'tbsp',c:0.50}] },
-    { name:'Classic Meatloaf & Mashed Potatoes', cost:9.80, ing:[{n:'ground beef',q:1.5,u:'lb',c:7.50},{n:'potatoes',q:4,u:'ea',c:2.00},{n:'milk',q:0.5,u:'cup',c:0.30}] },
-    { name:'Lemon Herb Roasted Chicken & Veggies', cost:8.90, ing:[{n:'whole chicken',q:1,u:'ea',c:6.00},{n:'potatoes',q:3,u:'ea',c:1.50},{n:'lemon',q:2,u:'ea',c:1.40}] },
-    { name:'Quick Beef Stir-Fry with Noodles', cost:8.50, ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'ramen noodles',q:3,u:'ea',c:1.50},{n:'frozen vegetables',q:1.5,u:'cup',c:1.80},{n:'soy sauce',q:2,u:'tbsp',c:1.20}] },
-    { name:'Baked Ziti Casserole', cost:7.80, ing:[{n:'ziti pasta',q:16,u:'oz',c:1.50},{n:'marinara sauce',q:1,u:'ea',c:2.00},{n:'ricotta cheese',q:8,u:'oz',c:3.30},{n:'mozzarella cheese',q:4,u:'oz',c:1.00}] },
-    { name:'Black Bean & Corn Quesadillas', cost:5.20, ing:[{n:'tortillas',q:6,u:'ea',c:1.50},{n:'black beans',q:2,u:'ea',c:1.40},{n:'corn',q:1,u:'ea',c:0.60},{n:'cheddar cheese',q:6,u:'oz',c:1.70}] },
-    { name:'Crispy Chicken Patty Sandwiches', cost:6.90, ing:[{n:'frozen chicken patties',q:4,u:'ea',c:4.50},{n:'hamburger buns',q:4,u:'ea',c:1.20},{n:'lettuce',q:1,u:'ea',c:1.20}] },
-    { name:'Hearty Lentil Soup & Bread', cost:4.50, ing:[{n:'dried lentils',q:2,u:'cup',c:1.80},{n:'canned diced tomatoes',q:1,u:'ea',c:1.00},{n:'onion',q:1,u:'ea',c:0.80},{n:'bread',q:4,u:'ea',c:0.90}] },
-    { name:'Teriyaki Chicken Rice Bowls', cost:7.40, ing:[{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'teriyaki sauce',q:0.5,u:'cup',c:1.50},{n:'frozen broccoli',q:1,u:'cup',c:1.10}] },
-    { name:'Creamy Tomato Basil Pasta', cost:4.80, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'marinara sauce',q:1,u:'ea',c:2.00},{n:'milk',q:0.5,u:'cup',c:0.30},{n:'butter',q:2,u:'tbsp',c:1.00}] },
-    { name:'Sausage & White Bean Stew', cost:6.70, ing:[{n:'sausage links',q:3,u:'ea',c:3.40},{n:'cannellini beans',q:2,u:'ea',c:1.60},{n:'chicken broth',q:2,u:'cup',c:1.00},{n:'onion',q:1,u:'ea',c:0.70}] },
-    { name:'Loaded Nachos Supreme', cost:7.50, ing:[{n:'tortilla chips',q:1,u:'ea',c:3.00},{n:'ground beef',q:0.5,u:'lb',c:2.50},{n:'cheddar cheese',q:6,u:'oz',c:1.70},{n:'salsa',q:0.5,u:'cup',c:0.30}] },
-    { name:'Garlic Butter Shrimp Pasta', cost:9.50, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'frozen shrimp',q:1,u:'lb',c:6.00},{n:'butter',q:3,u:'tbsp',c:1.00},{n:'garlic powder',q:1,u:'tsp',c:1.00}] },
-    { name:'Beef & Cabbage Skillet', cost:6.20, ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'cabbage',q:1,u:'ea',c:1.50},{n:'onion',q:1,u:'ea',c:0.70}] },
-    { name:'BBQ Pulled Chicken Sandwiches', cost:7.20, ing:[{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'bbq sauce',q:1,u:'cup',c:1.80},{n:'hamburger buns',q:4,u:'ea',c:1.40}] },
-    { name:'Minestrone Soup & Crackers', cost:5.80, ing:[{n:'canned diced tomatoes',q:2,u:'ea',c:1.80},{n:'kidney beans',q:1,u:'ea',c:0.70},{n:'pasta',q:0.5,u:'cup',c:0.50},{n:'frozen vegetables',q:1,u:'cup',c:1.20},{n:'crackers',q:1,u:'ea',c:1.60}] },
-    { name:'Ham & Cheese Pasta Bake', cost:6.50, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'diced ham',q:8,u:'oz',c:3.00},{n:'cheddar cheese',q:4,u:'oz',c:1.20},{n:'milk',q:0.5,u:'cup',c:0.80}] },
-    { name:'Smoky Black Bean & Corn Chili', cost:5.40, ing:[{n:'black beans',q:2,u:'ea',c:1.40},{n:'kidney beans',q:1,u:'ea',c:0.70},{n:'canned diced tomatoes',q:2,u:'ea',c:1.80},{n:'corn',q:1,u:'ea',c:0.60},{n:'onion',q:1,u:'ea',c:0.90}] },
-    { name:'Crispy Baked Pork Chops & Applesauce', cost:8.10, ing:[{n:'pork chops',q:4,u:'ea',c:6.00},{n:'applesauce',q:1,u:'cup',c:1.50},{n:'bread crumbs',q:0.5,u:'cup',c:0.60}] },
-    { name:'Loaded Potato Soup', cost:6.10, ing:[{n:'potatoes',q:5,u:'ea',c:2.50},{n:'milk',q:2,u:'cup',c:1.00},{n:'cheddar cheese',q:6,u:'oz',c:1.80},{n:'butter',q:2,u:'tbsp',c:0.80}] },
-    { name:'One-Pot Spanish Rice & Ground Beef', cost:7.10, ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'canned diced tomatoes',q:1,u:'ea',c:0.90},{n:'onion',q:1,u:'ea',c:1.40}] },
-    { name:'Chicken Salad Lettuce Wraps', cost:6.90, ing:[{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'mayo',q:4,u:'tbsp',c:0.80},{n:'lettuce',q:1,u:'ea',c:1.50},{n:'celery',q:2,u:'ea',c:0.60}] },
-    { name:'Cheesy Beef and Macaroni Skillet', cost:7.40, ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'macaroni pasta',q:12,u:'oz',c:1.20},{n:'cheddar cheese',q:6,u:'oz',c:1.70},{n:'canned tomato sauce',q:1,u:'ea',c:0.50}] }
+    { name:'Cheesy Rice & Black Bean Skillet', cost:5.50, link:'https://www.budgetbytes.com/cheesy-black-bean-and-rice-skillet/', ing:[{n:'black beans',q:3,u:'ea',c:2.10},{n:'rice',q:2,u:'cup',c:0.80},{n:'cheddar cheese',q:8,u:'oz',c:2.20},{n:'salsa',q:1,u:'cup',c:0.40}] },
+    { name:'Garlic Butter Pasta & Peas', cost:4.00, link:'https://www.budgetbytes.com/garlic-butter-pasta-with-parmesan-and-peas/', ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'butter',q:4,u:'tbsp',c:1.00},{n:'frozen peas',q:2,u:'cup',c:1.50}] },
+    { name:'Sheet Pan Chicken & Roasted Potatoes', cost:8.20, link:'https://www.budgetbytes.com/sheet-pan-rosemary-chicken-and-potatoes/', ing:[{n:'chicken thighs',q:4,u:'ea',c:5.00},{n:'potatoes',q:4,u:'ea',c:2.00},{n:'olive oil',q:2,u:'tbsp',c:1.20}] },
+    { name:'Hearty Beef & Bean Chili', cost:9.50, link:'https://www.budgetbytes.com/basic-homemade-chili/', ing:[{n:'ground beef',q:1,u:'lb',c:5.00},{n:'kidney beans',q:2,u:'ea',c:1.40},{n:'canned diced tomatoes',q:2,u:'ea',c:1.80},{n:'onion',q:1,u:'ea',c:1.30}] },
+    { name:'Spaghetti with Marinara & Meat Sauce', cost:7.00, link:'https://www.allrecipes.com/recipe/158140/spaghetti-sauce-with-ground-beef/', ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'ground beef',q:0.5,u:'lb',c:2.50},{n:'marinara sauce',q:1,u:'ea',c:2.00},{n:'parmesan cheese',q:2,u:'oz',c:1.00}] },
+    { name:'Creamy Garlic Parmesan Chicken Pasta', cost:9.20, link:'https://www.budgetbytes.com/creamy-garlic-parmesan-chicken-pasta/', ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'milk',q:1.5,u:'cup',c:1.00},{n:'parmesan cheese',q:4,u:'oz',c:2.00},{n:'butter',q:2,u:'tbsp',c:0.70}] },
+    { name:'Loaded Pork Carnitas Tacos', cost:8.80, link:'https://www.budgetbytes.com/slow-cooker-pork-carnitas/', ing:[{n:'pork shoulder',q:1.5,u:'lb',c:5.00},{n:'tortillas',q:8,u:'ea',c:2.00},{n:'salsa',q:1,u:'cup',c:1.00},{n:'onion',q:1,u:'ea',c:0.80}] },
+    { name:'Sheet Pan Sausage & Bell Peppers', cost:7.50, link:'https://www.budgetbytes.com/sheet-pan-sausage-and-peppers/', ing:[{n:'sausage links',q:4,u:'ea',c:4.50},{n:'bell peppers',q:3,u:'ea',c:2.20},{n:'onion',q:1,u:'ea',c:0.80}] },
+    { name:'Creamy Tuna Noodle Casserole', cost:5.20, link:'https://www.allrecipes.com/recipe/19448/tuna-noodle-casserole-from-scratch/', ing:[{n:'egg noodles',q:12,u:'oz',c:1.50},{n:'canned tuna',q:3,u:'ea',c:2.20},{n:'frozen peas',q:1,u:'cup',c:0.70},{n:'milk',q:1,u:'cup',c:0.80}] },
+    { name:'Homemade Chicken Fried Rice', cost:6.80, link:'https://www.budgetbytes.com/chicken-fried-rice/', ing:[{n:'rice',q:3,u:'cup',c:1.20},{n:'shredded chicken',q:1.5,u:'cup',c:3.00},{n:'eggs',q:3,u:'ea',c:0.80},{n:'frozen vegetables',q:1.5,u:'cup',c:1.80}] },
+    { name:'Classic Sloppy Joes', cost:6.50, link:'https://www.budgetbytes.com/sloppy-joes-plus/', ing:[{n:'ground beef',q:1,u:'lb',c:5.00},{n:'hamburger buns',q:5,u:'ea',c:1.50}] },
+    { name:'Vegetable & Chickpea Curry', cost:6.20, link:'https://www.budgetbytes.com/quick-sand-easy-chickpea-curry/', ing:[{n:'chickpeas',q:2,u:'ea',c:1.40},{n:'coconut milk',q:1,u:'ea',c:2.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'spinach',q:2,u:'cup',c:2.00}] },
+    { name:'Crispy Baked Fish Tacos', cost:8.50, link:'https://www.budgetbytes.com/crispy-fish-tacos-with-lime-crema/', ing:[{n:'frozen fish fillets',q:1,u:'lb',c:5.50},{n:'tortillas',q:8,u:'ea',c:2.00},{n:'salsa',q:0.5,u:'cup',c:1.00}] },
+    { name:'Stuffed Baked Potatoes with Chili', cost:7.20, link:'https://www.allrecipes.com/recipe/213072/chili-stuffed-baked-potatoes/', ing:[{n:'potatoes',q:4,u:'ea',c:2.00},{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'cheddar cheese',q:4,u:'oz',c:1.20}] },
+    { name:'Sweet Potato & Black Bean Burrito Bowls', cost:6.00, link:'https://www.budgetbytes.com/roasted-sweet-potato-black-bean-bowls/', ing:[{n:'sweet potatoes',q:2,u:'ea',c:2.00},{n:'black beans',q:2,u:'ea',c:1.40},{n:'rice',q:2,u:'cup',c:0.80},{n:'salsa',q:1,u:'cup',c:1.80}] },
+    { name:'Honey Mustard Chicken & Rice', cost:7.80, link:'https://www.budgetbytes.com/honey-mustard-chicken/', ing:[{n:'chicken thighs',q:4,u:'ea',c:5.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'honey',q:2,u:'tbsp',c:0.80},{n:'mustard',q:2,u:'tbsp',c:1.20}] },
+    { name:'Broccoli Cheddar Soup with Bread', cost:6.40, link:'https://www.budgetbytes.com/broccoli-cheddar-soup/', ing:[{n:'broccoli',q:2,u:'ea',c:3.00},{n:'cheddar cheese',q:6,u:'oz',c:2.00},{n:'milk',q:2,u:'cup',c:1.00},{n:'bread',q:4,u:'ea',c:0.40}] },
+    { name:'Pesto Butter Penne Pasta', cost:5.00, link:'https://www.budgetbytes.com/pesto-pasta-with-chicken-and-tomatoes/', ing:[{n:'penne pasta',q:16,u:'oz',c:1.50},{n:'pesto sauce',q:1,u:'ea',c:3.00},{n:'butter',q:1,u:'tbsp',c:0.50}] },
+    { name:'Classic Meatloaf & Mashed Potatoes', cost:9.80, link:'https://www.allrecipes.com/recipe/219163/the-best-meatloaf/', ing:[{n:'ground beef',q:1.5,u:'lb',c:7.50},{n:'potatoes',q:4,u:'ea',c:2.00},{n:'milk',q:0.5,u:'cup',c:0.30}] },
+    { name:'Lemon Herb Roasted Chicken & Veggies', cost:8.90, link:'https://www.budgetbytes.com/roasted-lemon-herb-chicken-thighs/', ing:[{n:'whole chicken',q:1,u:'ea',c:6.00},{n:'potatoes',q:3,u:'ea',c:1.50},{n:'lemon',q:2,u:'ea',c:1.40}] },
+    { name:'Quick Beef Stir-Fry with Noodles', cost:8.50, link:'https://www.budgetbytes.com/beef-and-cabbage-stir-fry/', ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'ramen noodles',q:3,u:'ea',c:1.50},{n:'frozen vegetables',q:1.5,u:'cup',c:1.80},{n:'soy sauce',q:2,u:'tbsp',c:1.20}] },
+    { name:'Baked Ziti Casserole', cost:7.80, link:'https://www.allrecipes.com/recipe/11832/baked-ziti-i/', ing:[{n:'ziti pasta',q:16,u:'oz',c:1.50},{n:'marinara sauce',q:1,u:'ea',c:2.00},{n:'ricotta cheese',q:8,u:'oz',c:3.30},{n:'mozzarella cheese',q:4,u:'oz',c:1.00}] },
+    { name:'Black Bean & Corn Quesadillas', cost:5.20, link:'https://www.budgetbytes.com/cheesy-black-bean-quesadillas/', ing:[{n:'tortillas',q:6,u:'ea',c:1.50},{n:'black beans',q:2,u:'ea',c:1.40},{n:'corn',q:1,u:'ea',c:0.60},{n:'cheddar cheese',q:6,u:'oz',c:1.70}] },
+    { name:'Crispy Chicken Patty Sandwiches', cost:6.90, link:'https://www.allrecipes.com/recipe/236003/crispy-chicken-sandwich/', ing:[{n:'frozen chicken patties',q:4,u:'ea',c:4.50},{n:'hamburger buns',q:4,u:'ea',c:1.20},{n:'lettuce',q:1,u:'ea',c:1.20}] },
+    { name:'Hearty Lentil Soup & Bread', cost:4.50, link:'https://www.budgetbytes.com/dal-makhani/', ing:[{n:'dried lentils',q:2,u:'cup',c:1.80},{n:'canned diced tomatoes',q:1,u:'ea',c:1.00},{n:'onion',q:1,u:'ea',c:0.80},{n:'bread',q:4,u:'ea',c:0.90}] },
+    { name:'Teriyaki Chicken Rice Bowls', cost:7.40, link:'https://www.budgetbytes.com/easy-teriyaki-chicken/', ing:[{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'teriyaki sauce',q:0.5,u:'cup',c:1.50},{n:'frozen broccoli',q:1,u:'cup',c:1.10}] },
+    { name:'Creamy Tomato Basil Pasta', cost:4.80, link:'https://www.budgetbytes.com/creamy-tomato-basil-pasta/', ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'marinara sauce',q:1,u:'ea',c:2.00},{n:'milk',q:0.5,u:'cup',c:0.30},{n:'butter',q:2,u:'tbsp',c:1.00}] },
+    { name:'Sausage & White Bean Stew', cost:6.70, link:'https://www.budgetbytes.com/white-bean-and-sausage-soup/', ing:[{n:'sausage links',q:3,u:'ea',c:3.40},{n:'cannellini beans',q:2,u:'ea',c:1.60},{n:'chicken broth',q:2,u:'cup',c:1.00},{n:'onion',q:1,u:'ea',c:0.70}] },
+    { name:'Loaded Nachos Supreme', cost:7.50, link:'https://www.allrecipes.com/recipe/51151/super-nachos/', ing:[{n:'tortilla chips',q:1,u:'ea',c:3.00},{n:'ground beef',q:0.5,u:'lb',c:2.50},{n:'cheddar cheese',q:6,u:'oz',c:1.70},{n:'salsa',q:0.5,u:'cup',c:0.30}] },
+    { name:'Garlic Butter Shrimp Pasta', cost:9.50, link:'https://www.budgetbytes.com/garlic-butter-shrimp-pasta/', ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'frozen shrimp',q:1,u:'lb',c:6.00},{n:'butter',q:3,u:'tbsp',c:1.00},{n:'garlic powder',q:1,u:'tsp',c:1.00}] },
+    { name:'Beef & Cabbage Skillet', cost:6.20, link:'https://www.budgetbytes.com/beef-cabbage-skillet/', ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'cabbage',q:1,u:'ea',c:1.50},{n:'onion',q:1,u:'ea',c:0.70}] },
+    { name:'BBQ Pulled Chicken Sandwiches', cost:7.20, link:'https://www.budgetbytes.com/slow-cooker-bbq-pulled-chicken/', ing:[{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'bbq sauce',q:1,u:'cup',c:1.80},{n:'hamburger buns',q:4,u:'ea',c:1.40}] },
+    { name:'Minestrone Soup & Crackers', cost:5.80, link:'https://www.budgetbytes.com/copycat-olive-garden-minestrone-soup/', ing:[{n:'canned diced tomatoes',q:2,u:'ea',c:1.80},{n:'kidney beans',q:1,u:'ea',c:0.70},{n:'pasta',q:0.5,u:'cup',c:0.50},{n:'frozen vegetables',q:1,u:'cup',c:1.20},{n:'crackers',q:1,u:'ea',c:1.60}] },
+    { name:'Ham & Cheese Pasta Bake', cost:6.50, link:'https://www.allrecipes.com/recipe/219985/ham-and-cheese-pasta-bake/', ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'diced ham',q:8,u:'oz',c:3.00},{n:'cheddar cheese',q:4,u:'oz',c:1.20},{n:'milk',q:0.5,u:'cup',c:0.80}] },
+    { name:'Smoky Black Bean & Corn Chili', cost:5.40, link:'https://www.budgetbytes.com/slow-cooker-black-bean-quinoa-chili/', ing:[{n:'black beans',q:2,u:'ea',c:1.40},{n:'kidney beans',q:1,u:'ea',c:0.70},{n:'canned diced tomatoes',q:2,u:'ea',c:1.80},{n:'corn',q:1,u:'ea',c:0.60},{n:'onion',q:1,u:'ea',c:0.90}] },
+    { name:'Crispy Baked Pork Chops & Applesauce', cost:8.10, link:'https://www.allrecipes.com/recipe/222247/crispy-baked-pork-chops/', ing:[{n:'pork chops',q:4,u:'ea',c:6.00},{n:'applesauce',q:1,u:'cup',c:1.50},{n:'bread crumbs',q:0.5,u:'cup',c:0.60}] },
+    { name:'Loaded Potato Soup', cost:6.10, link:'https://www.budgetbytes.com/potato-soup/', ing:[{n:'potatoes',q:5,u:'ea',c:2.50},{n:'milk',q:2,u:'cup',c:1.00},{n:'cheddar cheese',q:6,u:'oz',c:1.80},{n:'butter',q:2,u:'tbsp',c:0.80}] },
+    { name:'One-Pot Spanish Rice & Ground Beef', cost:7.10, link:'https://www.budgetbytes.com/one-pot-spanish-rice/', ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'canned diced tomatoes',q:1,u:'ea',c:0.90},{n:'onion',q:1,u:'ea',c:1.40}] },
+    { name:'Chicken Salad Lettuce Wraps', cost:6.90, link:'https://www.allrecipes.com/recipe/215309/chicken-salad-lettuce-wraps/', ing:[{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'mayo',q:4,u:'tbsp',c:0.80},{n:'lettuce',q:1,u:'ea',c:1.50},{n:'celery',q:2,u:'ea',c:0.60}] },
+    { name:'Cheesy Beef and Macaroni Skillet', cost:7.40, link:'https://www.budgetbytes.com/homemade-hamburger-helper/', ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'macaroni pasta',q:12,u:'oz',c:1.20},{n:'cheddar cheese',q:6,u:'oz',c:1.70},{n:'canned tomato sauce',q:1,u:'ea',c:0.50}] }
   ];
 
   const dinnerMeals = dinners.map(d => ({
@@ -462,7 +499,7 @@ function defaultState(){
     name: d.name,
     servings: 4,
     costTotal: d.cost,
-    instructionsUrl: '',
+    instructionsUrl: d.link,
     ingredients: d.ing.map(i => ({ id: uid(), name: i.n, qty: i.q, unit: i.u, cost: i.c }))
   }));
 
@@ -482,15 +519,13 @@ function defaultState(){
     menuFilterType: 'all',
     meals: [...breakfasts, ...lunches, ...dinnerMeals],
     entries: [
-      {id:uid(), date: t0.toISOString().slice(0,10), mealId: b1.id, mealType:'breakfast', servings:5, checked:[], recurring:false},
-      {id:uid(), date: t2.toISOString().slice(0,10), mealId: dinnerMeals[0].id, mealType:'dinner', servings:5, checked:[], recurring:false},
+      {id:uid(), date: t0.toISOString().slice(0,10), mealId: b1.id, mealType:'breakfast', servings:5, checked:[], recurring:false, daysOfWeek:[1,2,3,4,5]}
     ],
     entryStops: [],
     shoppingList:[],
     pantry:[
       {id:uid(), key:'rice', name:'rice', qty:10, unit:'lb'},
       {id:uid(), key:'pasta', name:'pasta', qty:5, unit:'lb'},
-      {id:uid(), key:'macaroni pasta', name:'macaroni pasta', qty:3, unit:'lb'},
       {id:uid(), key:'flour', name:'flour', qty:10, unit:'lb'},
       {id:uid(), key:'sugar', name:'sugar', qty:8, unit:'lb'},
       {id:uid(), key:'rolled oats', name:'rolled oats', qty:3, unit:'lb'},
@@ -498,27 +533,13 @@ function defaultState(){
       {id:uid(), key:'milk', name:'milk', qty:2, unit:'qt'},
       {id:uid(), key:'butter', name:'butter', qty:16, unit:'oz'},
       {id:uid(), key:'cheddar cheese', name:'cheddar cheese', qty:16, unit:'oz'},
-      {id:uid(), key:'parmesan cheese', name:'parmesan cheese', qty:8, unit:'oz'},
-      {id:uid(), key:'cream cheese', name:'cream cheese', qty:8, unit:'oz'},
-      {id:uid(), key:'yogurt', name:'yogurt', qty:4, unit:'cup'},
       {id:uid(), key:'olive oil', name:'olive oil', qty:32, unit:'oz'},
       {id:uid(), key:'salt', name:'salt', qty:32, unit:'oz'},
       {id:uid(), key:'black pepper', name:'black pepper', qty:8, unit:'oz'},
       {id:uid(), key:'garlic powder', name:'garlic powder', qty:8, unit:'oz'},
-      {id:uid(), key:'onion powder', name:'onion powder', qty:8, unit:'oz'},
-      {id:uid(), key:'cinnamon', name:'cinnamon', qty:4, unit:'oz'},
-      {id:uid(), key:'soy sauce', name:'soy sauce', qty:16, unit:'oz'},
+      {id:uid(), key:'bread', name:'bread', qty:2, unit:'ea'},
       {id:uid(), key:'peanut butter', name:'peanut butter', qty:2, unit:'ea'},
       {id:uid(), key:'jelly', name:'jelly', qty:1, unit:'ea'},
-      {id:uid(), key:'honey', name:'honey', qty:12, unit:'oz'},
-      {id:uid(), key:'black beans', name:'black beans', qty:6, unit:'ea'},
-      {id:uid(), key:'kidney beans', name:'kidney beans', qty:4, unit:'ea'},
-      {id:uid(), key:'canned diced tomatoes', name:'canned diced tomatoes', qty:6, unit:'ea'},
-      {id:uid(), key:'marinara sauce', name:'marinara sauce', qty:3, unit:'ea'},
-      {id:uid(), key:'salsa', name:'salsa', qty:2, unit:'ea'},
-      {id:uid(), key:'chicken broth', name:'chicken broth', qty:4, unit:'qt'},
-      {id:uid(), key:'bread', name:'bread', qty:2, unit:'ea'},
-      {id:uid(), key:'tortillas', name:'tortillas', qty:2, unit:'ea'},
       {id:uid(), key:'potatoes', name:'potatoes', qty:10, unit:'lb'},
       {id:uid(), key:'onion', name:'onion', qty:5, unit:'ea'}
     ]
@@ -533,8 +554,6 @@ function load(){
     if(!raw) return def;
     const parsed = JSON.parse(raw);
     const merged = {...def, ...parsed};
-    
-    // Always guarantee preloaded meals are present
     if(!merged.meals || merged.meals.length < 10){
       merged.meals = def.meals;
     }
@@ -542,12 +561,50 @@ function load(){
     merged.menuSearchQuery = merged.menuSearchQuery || '';
     merged.menuFilterType = merged.menuFilterType || 'all';
     merged.entryStops = merged.entryStops || [];
-    merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, ...e}));
+    merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, daysOfWeek:[], ...e}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
     return merged;
   }catch(e){ return defaultState(); }
 }
 function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+/* ============================= ADVANCED RECURRENCE BUILDER ============================= */
+function checkRecurringEntries(){
+  let updated = false;
+  state.entryStops = state.entryStops || [];
+  state.entries.forEach(entry => {
+    if(entry.recurring && entry.daysOfWeek && entry.daysOfWeek.length > 0){
+      for(let i=1; i<=28; i++){
+        const checkDate = new Date();
+        checkDate.setDate(checkDate.getDate() + i);
+        const dow = checkDate.getDay(); // 0=Sun, 1=Mon...
+        
+        if(entry.daysOfWeek.includes(dow)){
+          const checkIso = iso(checkDate);
+          const isStopped = state.entryStops.some(s => s.mealId === entry.mealId && s.date === checkIso);
+          if(isStopped) continue;
+
+          const exists = state.entries.some(e => e.date === checkIso && e.mealId === entry.mealId && e.mealType === entry.mealType);
+          if(!exists){
+            state.entries.push({
+              id: uid(),
+              date: checkIso,
+              mealId: entry.mealId,
+              mealType: entry.mealType,
+              servings: entry.servings,
+              checked: [],
+              recurring: true,
+              daysOfWeek: [...entry.daysOfWeek]
+            });
+            updated = true;
+          }
+        }
+      }
+    }
+  });
+  if(updated) save();
+}
+checkRecurringEntries();
 
 /* ============================= SCALING HELPERS ============================= */
 function getEntryServings(entry){
@@ -573,51 +630,13 @@ function getScaledMealCost(meal){
   return costPerPerson * state.householdSize;
 }
 
-/* ============================= RECURRING AUTO-GENERATOR ============================= */
-function checkRecurringEntries(){
-  let updated = false;
-  state.entryStops = state.entryStops || [];
-  state.entries.forEach(entry => {
-    if(entry.recurring){
-      const originalDate = new Date(entry.date+'T00:00:00');
-      const dayOfWeek = originalDate.getDay();
-      for(let i=1; i<=28; i++){
-        const checkDate = new Date();
-        checkDate.setDate(checkDate.getDate() + i);
-        if(checkDate.getDay() === dayOfWeek){
-          const checkIso = iso(checkDate);
-          
-          const isStopped = state.entryStops.some(s => s.mealId === entry.mealId && s.date === checkIso);
-          if(isStopped) continue;
-
-          const exists = state.entries.some(e => e.date === checkIso && e.mealId === entry.mealId && e.mealType === entry.mealType);
-          if(!exists){
-            state.entries.push({
-              id: uid(),
-              date: checkIso,
-              mealId: entry.mealId,
-              mealType: entry.mealType,
-              servings: entry.servings,
-              checked: [],
-              recurring: true
-            });
-            updated = true;
-          }
-        }
-      }
-    }
-  });
-  if(updated) save();
-}
-checkRecurringEntries();
-
 /* ============================= TOAST ============================= */
 function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(t._hideTimer);
-  t._hideTimer = setTimeout(()=>t.classList.remove('show'), 2400);
+  t._hideTimer = setTimeout(()=>t.classList.remove('show'), 2000);
 }
 
 /* ============================= UNIT HELPERS ============================= */
@@ -681,8 +700,7 @@ const ICONS = {
   pantry:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 8l8-5 8 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8z"/><path d="M9 21v-6h6v6"/></svg>`,
   budget:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 15c.5 1 1.5 1.5 2.7 1.5 1.7 0 2.8-.9 2.8-2.1 0-3-5.5-1.4-5.5-4.3 0-1.2 1.1-2.1 2.8-2.1 1.2 0 2.2.5 2.7 1.5M12 6.5v11"/></svg>`,
   plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
-  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
-  copy:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="0"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`
+  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`
 };
 
 /* ============================= TAB BAR ============================= */
@@ -718,8 +736,8 @@ function render(){
     budget: renderBudgetTab,
   };
   const subs = {
-    calendar:'FAMILY MEAL PLANNER', menu:'RECIPE BOX', shopping:'SHOPPING LIST',
-    pantry:'ON-HAND INVENTORY', budget:'MEAL BUDGET',
+    calendar:'90s RETRO MENU BUILDER', menu:'RECIPE BOX & SOURCES', shopping:'GROCERY LIST',
+    pantry:'ON-HAND INVENTORY', budget:'BUDGET TRACKER',
   };
   subEl.textContent = subs[state.activeTab];
   view.innerHTML='';
@@ -741,9 +759,9 @@ function byType(a,b){ return TYPE_ORDER.indexOf(a.mealType)-TYPE_ORDER.indexOf(b
 function renderCalendarTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
-    <div style="display:flex; align-items:center; gap:6px; background:#FFFF00; padding:4px 10px; border:2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);">
-      <span style="font-size:11px; font-weight:700; color:var(--ink);">Servings:</span>
-      <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:40px; padding:2px 4px; font-size:12px; font-weight:700; text-align:center; border:2px solid var(--ink); background:#fff; color:var(--ink);">
+    <div style="display:flex; align-items:center; gap:6px; background:#FFFF00; padding:4px 8px; border:2px solid #000;">
+      <span style="font-size:11px; font-weight:700; color:#000;">Servings:</span>
+      <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:38px; padding:2px; font-size:12px; font-weight:700; text-align:center; border:2px solid #000; background:#fff;">
     </div>
     <button class="pill ${state.calendarView==='week'?'active':''}" id="viewWeekBtn">Week</button>
     <button class="pill ${state.calendarView==='month'?'active':''}" id="viewMonthBtn">Month</button>
@@ -769,7 +787,7 @@ function renderWeekView(view){
   nav.style.marginBottom='10px';
   nav.innerHTML = `
     <button class="btn btn-ghost btn-sm" id="prevWeek">&larr; Prev</button>
-    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid var(--ink);">${niceDate(start)} – ${niceDate(addDays(start,6))}</strong>
+    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid #000; font-size:11px;">${niceDate(start)} – ${niceDate(addDays(start,6))}</strong>
     <button class="btn btn-ghost btn-sm" id="nextWeek">Next &rarr;</button>
   `;
   wrap.appendChild(nav);
@@ -782,9 +800,9 @@ function renderWeekView(view){
     const dayEntries = state.entries.filter(e=>e.date===ds).slice().sort(byType);
     const col = document.createElement('div');
     col.className = 'cal-week-day' + (ds===todayISO()?' today':'');
-    col.innerHTML = `<h3>${d.toLocaleDateString(undefined,{weekday:'short'})} <span style="color:var(--ink-soft); font-weight:700;">${d.getDate()}</span></h3>`;
+    col.innerHTML = `<h3>${d.toLocaleDateString(undefined,{weekday:'short'})} <span style="color:var(--win-blue); font-weight:bold;">${d.getDate()}</span></h3>`;
     if(dayEntries.length===0){
-      col.innerHTML += `<div style="font-size:11.5px;color:var(--ink-soft); font-weight:700;">No meals planned</div>`;
+      col.innerHTML += `<div style="font-size:11px;color:#666;">No meals</div>`;
     } else {
       dayEntries.forEach(e=>{
         const meal = state.meals.find(m=>m.id===e.mealId);
@@ -793,7 +811,7 @@ function renderWeekView(view){
         const r = document.createElement('div');
         r.className='week-meal-row';
         r.style.borderLeftColor = TYPE_COLORS[e.mealType];
-        r.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span><span class="mname">${meal.name} (${getEntryServings(e)}p) ${e.recurring?'<span style="font-size:10px;color:var(--purple);">&#8635;</span>':''}</span><span class="cost">$${scaledCost.toFixed(2)}</span>`;
+        r.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span><span class="mname">${meal.name} (${getEntryServings(e)}p)</span><span class="cost">$${scaledCost.toFixed(2)}</span>`;
         r.onclick = ()=>{ state.selectedDate = ds; save(); render(); };
         col.appendChild(r);
       });
@@ -824,15 +842,10 @@ function renderMonthView(view){
   nav.style.marginBottom='10px';
   nav.innerHTML = `
     <button class="btn btn-ghost btn-sm" id="prevMonth">&larr;</button>
-    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid var(--ink);">${anchor.toLocaleDateString(undefined,{month:'long', year:'numeric'})}</strong>
+    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid #000; font-size:11px;">${anchor.toLocaleDateString(undefined,{month:'long', year:'numeric'})}</strong>
     <button class="btn btn-ghost btn-sm" id="nextMonth">&rarr;</button>
   `;
   wrap.appendChild(nav);
-
-  const legend = document.createElement('div');
-  legend.style.cssText='display:flex; gap:10px; margin-bottom:8px; font-size:11px; color:var(--ink); font-weight:700; flex-wrap:wrap;';
-  legend.innerHTML = TYPE_ORDER.map(t=>`<span style="display:inline-flex;align-items:center;gap:4px; background:#FFFF00; padding:2px 6px; border:1px solid var(--ink);"><span class="type-badge" style="background:${TYPE_COLORS[t]}; width:12px;height:12px;font-size:7px;">${TYPE_LABELS[t]}</span>${TYPE_NAMES[t]}</span>`).join('');
-  wrap.appendChild(legend);
 
   const grid = document.createElement('div');
   grid.className='cal-grid-month';
@@ -909,27 +922,23 @@ function renderDayDetail(view){
 
     card.innerHTML = `
       <div class="row-between">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span class="type-badge" style="background:${TYPE_COLORS[entry.mealType]}; width:18px;height:18px;font-size:10px;">${TYPE_LABELS[entry.mealType]}</span>
-          <h3 style="font-family:var(--disp); margin:0;">${meal.name} ${entry.recurring?'<span style="font-size:12px;color:var(--purple);" title="Recurring weekly">&#8635;</span>':''}</h3>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span class="type-badge" style="background:${TYPE_COLORS[entry.mealType]}; width:16px;height:16px;font-size:9px;">${TYPE_LABELS[entry.mealType]}</span>
+          <h3 style="font-family:var(--disp); margin:0; font-size:11px;">${meal.name} ${entry.recurring?'<span style="font-size:12px;color:var(--neon-purple);" title="Recurring rule active">&#8635;</span>':''}</h3>
         </div>
-        <div style="display:flex; gap:4px; align-items:center;">
-          <button class="iconbtn" title="Duplicate record" data-duplicate-entry="${entry.id}">${ICONS.copy}</button>
-          <button class="iconbtn" title="Remove" data-remove-entry="${entry.id}">${ICONS.x}</button>
-        </div>
+        <button class="btn btn-danger btn-sm" style="padding:2px 6px;" title="Delete meal" data-remove-entry="${entry.id}">${ICONS.x}</button>
       </div>
       <div class="costline" style="margin-top:4px; display:flex; justify-content:space-between; align-items:center;">
-        <span>$${scaledCost.toFixed(2)} total &middot; $${costPerPerson.toFixed(2)}/person</span>
+        <span>$${scaledCost.toFixed(2)} total &middot; $${costPerPerson.toFixed(2)}/p</span>
         <div style="display:flex; align-items:center; gap:4px;">
-          <span style="font-size:11px; font-weight:700; color:var(--ink);">Servings:</span>
-          <input type="number" min="1" value="${currentServings}" data-entry-servings="${entry.id}" style="width:44px; padding:2px 4px; font-size:12px; font-weight:700; text-align:center; border:2px solid var(--ink);">
+          <span style="font-size:10.5px; font-weight:700;">Servings:</span>
+          <input type="number" min="1" value="${currentServings}" data-entry-servings="${entry.id}" style="width:38px; padding:2px; font-size:11px; font-weight:700; text-align:center; border:2px solid #000;">
         </div>
       </div>
-      ${meal.instructionsUrl?`<a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener" style="display:block; margin-top:4px;">Instructions &rarr;</a>`:''}
+      ${meal.instructionsUrl?`<a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener" style="display:block; margin-top:4px;">Recipe Source &rarr;</a>`:''}
       <div style="margin-top:8px;">${ingHtml}</div>
       <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
         <button class="btn btn-teal btn-sm" style="flex:1;" data-add-unchecked="${entry.id}">Add unchecked to list</button>
-        <button class="btn btn-ghost btn-sm ${entry.recurring?'active':''}" data-toggle-recurring="${entry.id}" style="${entry.recurring?'background:var(--accent);color:var(--ink);border-color:var(--ink);':''}">${entry.recurring?'Recurring (On)':'Make Recurring'}</button>
       </div>
     `;
     wrap.appendChild(card);
@@ -958,25 +967,6 @@ function renderDayDetail(view){
       save(); render();
       showToast('Meal removed from day');
     };
-    card.querySelector('[data-duplicate-entry]').onclick = ()=>{
-      state.entries.push({
-        id: uid(),
-        date: entry.date,
-        mealId: entry.mealId,
-        mealType: entry.mealType,
-        servings: entry.servings,
-        checked: [...entry.checked],
-        recurring: false
-      });
-      save(); render();
-      showToast('Meal record duplicated');
-    };
-    card.querySelector('[data-toggle-recurring]').onclick = ()=>{
-      entry.recurring = !entry.recurring;
-      if(entry.recurring) checkRecurringEntries();
-      save(); render();
-      showToast(entry.recurring ? 'Set as recurring weekly!' : 'Recurring turned off');
-    };
     card.querySelector('[data-add-unchecked]').onclick = ()=>{
       const addedCount = addIngredientsToShoppingListForEntry(meal, entry);
       if(addedCount === 0){ showToast('Already added — nothing unchecked left.'); return; }
@@ -984,7 +974,7 @@ function renderDayDetail(view){
         if(!entry.checked.includes(ing.id)) entry.checked.push(ing.id);
       });
       save();
-      showToast(`Added scaled ingredients to shopping list`);
+      showToast(`Added scaled ingredients to list`);
       render();
     };
   });
@@ -995,7 +985,7 @@ function renderDayDetail(view){
 function openStopRecurringModal(entry){
   openModal(`
     <h2>Manage Recurring Meal</h2>
-    <p style="font-size:12px; color:var(--ink); font-weight:700; margin-bottom:14px;">This is part of a recurring series. How would you like to remove it?</p>
+    <p style="font-size:12px; font-weight:700; margin-bottom:12px;">This meal follows a recurring schedule. How would you like to delete it?</p>
     <button class="btn btn-ghost btn-block" id="delOnlyThis" style="margin-bottom:8px; background:#FFFF00;">Delete only this instance</button>
     <button class="btn btn-danger btn-block" id="delForward" style="margin-bottom:12px;">Stop recurrence from this date forward</button>
     <button class="btn btn-primary btn-block" id="cancelStop">Cancel</button>
@@ -1025,11 +1015,10 @@ function openStopRecurringModal(entry){
   };
 }
 
-/* ============================= PLAN MODAL ============================= */
+/* ============================= ADVANCED PLANNER BUILDER MODAL ============================= */
 function openPlanModal({mealId=null, defaultDate=null}={}){
   if(state.meals.length===0){
-    openModal(`<h2>No meals yet</h2><p>Add a meal in the Menu tab first, then come back to plan it on the calendar.</p>
-      <button class="btn btn-primary btn-block" id="closeM">Got it</button>`);
+    openModal(`<h2>No meals yet</h2><p>Add a meal in the Menu tab first.</p><button class="btn btn-primary btn-block" id="closeM">Got it</button>`);
     document.getElementById('closeM').onclick = closeModal;
     return;
   }
@@ -1038,56 +1027,53 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
   let selType = 'dinner';
   let mealServings = state.householdSize;
   let isRecurring = false;
+  let selectedDays = [new Date(d0+'T00:00:00').getDay()]; // default to clicked day's DOW
+
   const weekStart = startOfWeek(d0);
   const weekDates = Array.from({length:7},(_,i)=>iso(addDays(weekStart,i)));
-  let chosen = new Set([d0]);
-  let extra = [];
-
-  function updateMealServingsDefault(){
-    const m = state.meals.find(x=>x.id===selMeal);
-    if(m) mealServings = state.householdSize;
-  }
-  updateMealServingsDefault();
+  const DOW_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   function bodyHtml(){
     const fixedMealName = mealId ? (state.meals.find(m=>m.id===mealId)||{}).name : null;
     return `
-      <h2>Plan a meal</h2>
-      ${fixedMealName ? `<div class="card" style="padding:8px 12px; margin-bottom:8px;"><strong>${fixedMealName}</strong></div>` :
-        `<label class="field-label">Meal</label>
+      <h2>Menu Planner Builder</h2>
+      ${fixedMealName ? `<div class="card" style="padding:6px 10px; margin-bottom:6px;"><strong>${fixedMealName}</strong></div>` :
+        `<label class="field-label">Select Recipe</label>
          <select id="planMealSelect">${state.meals.map(m=>`<option value="${m.id}" ${m.id===selMeal?'selected':''}>${m.name}</option>`).join('')}</select>`}
-      <label class="field-label">Meal type</label>
-      <div id="typeToggle" style="display:flex; gap:6px; flex-wrap:wrap;">
+      
+      <label class="field-label">Meal Type</label>
+      <div id="typeToggle" style="display:flex; gap:4px; flex-wrap:wrap;">
         ${TYPE_ORDER.map(t=>`<button type="button" class="chip ${t===selType?'active':''}" data-type="${t}">${TYPE_LABELS[t]} ${TYPE_NAMES[t]}</button>`).join('')}
       </div>
-      <div style="display:flex; gap:10px; margin-top:10px; align-items:center;">
+
+      <div style="display:flex; gap:8px; margin-top:8px;">
         <div style="flex:1;">
-          <label class="field-label" style="margin:0 0 4px;">Servings for this meal</label>
+          <label class="field-label">Servings</label>
           <input type="number" id="planServingsInput" value="${mealServings}" min="1" max="100">
         </div>
       </div>
-      <div style="margin:12px 0; display:flex; align-items:center; gap:8px;">
-        <input type="checkbox" id="planRecurringCb" ${isRecurring?'checked':''} style="width:18px;height:18px;accent-color:var(--accent);">
-        <label for="planRecurringCb" style="font-size:12px;font-weight:700;cursor:pointer;margin:0;">Make this a recurring weekly meal (e.g. Taco Tuesday)</label>
+
+      <div style="margin:10px 0; background:#E0E0E0; padding:8px; border:2px solid var(--win-border-darkest);">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+          <input type="checkbox" id="planRecurringCb" ${isRecurring?'checked':''} style="width:16px;height:16px;accent-color:var(--neon-pink);">
+          <label for="planRecurringCb" style="font-size:11px;font-weight:700;cursor:pointer;margin:0;">Enable Recurring Schedule (e.g. M-F or Every Tuesday)</label>
+        </div>
+        <div id="dowContainer" style="display:${isRecurring?'block':'none'}; margin-top:6px;">
+          <label class="field-label" style="margin-bottom:4px;">Repeat on these days of the week:</label>
+          <div style="display:flex; gap:3px;">
+            ${DOW_NAMES.map((name, idx)=>`
+              <button type="button" class="chip ${selectedDays.includes(idx)?'active':''}" data-dow="${idx}" style="flex:1; padding:4px 2px; text-align:center; font-size:10px;">${name}</button>
+            `).join('')}
+          </div>
+        </div>
       </div>
-      <label class="field-label">Days this week</label>
-      <div id="dayToggle" style="display:flex; gap:6px; flex-wrap:wrap;">
-        ${weekDates.map(d=>{
-          const dt=new Date(d+'T00:00:00');
-          return `<button type="button" class="chip ${chosen.has(d)?'active':''}" data-date="${d}">${dt.toLocaleDateString(undefined,{weekday:'short'})} ${dt.getDate()}</button>`;
-        }).join('')}
-      </div>
-      <label class="field-label">Add another date (different week)</label>
-      <div style="display:flex; gap:6px;">
-        <input type="date" id="extraDateInput" style="flex:1;">
-        <button class="btn btn-ghost btn-sm" id="addExtraDate">Add</button>
-      </div>
-      ${extra.length? `<div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
-        ${extra.map(d=>`<span class="chip active" data-extra="${d}">${d} &times;</span>`).join('')}
-      </div>`:''}
-      <div style="display:flex; gap:8px; margin-top:16px;">
+
+      <label class="field-label">Target Date (for single or initial start)</label>
+      <input type="date" id="singleDateInput" value="${d0}">
+
+      <div style="display:flex; gap:8px; margin-top:14px;">
         <button class="btn btn-ghost btn-block" id="cancelPlan">Cancel</button>
-        <button class="btn btn-primary btn-block" id="confirmPlan">Add to calendar</button>
+        <button class="btn btn-primary btn-block" id="confirmPlan">Build & Add to Schedule</button>
       </div>
     `;
   }
@@ -1100,46 +1086,83 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
   function wire(){
     document.getElementById('cancelPlan').onclick = closeModal;
     const mealSel = document.getElementById('planMealSelect');
-    if(mealSel) mealSel.onchange = ()=>{ selMeal = mealSel.value; updateMealServingsDefault(); refresh(); };
+    if(mealSel) mealSel.onchange = ()=>{ selMeal = mealSel.value; };
     const servIn = document.getElementById('planServingsInput');
     if(servIn) servIn.onchange = ()=>{ mealServings = parseInt(servIn.value, 10) || state.householdSize; };
+    
     const recCb = document.getElementById('planRecurringCb');
-    if(recCb) recCb.onchange = ()=>{ isRecurring = recCb.checked; };
+    if(recCb) recCb.onchange = ()=>{ 
+      isRecurring = recCb.checked; 
+      refresh();
+    };
+
+    document.querySelectorAll('[data-dow]').forEach(btn=>{
+      btn.onclick = ()=>{
+        const dayIdx = parseInt(btn.dataset.dow, 10);
+        if(selectedDays.includes(dayIdx)){
+          selectedDays = selectedDays.filter(d=>d!==dayIdx);
+        } else {
+          selectedDays.push(dayIdx);
+        }
+        refresh();
+      };
+    });
+
     document.querySelectorAll('#typeToggle .chip').forEach(b=>{
       b.onclick = ()=>{ selType = b.dataset.type; refresh(); };
     });
-    document.querySelectorAll('#dayToggle .chip').forEach(b=>{
-      b.onclick = ()=>{
-        const d = b.dataset.date;
-        if(chosen.has(d)) chosen.delete(d); else chosen.add(d);
-        refresh();
-      };
-    });
-    document.getElementById('addExtraDate').onclick = ()=>{
-      const val = document.getElementById('extraDateInput').value;
-      if(!val) return;
-      if(!weekDates.includes(val) && !extra.includes(val)) extra.push(val);
-      chosen.add(val);
-      refresh();
-    };
-    document.querySelectorAll('[data-extra]').forEach(chip=>{
-      chip.onclick = ()=>{
-        const d = chip.dataset.extra;
-        extra = extra.filter(x=>x!==d);
-        chosen.delete(d);
-        refresh();
-      };
-    });
+
     document.getElementById('confirmPlan').onclick = ()=>{
-      if(chosen.size===0){ alert('Pick at least one day.'); return; }
-      chosen.forEach(d=>{
-        state.entries.push({id:uid(), date:d, mealId:selMeal, mealType:selType, servings:mealServings, checked:[], recurring:isRecurring});
-      });
-      if(isRecurring) checkRecurringEntries();
-      save(); closeModal();
-      state.activeTab='calendar'; state.selectedDate=[...chosen][0]; save();
-      render();
-      showToast(`Planned for ${chosen.size} day${chosen.size===1?'':'s'}`);
+      const targetDateStr = document.getElementById('singleDateInput').value || d0;
+      
+      if(isRecurring && selectedDays.length > 0){
+        // Generate for selected DOWs over the next 4 weeks starting from target date
+        const baseDate = new Date(targetDateStr+'T00:00:00');
+        let addedCount = 0;
+        
+        for(let i=0; i<28; i++){
+          const d = new Date(baseDate);
+          d.setDate(d.getDate() + i);
+          const dow = d.getDay();
+          if(selectedDays.includes(dow)){
+            const ds = iso(d);
+            const exists = state.entries.some(e => e.date === ds && e.mealId === selMeal && e.mealType === selType);
+            if(!exists){
+              state.entries.push({
+                id: uid(),
+                date: ds,
+                mealId: selMeal,
+                mealType: selType,
+                servings: mealServings,
+                checked: [],
+                recurring: true,
+                daysOfWeek: [...selectedDays]
+              });
+              addedCount++;
+            }
+          }
+        }
+        save(); closeModal();
+        state.activeTab='calendar'; state.selectedDate=targetDateStr; save();
+        render();
+        showToast(`Scheduled recurring rules for ${addedCount} dates`);
+      } else {
+        // Single date entry
+        state.entries.push({
+          id: uid(),
+          date: targetDateStr,
+          mealId: selMeal,
+          mealType: selType,
+          servings: mealServings,
+          checked: [],
+          recurring: false,
+          daysOfWeek: []
+        });
+        save(); closeModal();
+        state.activeTab='calendar'; state.selectedDate=targetDateStr; save();
+        render();
+        showToast(`Meal added to calendar`);
+      }
     };
   }
 
@@ -1150,15 +1173,15 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
 /* ============================= MENU TAB ============================= */
 function renderMenuTab(view){
   const controls = document.getElementById('topControls');
-  controls.innerHTML = `<button class="pill active" id="newMealBtn">${ICONS.plus} New meal</button>`;
+  controls.innerHTML = `<button class="pill active" id="newMealBtn">${ICONS.plus} New recipe</button>`;
   controls.querySelector('#newMealBtn').onclick = ()=>openMealForm(null);
 
   const filterCard = document.createElement('div');
   filterCard.className = 'card';
-  filterCard.style.padding = '10px 14px';
+  filterCard.style.padding = '10px 12px';
   filterCard.innerHTML = `
     <input type="text" id="menuSearchInput" placeholder="🔍 Search recipes or ingredients..." value="${state.menuSearchQuery}" style="margin-bottom:8px;">
-    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+    <div style="display:flex; gap:4px; flex-wrap:wrap;">
       <button class="chip ${state.menuFilterType==='all'?'active':''}" data-mfilter="all">All</button>
       <button class="chip ${state.menuFilterType==='breakfast'?'active':''}" data-mfilter="breakfast">Breakfast</button>
       <button class="chip ${state.menuFilterType==='lunch'?'active':''}" data-mfilter="lunch">Lunch</button>
@@ -1213,14 +1236,11 @@ function updateMealListContainer(container){
           <span class="type-badge" style="background:${TYPE_COLORS[meal.type||'dinner']}; width:16px;height:16px;font-size:9px;">${TYPE_LABELS[meal.type||'dinner']}</span>
           <h3>${meal.name}</h3>
         </div>
-        <div style="display:flex; gap:4px;">
-          <button class="iconbtn" title="Duplicate meal" data-duplicate-meal="${meal.id}">${ICONS.copy}</button>
-          <button class="iconbtn" title="Edit meal" data-edit="${meal.id}">&#9998;</button>
-        </div>
+        <button class="iconbtn" title="Edit recipe" data-edit="${meal.id}">&#9998;</button>
       </div>
-      <div class="costline">$${scaledCost.toFixed(2)} for ${state.householdSize} people &middot; $${costPerPerson.toFixed(2)}/person</div>
+      <div class="costline">$${scaledCost.toFixed(2)} for ${state.householdSize} people &middot; $${costPerPerson.toFixed(2)}/p</div>
       <div style="margin-top:6px;">${meal.ingredients.map(i=>`<span class="tag">${i.name}</span>`).join('')}</div>
-      ${meal.instructionsUrl?`<div style="margin-top:6px;"><a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener">Instructions &rarr;</a></div>`:''}
+      ${meal.instructionsUrl?`<div style="margin-top:6px;"><a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener">Recipe Source Link &rarr;</a></div>`:''}
       <div style="display:flex; gap:8px; margin-top:10px;">
         <button class="btn btn-teal btn-sm" data-plan="${meal.id}">+ Plan on calendar</button>
         <button class="btn btn-danger btn-sm" data-del="${meal.id}">Delete</button>
@@ -1228,15 +1248,6 @@ function updateMealListContainer(container){
     `;
     container.appendChild(card);
     card.querySelector('[data-edit]').onclick = ()=>openMealForm(meal.id);
-    card.querySelector('[data-duplicate-meal]').onclick = ()=>{
-      const dup = JSON.parse(JSON.stringify(meal));
-      dup.id = uid();
-      dup.name = meal.name + ' (Copy)';
-      dup.ingredients.forEach(i => i.id = uid());
-      state.meals.push(dup);
-      save(); render();
-      showToast('Meal duplicated to recipe box');
-    };
     card.querySelector('[data-del]').onclick = ()=>{
       if(confirm(`Remove "${meal.name}" from the recipe box?`)){
         state.meals = state.meals.filter(m=>m.id!==meal.id);
@@ -1271,10 +1282,10 @@ function openMealForm(mealId){
 
   function bodyHtml(){
     return `
-      <h2>${editing?'Edit meal':'New meal'}</h2>
-      <label class="field-label">Meal name</label>
+      <h2>${editing?'Edit Recipe':'New Recipe'}</h2>
+      <label class="field-label">Recipe Name</label>
       <input type="text" id="mName" value="${meal.name}" placeholder="e.g. Pasta Bake">
-      <div style="display:flex; gap:10px;">
+      <div style="display:flex; gap:8px;">
         <div style="flex:1;">
           <label class="field-label">Category</label>
           <select id="mType">
@@ -1291,14 +1302,14 @@ function openMealForm(mealId){
       </div>
       <label class="field-label">Total Cost ($)</label>
       <input type="number" id="mCost" value="${meal.costTotal||''}" step="0.01" min="0">
-      <label class="field-label">Instructions link</label>
+      <label class="field-label">Recipe Source Link</label>
       <input type="url" id="mLink" value="${meal.instructionsUrl}" placeholder="https://...">
-      <label class="field-label">Ingredients <span style="font-weight:400; text-transform:none;">(name, qty, unit, cost)</span></label>
+      <label class="field-label">Ingredients</label>
       <div id="ingRows">${draftIngredients.map(ingredientRowHtml).join('')}</div>
       <button class="btn btn-ghost btn-sm" id="addIngRow" style="margin-top:4px;">${ICONS.plus} Add ingredient</button>
-      <div style="display:flex; gap:8px; margin-top:18px;">
+      <div style="display:flex; gap:8px; margin-top:14px;">
         <button class="btn btn-ghost btn-block" id="cancelMeal">Cancel</button>
-        <button class="btn btn-primary btn-block" id="saveMeal">Save meal</button>
+        <button class="btn btn-primary btn-block" id="saveMeal">Save Recipe</button>
       </div>
     `;
   }
@@ -1318,7 +1329,7 @@ function openMealForm(mealId){
 
     document.getElementById('saveMeal').onclick = ()=>{
       const name = document.getElementById('mName').value.trim();
-      if(!name){ alert('Give the meal a name first.'); return; }
+      if(!name){ alert('Give the recipe a name first.'); return; }
       meal.name = name;
       meal.type = document.getElementById('mType').value;
       meal.servings = parseFloat(document.getElementById('mServings').value) || 4;
@@ -1351,7 +1362,7 @@ function openMealForm(mealId){
 function renderShoppingTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
-    <button class="pill" id="clearPurchased">Clear purchased</button>
+    <button class="pill" id="clearPurchased">Clear bought</button>
     <button class="pill" id="clearAll">Clear all</button>
   `;
   controls.querySelector('#clearPurchased').onclick = ()=>{
@@ -1382,7 +1393,7 @@ function renderShoppingTab(view){
     const cost = parseFloat(document.getElementById('manCost').value)||0;
     if(!name || qty<=0) return;
     addIngredientsToShoppingList([{name, qty, unit, cost}]);
-    showToast(`Added ${name} to shopping list`);
+    showToast(`Added ${name}`);
     render();
   };
 
@@ -1393,27 +1404,27 @@ function renderShoppingTab(view){
   receipt.innerHTML = `
     <div class="receipt-head">
       <div class="store">HEARTH GROCERY</div>
-      <div class="meta">${items.length} item${items.length===1?'':'s'} &middot; Household: ${state.householdSize}</div>
+      <div class="meta">${items.length} item${items.length===1?'':'s'} &middot; HH: ${state.householdSize}</div>
     </div>
     <hr>
-    ${items.length===0 ? `<div class="empty" style="font-family:var(--body);">List is empty. Uncheck ingredients on a planned meal, or add items above.</div>` :
+    ${items.length===0 ? `<div class="empty" style="font-family:var(--body); font-size:12px;">List is empty. Uncheck ingredients on a planned meal, or add items above.</div>` :
       items.map(it=>{
         const disp = displayFromBase(it.category, it.base);
         return `<div class="receipt-line ${it.purchased?'purchased':''}" data-item="${it.id}">
-          <input type="checkbox" data-buy="${it.id}" ${it.purchased?'checked':''}>
+          <input type="checkbox" data-buy="${it.id}" ${it.purchased?'checked':''} style="width:16px;height:16px;accent-color:var(--neon-green);">
           <span class="name">${it.name}</span>
           <button class="step-btn" data-step="-1" data-item="${it.id}">&minus;</button>
           <span class="qty">${disp.qty} ${disp.unit}</span>
           <button class="step-btn" data-step="1" data-item="${it.id}">+</button>
           ${it.costEstimate?`<span class="est">$${it.costEstimate.toFixed(2)}</span>`:''}
-          <button class="iconbtn" style="padding:2px 4px; font-size:15px;" data-edit-item="${it.id}">&#9998;</button>
-          <button class="iconbtn" style="padding:2px 4px;" data-del-item="${it.id}">${ICONS.x}</button>
+          <button class="iconbtn" style="padding:2px 4px; font-size:12px;" data-edit-item="${it.id}">&#9998;</button>
+          <button class="iconbtn" style="padding:2px 4px; background:#FF0000; color:#FFF;" data-del-item="${it.id}">${ICONS.x}</button>
         </div>`;
-      }).join('<hr style="margin:3px 0; opacity:.5;">')
+      }).join('<hr style="margin:2px 0;">')
     }
     <hr>
     <div class="receipt-total"><span>ITEMS TO BUY</span><span>${items.filter(i=>!i.purchased).length}</span></div>
-    <div class="receipt-total est"><span>EST. COST REMAINING</span><span>$${estTotal.toFixed(2)}</span></div>
+    <div class="receipt-total est"><span>EST. COST</span><span>$${estTotal.toFixed(2)}</span></div>
   `;
   view.appendChild(receipt);
 
@@ -1454,13 +1465,13 @@ function openShoppingItemEdit(itemId){
     <h2>Edit item</h2>
     <label class="field-label">Name</label>
     <input type="text" id="eName" value="${item.name}">
-    <div style="display:flex; gap:10px;">
+    <div style="display:flex; gap:8px;">
       <div style="flex:1;"><label class="field-label">Qty</label><input type="number" id="eQty" step="0.25" value="${disp.qty}"></div>
       <div style="flex:1;"><label class="field-label">Unit</label><select id="eUnit">${catUnits.map(u=>`<option value="${u}" ${u===disp.unit?'selected':''}>${u}</option>`).join('')}</select></div>
     </div>
-    <label class="field-label">Estimated cost ($)</label>
+    <label class="field-label">Estimated Cost ($)</label>
     <input type="number" id="eCost" step="0.01" min="0" value="${item.costEstimate||0}">
-    <div style="display:flex; gap:8px; margin-top:16px;">
+    <div style="display:flex; gap:8px; margin-top:14px;">
       <button class="btn btn-danger btn-block" id="deleteItem">Delete</button>
       <button class="btn btn-primary btn-block" id="saveItem">Save</button>
     </div>
@@ -1491,9 +1502,9 @@ function renderPantryTab(view){
 
   const listCard = document.createElement('div');
   listCard.className='card';
-  listCard.innerHTML = `<h2 class="section-title">On hand inventory</h2>`;
+  listCard.innerHTML = `<h2 class="section-title">On Hand Inventory</h2>`;
   if(state.pantry.length===0){
-    listCard.innerHTML += `<div class="empty">Pantry is empty. Add what you've got on hand.</div>`;
+    listCard.innerHTML += `<div class="empty">Pantry is empty.</div>`;
   } else {
     state.pantry.forEach(p=>{
       const row = document.createElement('div');
@@ -1502,7 +1513,7 @@ function renderPantryTab(view){
         <span>${p.name}</span>
         <span class="ing-qty">${fmtQtyUnit(p.qty,p.unit)}</span>
         <button class="iconbtn" title="Edit item" data-edit-pantry="${p.id}">&#9998;</button>
-        <button class="iconbtn" title="Delete item" data-rm="${p.id}">${ICONS.x}</button>
+        <button class="iconbtn" title="Delete item" style="background:#FF0000; color:#FFF;" data-rm="${p.id}">${ICONS.x}</button>
       `;
       row.querySelector('[data-edit-pantry]').onclick = ()=>openPantryForm(p.id);
       row.querySelector('[data-rm]').onclick = ()=>{
@@ -1516,17 +1527,17 @@ function renderPantryTab(view){
 
   const matchCard = document.createElement('div');
   matchCard.className='card';
-  matchCard.innerHTML = `<h2 class="section-title">Best matches from what's on hand</h2>`;
+  matchCard.innerHTML = `<h2 class="section-title">Best Matches From Pantry</h2>`;
   const ranked = state.meals.map(m=>({meal:m, pct:mealMatchPct(m)})).sort((a,b)=>b.pct-a.pct);
   if(ranked.length===0){
-    matchCard.innerHTML += `<div class="empty">Add meals in the Menu tab to see matches.</div>`;
+    matchCard.innerHTML += `<div class="empty">No recipes found.</div>`;
   } else {
     ranked.forEach(({meal,pct})=>{
       const el = document.createElement('div');
-      el.style.marginBottom='12px';
+      el.style.marginBottom='10px';
       el.innerHTML = `
-        <div class="row-between"><strong style="font-size:14px;">${meal.name}</strong><span class="tag">${pct}% on hand</span></div>
-        <div class="match-bar-track"><div class="match-bar-fill" style="width:${pct}%; background:${pct>=75?'var(--accent)':pct>=40?'var(--gold)':'var(--primary)'}"></div></div>
+        <div class="row-between"><strong style="font-size:12px;">${meal.name}</strong><span class="tag">${pct}% on hand</span></div>
+        <div class="match-bar-track"><div class="match-bar-fill" style="width:${pct}%; background:${pct>=75?'var(--neon-green)':pct>=40?'var(--neon-yellow)':'var(--neon-pink)'}"></div></div>
       `;
       matchCard.appendChild(el);
     });
@@ -1539,14 +1550,14 @@ function openPantryForm(pantryId){
   const item = editing ? state.pantry.find(p=>p.id===pantryId) : { id:uid(), name:'', qty:1, unit:'ea' };
 
   openModal(`
-    <h2>${editing ? 'Edit pantry item' : 'Add pantry item'}</h2>
-    <label class="field-label">Item name</label>
+    <h2>${editing ? 'Edit Pantry Item' : 'Add Pantry Item'}</h2>
+    <label class="field-label">Item Name</label>
     <input type="text" id="pName" placeholder="e.g. olive oil" value="${item.name}">
-    <div style="display:flex; gap:10px;">
+    <div style="display:flex; gap:8px;">
       <div style="flex:1;"><label class="field-label">Qty</label><input type="number" id="pQty" step="0.25" value="${item.qty}"></div>
       <div style="flex:1;"><label class="field-label">Unit</label><select id="pUnit">${UNIT_LIST.map(u=>`<option value="${u}" ${u===item.unit?'selected':''}>${u}</option>`).join('')}</select></div>
     </div>
-    <div style="display:flex; gap:8px; margin-top:16px;">
+    <div style="display:flex; gap:8px; margin-top:14px;">
       ${editing ? '<button class="btn btn-danger btn-block" id="deletePantry">Delete</button>' : ''}
       <button class="btn btn-primary btn-block" id="savePantry">${editing ? 'Save' : 'Add'}</button>
     </div>
@@ -1556,7 +1567,7 @@ function openPantryForm(pantryId){
     document.getElementById('deletePantry').onclick = ()=>{
       state.pantry = state.pantry.filter(p=>p.id!==pantryId);
       save(); closeModal(); render();
-      showToast('Item removed from pantry');
+      showToast('Item removed');
     };
   }
 
@@ -1575,7 +1586,7 @@ function openPantryForm(pantryId){
       state.pantry.push({ id:uid(), key:name.toLowerCase(), name, qty, unit });
     }
     save(); closeModal(); render();
-    showToast(editing ? 'Pantry item updated' : 'Added to pantry');
+    showToast(editing ? 'Item updated' : 'Added to pantry');
   };
 }
 
@@ -1583,9 +1594,9 @@ function openPantryForm(pantryId){
 function renderBudgetTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
-    <div style="display:flex; align-items:center; gap:6px; background:#FFFF00; padding:4px 10px; border:2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);">
-      <span style="font-size:11px; font-weight:700; color:var(--ink);">Servings:</span>
-      <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:40px; padding:2px 4px; font-size:12px; font-weight:700; text-align:center; border:2px solid var(--ink); background:#fff; color:var(--ink);">
+    <div style="display:flex; align-items:center; gap:6px; background:#FFFF00; padding:4px 8px; border:2px solid #000;">
+      <span style="font-size:11px; font-weight:700; color:#000;">Servings:</span>
+      <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:38px; padding:2px; font-size:12px; font-weight:700; text-align:center; border:2px solid #000; background:#fff;">
     </div>
     <button class="pill ${state.calendarView==='week'?'active':''}" id="bWeek">This week</button>
     <button class="pill ${state.calendarView==='month'?'active':''}" id="bMonth">This month</button>
@@ -1622,12 +1633,12 @@ function renderBudgetTab(view){
   targetCard.innerHTML = `
     <div class="budget-header">
       <span>${rangeLabel}</span>
-      <span>Target: <input type="number" id="targetInput" value="${state.budgetTarget}" style="width:70px; display:inline-block; padding:3px 6px;"></span>
+      <span>Target: <input type="number" id="targetInput" value="${state.budgetTarget}" style="width:64px; padding:2px;"></span>
     </div>
-    <div class="budget-bar-track"><div class="budget-bar-fill" style="width:${pct}%; background:${over?'var(--primary)':'var(--accent)'}"></div></div>
+    <div class="budget-bar-track"><div class="budget-bar-fill" style="width:${pct}%; background:${over?'var(--neon-pink)':'var(--neon-green)'}"></div></div>
     <div class="row-between" style="margin-top:6px;">
-      <span class="budget-target-num" style="color:${over?'var(--primary-dark)':'var(--accent-dark)'}">$${total.toFixed(2)} planned</span>
-      <span style="font-size:12.5px; color:var(--ink-soft);">of $${state.budgetTarget.toFixed(2)}</span>
+      <span class="budget-target-num" style="color:${over?'var(--neon-pink)':'var(--win-blue)'}">$${total.toFixed(2)} planned</span>
+      <span style="font-size:11.5px; color:#666;">of $${state.budgetTarget.toFixed(2)}</span>
     </div>
   `;
   view.appendChild(targetCard);
@@ -1637,9 +1648,9 @@ function renderBudgetTab(view){
 
   const planCard = document.createElement('div');
   planCard.className='card';
-  planCard.innerHTML = `<h2 class="section-title">Meals in this range</h2>`;
+  planCard.innerHTML = `<h2 class="section-title">Meals In Range</h2>`;
   if(rangeEntries.length===0){
-    planCard.innerHTML += `<div class="empty">Nothing planned yet — add meals from the Menu tab.</div>`;
+    planCard.innerHTML += `<div class="empty">Nothing planned yet.</div>`;
   } else {
     rangeEntries.slice().sort((a,b)=> a.date.localeCompare(b.date) || byType(a,b)).forEach(e=>{
       const meal = state.meals.find(m=>m.id===e.mealId);
@@ -1650,7 +1661,7 @@ function renderBudgetTab(view){
       row.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span>
         <span>${meal.name} (${getEntryServings(e)}p) ${e.recurring?'&#8635;':''} <span class="tag">${e.date}</span></span>
         <span class="ing-qty">$${scaledCost.toFixed(2)}</span>
-        <button class="iconbtn" data-rm="${e.id}">${ICONS.x}</button>`;
+        <button class="iconbtn" style="background:#FF0000; color:#FFF; padding:2px 6px;" data-rm="${e.id}">${ICONS.x}</button>`;
       row.querySelector('[data-rm]').onclick=()=>{
         if(e.recurring){
           openStopRecurringModal(e);
@@ -1666,17 +1677,17 @@ function renderBudgetTab(view){
 
   const libCard = document.createElement('div');
   libCard.className='card';
-  libCard.innerHTML = `<h2 class="section-title">Recipe box, sorted by cost</h2>`;
+  libCard.innerHTML = `<h2 class="section-title">Recipe Box (By Cost)</h2>`;
   const sorted = state.meals.slice().sort((a,b)=>getScaledMealCost(a)-getScaledMealCost(b));
   if(sorted.length===0){
-    libCard.innerHTML += `<div class="empty">No meals yet.</div>`;
+    libCard.innerHTML += `<div class="empty">No recipes yet.</div>`;
   }
   sorted.forEach(meal=>{
     const scaledCost = getScaledMealCost(meal);
     const row = document.createElement('div');
     row.className='ing-row';
     row.innerHTML = `<span>${meal.name}</span><span class="ing-qty">$${scaledCost.toFixed(2)}</span>
-      <button class="btn btn-teal btn-sm" style="margin-left:8px;" data-add="${meal.id}">+ Add</button>`;
+      <button class="btn btn-teal btn-sm" style="margin-left:6px;" data-add="${meal.id}">+ Add</button>`;
     row.querySelector('[data-add]').onclick = ()=>{
       const d = state.calendarView==='week' ? iso(startOfWeek(state.anchorDate)) : state.anchorDate;
       openPlanModal({mealId:meal.id, defaultDate:d});
