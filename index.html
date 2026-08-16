@@ -673,6 +673,7 @@ function load(){
 }
 
 function save(){ 
+  state.lastModified = Date.now();
   localStorage.setItem(STORE_KEY, JSON.stringify(state)); 
   if(!isRemoteUpdate) {
     db.ref('hearth_state').set(state).catch(err => console.log('Firebase sync error:', err));
@@ -682,10 +683,16 @@ function save(){
 // Immediate theme application before initial render
 applyTheme();
 
-// Firebase listener with theme preservation check
+// Firebase listener with theme preservation + stale-write guard.
+// Only accept remote data if it's actually newer than what we already have locally,
+// so a stale/failed remote snapshot can never wipe out fresher local edits (e.g. calendar entries).
 db.ref('hearth_state').on('value', (snapshot) => {
   const remoteData = snapshot.val();
   if(remoteData){
+    if(initialSyncDone && (remoteData.lastModified || 0) < (state.lastModified || 0)){
+      console.log('Ignored stale Firebase snapshot (older than local state)');
+      return;
+    }
     isRemoteUpdate = true;
     const currentTheme = state.theme; // preserve local theme choice
     state = {...defaultState(), ...remoteData};
@@ -695,6 +702,7 @@ db.ref('hearth_state').on('value', (snapshot) => {
     render();
     isRemoteUpdate = false;
   }
+  initialSyncDone = true;
 });
 
 function applyTheme(){
