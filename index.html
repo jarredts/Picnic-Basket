@@ -323,7 +323,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_8';
+const STORE_KEY = 'hearth_v9_9';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -526,7 +526,6 @@ function load(){
     if(!raw) return def;
     const parsed = JSON.parse(raw);
     const merged = {...def, ...parsed};
-    // Ensure meals array is populated even if localstorage saved an empty or partial list previously
     if(!merged.meals || merged.meals.length === 0){
       merged.meals = def.meals;
     }
