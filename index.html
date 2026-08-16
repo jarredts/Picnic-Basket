@@ -429,7 +429,7 @@ label.field-label{
       <h1 id="topTitle">HEARTH 95</h1>
       <div class="header-right">
         <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle 90s Theme">🖥️ Win95</button>
-        <span class="version-tag">v9.4.7.8</span>
+        <span class="version-tag">v9.4.7.9</span>
       </div>
     </div>
     <div class="sub" id="topSub">90s RETRO MENU BUILDER</div>
@@ -471,13 +471,20 @@ const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36
 const todayISO = () => new Date().toISOString().slice(0,10);
 
 const UNITS = {
-  tsp: {cat:'volume', toBase:1,   label:'tsp'},
-  tbsp:{cat:'volume', toBase:3,   label:'tbsp'},
-  cup: {cat:'volume', toBase:48,  label:'cup'},
-  qt:  {cat:'volume', toBase:192, label:'qt'},
-  oz:  {cat:'weight', toBase:1,   label:'oz'},
-  lb:  {cat:'weight', toBase:16,  label:'lb'},
-  ea:  {cat:'count',  toBase:1,   label:'ea'},
+  tsp: {cat:'volume', toBase:1,   label:'tsp', type:'volume'},
+  tbsp:{cat:'volume', toBase:3,   label:'tbsp', type:'volume'},
+  cup: {cat:'volume', toBase:48,  label:'cup', type:'volume'},
+  fl_oz:{cat:'volume', toBase:6,  label:'fl oz', type:'volume'},
+  pt:  {cat:'volume', toBase:96,  label:'pt', type:'volume'},
+  qt:  {cat:'volume', toBase:192, label:'qt', type:'volume'},
+  gal: {cat:'volume', toBase:768, label:'gal', type:'volume'},
+  ml:  {cat:'volume', toBase:0.202884, label:'ml', type:'volume'},
+  l:   {cat:'volume', toBase:202.884,  label:'l', type:'volume'},
+  oz:  {cat:'weight', toBase:1,   label:'oz', type:'weight'},
+  lb:  {cat:'weight', toBase:16,  label:'lb', type:'weight'},
+  g:   {cat:'weight', toBase:0.035274, label:'g', type:'weight'},
+  kg:  {cat:'weight', toBase:35.274,  label:'kg', type:'weight'},
+  ea:  {cat:'count',  toBase:1,   label:'ea', type:'count'},
 };
 const UNIT_LIST = Object.keys(UNITS);
 
@@ -491,65 +498,65 @@ function getTypeColor(type) {
 
 function defaultState(){
   const b1 = { id:uid(), type:'breakfast', name:'Overnight Peanut Butter Oats', servings:4, costTotal:3.20, instructionsUrl:'https://www.budgetbytes.com/peanut-butter-overnight-oats/', ingredients:[
-    {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'milk', qty:2, unit:'cup', cost:1.00}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:1.00}
+    {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20, costPricePerUnit:0}, {id:uid(), name:'milk', qty:2, unit:'cup', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:1.00, costPricePerUnit:0}
   ]};
   const b2 = { id:uid(), type:'breakfast', name:'Scrambled Eggs & Toast', servings:4, costTotal:2.80, instructionsUrl:'https://www.allrecipes.com/recipe/23971/fluffy-scrambled-eggs/', ingredients:[
-    {id:uid(), name:'eggs', qty:8, unit:'ea', cost:2.00}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80}
+    {id:uid(), name:'eggs', qty:8, unit:'ea', cost:2.00, costPricePerUnit:0}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80, costPricePerUnit:0}
   ]};
   const b3 = { id:uid(), type:'breakfast', name:'Classic Pancakes', servings:4, costTotal:2.20, instructionsUrl:'https://www.allrecipes.com/recipe/21014/good-old-fashioned-pancakes/', ingredients:[
-    {id:uid(), name:'flour', qty:2, unit:'cup', cost:0.80}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50}, {id:uid(), name:'sugar', qty:2, unit:'tbsp', cost:0.40}
+    {id:uid(), name:'flour', qty:2, unit:'cup', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50, costPricePerUnit:0}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50, costPricePerUnit:0}, {id:uid(), name:'sugar', qty:2, unit:'tbsp', cost:0.40, costPricePerUnit:0}
   ]};
   const b4 = { id:uid(), type:'breakfast', name:'Cinnamon French Toast', servings:4, costTotal:3.10, instructionsUrl:'https://www.allrecipes.com/recipe/7018/french-toast-i/', ingredients:[
-    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'eggs', qty:3, unit:'ea', cost:0.75}, {id:uid(), name:'milk', qty:0.5, unit:'cup', cost:0.50}, {id:uid(), name:'cinnamon', qty:1, unit:'tbsp', cost:0.25}
+    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60, costPricePerUnit:0}, {id:uid(), name:'eggs', qty:3, unit:'ea', cost:0.75, costPricePerUnit:0}, {id:uid(), name:'milk', qty:0.5, unit:'cup', cost:0.50, costPricePerUnit:0}, {id:uid(), name:'cinnamon', qty:1, unit:'tbsp', cost:0.25, costPricePerUnit:0}
   ]};
   const b5 = { id:uid(), type:'breakfast', name:'Banana Oatmeal Porridge', servings:4, costTotal:2.00, instructionsUrl:'https://www.budgetbytes.com/cinnamon-apple-oatmeal/', ingredients:[
-    {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'bananas', qty:2, unit:'ea', cost:0.60}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.20}
+    {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20, costPricePerUnit:0}, {id:uid(), name:'bananas', qty:2, unit:'ea', cost:0.60, costPricePerUnit:0}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.20, costPricePerUnit:0}
   ]};
   const b6 = { id:uid(), type:'breakfast', name:'Breakfast Egg & Cheese Burritos', servings:4, costTotal:4.50, instructionsUrl:'https://www.budgetbytes.com/freezer-breakfast-burritos/', ingredients:[
-    {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50}, {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50}, {id:uid(), name:'salsa', qty:0.5, unit:'cup', cost:0.50}
+    {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50, costPricePerUnit:0}, {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50, costPricePerUnit:0}, {id:uid(), name:'salsa', qty:0.5, unit:'cup', cost:0.50, costPricePerUnit:0}
   ]};
   const b7 = { id:uid(), type:'breakfast', name:'Cheesy Scrambled Egg Toast', servings:2, costTotal:2.10, instructionsUrl:'https://www.allrecipes.com/recipe/23971/fluffy-scrambled-eggs/', ingredients:[
-    {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.80}, {id:uid(), name:'bread', qty:2, unit:'ea', cost:0.30}
+    {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'bread', qty:2, unit:'ea', cost:0.30, costPricePerUnit:0}
   ]};
   const b8 = { id:uid(), type:'breakfast', name:'Bagels & Cream Cheese', servings:4, costTotal:3.50, instructionsUrl:'https://www.seriouseats.com/homemade-bagels-recipe', ingredients:[
-    {id:uid(), name:'bagels', qty:4, unit:'ea', cost:2.50}, {id:uid(), name:'cream cheese', qty:4, unit:'oz', cost:1.00}
+    {id:uid(), name:'bagels', qty:4, unit:'ea', cost:2.50, costPricePerUnit:0}, {id:uid(), name:'cream cheese', qty:4, unit:'oz', cost:1.00, costPricePerUnit:0}
   ]};
   const b9 = { id:uid(), type:'breakfast', name:'Yogurt & Honey Granola Bowl', servings:3, costTotal:4.20, instructionsUrl:'https://www.budgetbytes.com/yogurt-parfait/', ingredients:[
-    {id:uid(), name:'yogurt', qty:3, unit:'cup', cost:2.50}, {id:uid(), name:'granola', qty:1.5, unit:'cup', cost:1.20}, {id:uid(), name:'honey', qty:2, unit:'tbsp', cost:0.50}
+    {id:uid(), name:'yogurt', qty:3, unit:'cup', cost:2.50, costPricePerUnit:0}, {id:uid(), name:'granola', qty:1.5, unit:'cup', cost:1.20, costPricePerUnit:0}, {id:uid(), name:'honey', qty:2, unit:'tbsp', cost:0.50, costPricePerUnit:0}
   ]};
   const b10 = { id:uid(), type:'breakfast', name:'Loaded Breakfast Potato Hash', servings:4, costTotal:3.80, instructionsUrl:'https://www.budgetbytes.com/skillet-breakfast-hash/', ingredients:[
-    {id:uid(), name:'potatoes', qty:4, unit:'ea', cost:2.00}, {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'onion', qty:1, unit:'ea', cost:0.80}
+    {id:uid(), name:'potatoes', qty:4, unit:'ea', cost:2.00, costPricePerUnit:0}, {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'onion', qty:1, unit:'ea', cost:0.80, costPricePerUnit:0}
   ]};
 
   const l1 = { id:uid(), type:'lunch', name:'Classic Peanut Butter & Jelly', servings:4, costTotal:2.50, instructionsUrl:'https://www.allrecipes.com/recipe/238712/peanut-butter-and-jelly-sandwich/', ingredients:[
-    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:0.60}, {id:uid(), name:'jelly', qty:4, unit:'tbsp', cost:0.30}
+    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60, costPricePerUnit:0}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:0.60, costPricePerUnit:0}, {id:uid(), name:'jelly', qty:4, unit:'tbsp', cost:0.30, costPricePerUnit:0}
   ]};
   const l2 = { id:uid(), type:'lunch', name:'Tuna Salad Sandwiches', servings:4, costTotal:4.20, instructionsUrl:'https://www.allrecipes.com/recipe/14352/classic-tuna-salad/', ingredients:[
-    {id:uid(), name:'canned tuna', qty:2, unit:'ea', cost:3.00}, {id:uid(), name:'mayo', qty:4, unit:'tbsp', cost:0.80}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.40}
+    {id:uid(), name:'canned tuna', qty:2, unit:'ea', cost:3.00, costPricePerUnit:0}, {id:uid(), name:'mayo', qty:4, unit:'tbsp', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.40, costPricePerUnit:0}
   ]};
   const l3 = { id:uid(), type:'lunch', name:'Grilled Cheese & Tomato Soup', servings:4, costTotal:4.80, instructionsUrl:'https://www.budgetbytes.com/classic-grilled-cheese-tomato-soup/', ingredients:[
-    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'canned tomato soup', qty:2, unit:'ea', cost:1.00}
+    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20, costPricePerUnit:0}, {id:uid(), name:'canned tomato soup', qty:2, unit:'ea', cost:1.00, costPricePerUnit:0}
   ]};
   const l4 = { id:uid(), type:'lunch', name:'Black Bean & Rice Bowls', servings:4, costTotal:3.60, instructionsUrl:'https://www.budgetbytes.com/southwest-black-bean-rice-bowls/', ingredients:[
-    {id:uid(), name:'black beans', qty:2, unit:'ea', cost:1.40}, {id:uid(), name:'rice', qty:2, unit:'cup', cost:0.80}, {id:uid(), name:'salsa', qty:1, unit:'cup', cost:0.80}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.60}
+    {id:uid(), name:'black beans', qty:2, unit:'ea', cost:1.40, costPricePerUnit:0}, {id:uid(), name:'rice', qty:2, unit:'cup', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'salsa', qty:1, unit:'cup', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.60, costPricePerUnit:0}
   ]};
   const l5 = { id:uid(), type:'lunch', name:'Egg Salad Sandwiches', servings:4, costTotal:3.20, instructionsUrl:'https://www.allrecipes.com/recipe/14725/classic-egg-salad/', ingredients:[
-    {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50}, {id:uid(), name:'mayo', qty:3, unit:'tbsp', cost:0.60}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80}, {id:uid(), name:'mustard', qty:1, unit:'tbsp', cost:0.30}
+    {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50, costPricePerUnit:0}, {id:uid(), name:'mayo', qty:3, unit:'tbsp', cost:0.60, costPricePerUnit:0}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'mustard', qty:1, unit:'tbsp', cost:0.30, costPricePerUnit:0}
   ]};
   const l6 = { id:uid(), type:'lunch', name:'Turkey & Cheese Wraps', servings:4, costTotal:5.50, instructionsUrl:'https://www.allrecipes.com/recipe/222146/turkey-wrap/', ingredients:[
-    {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'sliced turkey', qty:8, unit:'oz', cost:3.00}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50}
+    {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'sliced turkey', qty:8, unit:'oz', cost:3.00, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50, costPricePerUnit:0}
   ]};
   const l7 = { id:uid(), type:'lunch', name:'Quick Ramen & Soft Egg', servings:2, costTotal:2.20, instructionsUrl:'https://www.budgetbytes.com/upgraded-ramen/', ingredients:[
-    {id:uid(), name:'instant ramen', qty:2, unit:'ea', cost:1.00}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50}, {id:uid(), name:'frozen vegetables', qty:1, unit:'cup', cost:0.70}
+    {id:uid(), name:'instant ramen', qty:2, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50, costPricePerUnit:0}, {id:uid(), name:'frozen vegetables', qty:1, unit:'cup', cost:0.70, costPricePerUnit:0}
   ]};
   const l8 = { id:uid(), type:'lunch', name:'Hummus & Veggie Pita Pockets', servings:3, costTotal:4.50, instructionsUrl:'https://www.budgetbytes.com/mediterranean-veggie-pitas/', ingredients:[
-    {id:uid(), name:'pita bread', qty:3, unit:'ea', cost:1.80}, {id:uid(), name:'hummus', qty:1, unit:'cup', cost:2.00}, {id:uid(), name:'cucumber', qty:1, unit:'ea', cost:0.70}
+    {id:uid(), name:'pita bread', qty:3, unit:'ea', cost:1.80, costPricePerUnit:0}, {id:uid(), name:'hummus', qty:1, unit:'cup', cost:2.00, costPricePerUnit:0}, {id:uid(), name:'cucumber', qty:1, unit:'ea', cost:0.70, costPricePerUnit:0}
   ]};
   const l9 = { id:uid(), type:'lunch', name:'Loaded Macaroni & Cheese', servings:4, costTotal:3.40, instructionsUrl:'https://www.budgetbytes.com/extra-creamy-homemade-mac-and-cheese/', ingredients:[
-    {id:uid(), name:'macaroni pasta', qty:12, unit:'oz', cost:1.20}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:1.70}
+    {id:uid(), name:'macaroni pasta', qty:12, unit:'oz', cost:1.20, costPricePerUnit:0}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:1.70, costPricePerUnit:0}
   ]};
   const l10 = { id:uid(), type:'lunch', name:'Quesadillas with Beans & Cheese', servings:4, costTotal:3.80, instructionsUrl:'https://www.budgetbytes.com/cheesy-black-bean-quesadillas/', ingredients:[
-    {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'black beans', qty:1, unit:'ea', cost:0.60}
+    {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20, costPricePerUnit:0}, {id:uid(), name:'black beans', qty:1, unit:'ea', cost:0.60, costPricePerUnit:0}
   ]};
 
   const dinners = [
@@ -602,7 +609,7 @@ function defaultState(){
     servings: 4,
     costTotal: d.cost,
     instructionsUrl: d.link,
-    ingredients: d.ing.map(i => ({ id: uid(), name: i.n, qty: i.q, unit: i.u, cost: i.c }))
+    ingredients: d.ing.map(i => ({ id: uid(), name: i.n, qty: i.q, unit: i.u, cost: i.c, costPricePerUnit: 0 }))
   }));
 
   const breakfasts = [b1,b2,b3,b4,b5,b6,b7,b8,b9,b10];
@@ -669,9 +676,15 @@ function load(){
     merged.theme = parsed.theme || def.theme;
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, daysOfWeek:[], ...e}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
-    // Give every pantry item a default "restock" amount (what gets added to the
-    // shopping list when tapped) - falls back to its on-hand qty/unit if not set.
     merged.pantry = (merged.pantry||[]).map(p=>({restockQty:p.qty, restockUnit:p.unit, ...p}));
+    // Ensure costPricePerUnit exists on all recipe ingredients
+    merged.meals.forEach(m => {
+      if(m.ingredients) {
+        m.ingredients.forEach(i => {
+          if(i.costPricePerUnit === undefined) i.costPricePerUnit = 0;
+        });
+      }
+    });
     return merged;
   }catch(e){ return defaultState(); }
 }
@@ -684,26 +697,20 @@ function save(){
   }
 }
 
-// Immediate theme application before initial render
 applyTheme();
 
-// Firebase listener with theme preservation + stale-write guard.
-// Only accept remote data if it's actually newer than what we already have locally,
-// so a stale/failed remote snapshot can never wipe out fresher local edits (e.g. calendar entries).
 db.ref('hearth_state').on('value', (snapshot) => {
   const remoteData = snapshot.val();
   if(remoteData){
-    // Always compare timestamps, including the very first snapshot on page load.
-    // <= (not just <) so our own write-echo is also skipped instead of triggering a needless re-render.
     if((remoteData.lastModified || 0) <= (state.lastModified || 0)){
       console.log('Ignored stale/redundant Firebase snapshot');
       initialSyncDone = true;
       return;
     }
     isRemoteUpdate = true;
-    const currentTheme = state.theme; // preserve local theme choice
+    const currentTheme = state.theme;
     state = {...defaultState(), ...remoteData};
-    state.theme = currentTheme; // keep local theme preference on initial pull
+    state.theme = currentTheme;
     localStorage.setItem(STORE_KEY, JSON.stringify(state));
     applyTheme();
     render();
@@ -729,7 +736,20 @@ function getEntryServings(entry){
   return entry.servings !== undefined ? entry.servings : state.householdSize;
 }
 function getScaledMealCostForEntry(meal, entry){
+  // Calculate cost dynamically from ingredients if costPricePerUnit is set, else fall back to scaled total cost
+  let calculatedCost = 0;
+  let hasUnitCost = false;
   const baseServings = meal.servings || 4;
+  const scale = getEntryServings(entry) / baseServings;
+
+  meal.ingredients.forEach(ing => {
+    if(ing.costPricePerUnit && ing.costPricePerUnit > 0) {
+      hasUnitCost = true;
+      calculatedCost += (ing.qty * scale) * ing.costPricePerUnit;
+    }
+  });
+
+  if(hasUnitCost) return calculatedCost;
   const costPerPerson = (meal.costTotal || 0) / baseServings;
   return costPerPerson * getEntryServings(entry);
 }
@@ -737,13 +757,28 @@ function getScaledQtyForEntry(qty, meal, entry){
   const baseServings = meal.servings || 4;
   return qty * (getEntryServings(entry) / baseServings);
 }
-function getScaledIngredientCostForEntry(ingCost, meal, entry){
+function getScaledIngredientCostForEntry(ing, meal, entry){
   const baseServings = meal.servings || 4;
-  const costPerPerson = (ingCost || 0) / baseServings;
+  const scale = getEntryServings(entry) / baseServings;
+  if(ing.costPricePerUnit && ing.costPricePerUnit > 0) {
+    return (ing.qty * scale) * ing.costPricePerUnit;
+  }
+  const costPerPerson = (ing.cost || 0) / baseServings;
   return costPerPerson * getEntryServings(entry);
 }
 function getScaledMealCost(meal){
+  let calculatedCost = 0;
+  let hasUnitCost = false;
   const baseServings = meal.servings || 4;
+
+  meal.ingredients.forEach(ing => {
+    if(ing.costPricePerUnit && ing.costPricePerUnit > 0) {
+      hasUnitCost = true;
+      calculatedCost += (ing.qty * (state.householdSize / baseServings)) * ing.costPricePerUnit;
+    }
+  });
+
+  if(hasUnitCost) return calculatedCost;
   const costPerPerson = (meal.costTotal || 0) / baseServings;
   return costPerPerson * state.householdSize;
 }
@@ -793,7 +828,10 @@ function showToast(msg){
   t._hideTimer = setTimeout(()=>t.classList.remove('show'), 2000);
 }
 
-function toBase(qty, unit){ return qty * UNITS[unit].toBase; }
+function toBase(qty, unit){ 
+  return qty * (UNITS[unit] ? UNITS[unit].toBase : 1); 
+}
+
 function displayFromBase(cat, baseQty){
   if(cat==='count') return {qty: round4(baseQty), unit:'ea'};
   if(cat==='weight'){
@@ -805,19 +843,69 @@ function displayFromBase(cat, baseQty){
   if(baseQty >= 3)   return {qty: round4(baseQty/3), unit:'tbsp'};
   return {qty: round4(baseQty), unit:'tsp'};
 }
+
+// Cross-category conversion helper for Pantry deduction / matching
+function convertBase(baseQty, fromCat, toCat, targetUnit) {
+  // If categories match or we can convert between volume and weight approx (water density 1g/ml = 1 oz/fl_oz roughly)
+  if (fromCat === toCat) {
+    if (toCat === 'weight') {
+      if (targetUnit === 'lb') return baseQty / 16;
+      if (targetUnit === 'g') return baseQty / UNITS.g.toBase;
+      if (targetUnit === 'kg') return baseQty / UNITS.kg.toBase;
+      return baseQty; // oz
+    }
+    if (toCat === 'volume') {
+      if (targetUnit === 'cup') return baseQty / UNITS.cup.toBase;
+      if (targetUnit === 'qt') return baseQty / UNITS.qt.toBase;
+      if (targetUnit === 'gal') return baseQty / UNITS.gal.toBase;
+      if (targetUnit === 'tbsp') return baseQty / UNITS.tbsp.toBase;
+      if (targetUnit === 'tsp') return baseQty / UNITS.tsp.toBase;
+      if (targetUnit === 'ml') return baseQty / UNITS.ml.toBase;
+      if (targetUnit === 'l') return baseQty / UNITS.l.toBase;
+      return baseQty; // tsp base
+    }
+    return baseQty;
+  }
+  return baseQty;
+}
+
 function round4(n){
   const r = Math.round(n*4)/4;
   return r % 1 === 0 ? r : Math.round(r*100)/100;
 }
 function fmtQtyUnit(qty, unit){ return `${round4(qty)} ${unit}`; }
 
+function deductPantryForIngredient(ingName, scaledQty, ingUnit) {
+  const key = ingName.trim().toLowerCase();
+  const pantryItem = state.pantry.find(p => (p.key || p.name.toLowerCase()) === key);
+  if(!pantryItem) return;
+
+  const ingUnitObj = UNITS[ingUnit] || {cat:'count', toBase:1};
+  const pantryUnitObj = UNITS[pantryItem.unit] || {cat:'count', toBase:1};
+
+  const neededBase = scaledQty * ingUnitObj.toBase;
+  const currentPantryBase = pantryItem.qty * pantryUnitObj.toBase;
+
+  const newBase = Math.max(0, currentPantryBase - neededBase);
+  const converted = displayFromBase(pantryUnitObj.cat, newBase);
+  
+  // Keep original pantry unit if categories match and it's clean, otherwise update
+  if(pantryUnitObj.cat === ingUnitObj.cat) {
+    pantryItem.qty = Math.max(0, pantryItem.qty - (neededBase / pantryUnitObj.toBase));
+  } else {
+    pantryItem.qty = converted.qty;
+    pantryItem.unit = converted.unit;
+  }
+}
+
 function addIngredientsToShoppingListForEntry(meal, entry){
   let added = 0;
   meal.ingredients.forEach(ing=>{
     if(entry.checked.includes(ing.id)) return;
     const scaledQty = getScaledQtyForEntry(ing.qty, meal, entry);
-    const scaledCost = getScaledIngredientCostForEntry(ing.cost, meal, entry);
-    const cat = UNITS[ing.unit].cat;
+    const scaledCost = getScaledIngredientCostForEntry(ing, meal, entry);
+    const unitObj = UNITS[ing.unit] || {cat:'count', toBase:1};
+    const cat = unitObj.cat;
     const base = toBase(scaledQty, ing.unit);
     const key = ing.name.trim().toLowerCase();
     let item = state.shoppingList.find(i => i.key===key && i.category===cat);
@@ -836,7 +924,8 @@ function addIngredientsToShoppingListForEntry(meal, entry){
 function addPantryItemToShoppingList(p){
   const qty = (p.restockQty!=null ? p.restockQty : p.qty) || 1;
   const unit = p.restockUnit || p.unit;
-  const cat = UNITS[unit].cat;
+  const unitObj = UNITS[unit] || {cat:'count', toBase:1};
+  const cat = unitObj.cat;
   const base = toBase(qty, unit);
   const key = p.key || p.name.trim().toLowerCase();
   let item = state.shoppingList.find(i=>i.key===key && i.category===cat);
@@ -1086,12 +1175,12 @@ function renderDayDetail(view){
     let ingHtml = meal.ingredients.map(ing=>{
       const checked = entry.checked.includes(ing.id);
       const scaledQty = getScaledQtyForEntry(ing.qty, meal, entry);
-      const scaledIngCost = getScaledIngredientCostForEntry(ing.cost, meal, entry);
+      const scaledIngCost = getScaledIngredientCostForEntry(ing, meal, entry);
       return `
         <div class="ing-row ${checked?'checked':''}" data-ing="${ing.id}">
           <input type="checkbox" ${checked?'checked':''} data-ing-cb="${ing.id}">
           <span>${ing.name}</span>
-          <span class="ing-qty">${fmtQtyUnit(scaledQty, ing.unit)}${ing.cost?` &middot; $${scaledIngCost.toFixed(2)}`:''}</span>
+          <span class="ing-qty">${fmtQtyUnit(scaledQty, ing.unit)}${(scaledIngCost>0)?` &middot; $${scaledIngCost.toFixed(2)}`:''}</span>
         </div>`;
     }).join('');
 
@@ -1128,8 +1217,18 @@ function renderDayDetail(view){
     card.querySelectorAll('[data-ing-cb]').forEach(cb=>{
       cb.onchange = ()=>{
         const ingId = cb.dataset.ingCb;
-        if(cb.checked){ if(!entry.checked.includes(ingId)) entry.checked.push(ingId); }
-        else { entry.checked = entry.checked.filter(x=>x!==ingId); }
+        const ingObj = meal.ingredients.find(i => i.id === ingId);
+        if(cb.checked){
+          if(!entry.checked.includes(ingId)) entry.checked.push(ingId);
+          // Deduct from pantry when checked off
+          if(ingObj) {
+            const scaledQty = getScaledQtyForEntry(ingObj.qty, meal, entry);
+            deductPantryForIngredient(ingObj.name, scaledQty, ingObj.unit);
+            showToast(`Deducted ${ingObj.name} from pantry`);
+          }
+        } else {
+          entry.checked = entry.checked.filter(x=>x!==ingId);
+        }
         save(); render();
       };
     });
@@ -1477,7 +1576,7 @@ function openMealForm(mealId){
   const meal = editing ? state.meals.find(m=>m.id===mealId) : {
     id:uid(), type:'dinner', name:'', servings:4, costTotal:0, instructionsUrl:'', ingredients:[]
   };
-  let draftIngredients = meal.ingredients.map(i=>({...i}));
+  let draftIngredients = meal.ingredients.map(i=>({costPricePerUnit:0, ...i}));
 
   function ingredientRowHtml(ing){
     return `
@@ -1488,7 +1587,8 @@ function openMealForm(mealId){
           <select data-ing-unit="${ing.id}">
             ${UNIT_LIST.map(u=>`<option value="${u}" ${u===ing.unit?'selected':''}>${u}</option>`).join('')}
           </select>
-          <input type="number" class="cost-input" step="0.01" min="0" placeholder="$" value="${ing.cost||''}" data-ing-cost="${ing.id}">
+          <input type="number" class="cost-input" step="0.001" min="0" placeholder="$/unit" value="${ing.costPricePerUnit||''}" data-ing-cppu="${ing.id}" title="Cost price per unit (e.g. $0.083/oz)">
+          <input type="number" class="cost-input" step="0.01" min="0" placeholder="total $" value="${ing.cost||''}" data-ing-cost="${ing.id}" title="Total item cost">
           <button class="iconbtn" data-ing-remove="${ing.id}">${ICONS.x}</button>
         </div>
       </div>`;
@@ -1514,11 +1614,11 @@ function openMealForm(mealId){
           <input type="number" id="mServings" value="${meal.servings||4}" min="1">
         </div>
       </div>
-      <label class="field-label">Total Cost ($)</label>
+      <label class="field-label">Total Cost ($) [Fallback]</label>
       <input type="number" id="mCost" value="${meal.costTotal||''}" step="0.01" min="0">
       <label class="field-label">Recipe Source Link</label>
       <input type="url" id="mLink" value="${meal.instructionsUrl}" placeholder="https://...">
-      <label class="field-label">Ingredients</label>
+      <label class="field-label">Ingredients (with Cost/Unit option)</label>
       <div id="ingRows">${draftIngredients.map(ingredientRowHtml).join('')}</div>
       <button class="btn btn-ghost btn-sm" id="addIngRow" style="margin-top:4px;">${ICONS.plus} Add ingredient</button>
       <div style="display:flex; gap:8px; margin-top:14px;">
@@ -1534,7 +1634,7 @@ function openMealForm(mealId){
   function wireMealForm(){
     document.getElementById('cancelMeal').onclick = closeModal;
     document.getElementById('addIngRow').onclick = ()=>{
-      const newIng = {id:uid(), name:'', qty:1, unit:'ea', cost:0};
+      const newIng = {id:uid(), name:'', qty:1, unit:'oz', cost:0, costPricePerUnit:0};
       draftIngredients.push(newIng);
       document.getElementById('ingRows').insertAdjacentHTML('beforeend', ingredientRowHtml(newIng));
       wireIngRow(newIng.id);
@@ -1547,7 +1647,20 @@ function openMealForm(mealId){
       meal.name = name;
       meal.type = document.getElementById('mType').value;
       meal.servings = parseFloat(document.getElementById('mServings').value) || 4;
-      meal.costTotal = parseFloat(document.getElementById('mCost').value) || 0;
+      
+      // Calculate total cost automatically if unit costs are present
+      let autoTotalCost = 0;
+      let hasUnitCosts = false;
+      draftIngredients.forEach(i => {
+        if(i.costPricePerUnit && i.costPricePerUnit > 0) {
+          hasUnitCosts = true;
+          autoTotalCost += i.qty * i.costPricePerUnit;
+        } else {
+          autoTotalCost += (i.cost || 0);
+        }
+      });
+
+      meal.costTotal = hasUnitCosts ? autoTotalCost : (parseFloat(document.getElementById('mCost').value) || 0);
       meal.instructionsUrl = document.getElementById('mLink').value.trim();
       meal.ingredients = draftIngredients.filter(i=>i.name.trim()!=='');
       if(!editing) state.meals.push(meal);
@@ -1558,12 +1671,29 @@ function openMealForm(mealId){
     const nameEl = document.querySelector(`[data-ing-name="${id}"]`);
     const qtyEl = document.querySelector(`[data-ing-qty="${id}"]`);
     const unitEl = document.querySelector(`[data-ing-unit="${id}"]`);
+    const cppuEl = document.querySelector(`[data-ing-cppu="${id}"]`);
     const costEl = document.querySelector(`[data-ing-cost="${id}"]`);
     const rmEl = document.querySelector(`[data-ing-remove="${id}"]`);
     const target = ()=>draftIngredients.find(i=>i.id===id);
+
     nameEl.oninput = ()=>{ target().name = nameEl.value; };
-    qtyEl.oninput = ()=>{ target().qty = parseFloat(qtyEl.value)||0; };
+    qtyEl.oninput = ()=>{ 
+      target().qty = parseFloat(qtyEl.value)||0; 
+      const t = target();
+      if(t.costPricePerUnit > 0) {
+        t.cost = t.qty * t.costPricePerUnit;
+        if(costEl) costEl.value = t.cost.toFixed(2);
+      }
+    };
     unitEl.onchange = ()=>{ target().unit = unitEl.value; };
+    cppuEl.oninput = ()=>{ 
+      target().costPricePerUnit = parseFloat(cppuEl.value)||0; 
+      const t = target();
+      if(t.costPricePerUnit > 0) {
+        t.cost = t.qty * t.costPricePerUnit;
+        if(costEl) costEl.value = t.cost.toFixed(2);
+      }
+    };
     costEl.oninput = ()=>{ target().cost = parseFloat(costEl.value)||0; };
     rmEl.onclick = ()=>{
       draftIngredients = draftIngredients.filter(i=>i.id!==id);
@@ -1653,7 +1783,7 @@ function renderShoppingTab(view){
     b.onclick = ()=>{
       const item = state.shoppingList.find(i=>i.id===b.dataset.item);
       const disp = displayFromBase(item.category, item.base);
-      const stepBase = UNITS[disp.unit].toBase;
+      const stepBase = UNITS[disp.unit] ? UNITS[disp.unit].toBase : 1;
       const delta = parseInt(b.dataset.step,10)*stepBase;
       item.base = Math.max(0, item.base + delta);
       save(); render();
@@ -1716,7 +1846,7 @@ function renderPantryTab(view){
 
   const listCard = document.createElement('div');
   listCard.className='card';
-  listCard.innerHTML = `<h2 class="section-title">On Hand Inventory</h2>`;
+  listCard.innerHTML = `<h2 class="section-title">On Hand Inventory (Manual Override)</h2>`;
   if(state.pantry.length===0){
     listCard.innerHTML += `<div class="empty">Pantry is empty.</div>`;
   } else {
@@ -1725,11 +1855,22 @@ function renderPantryTab(view){
       row.className='ing-row';
       row.innerHTML = `
         <span style="flex:1;">${p.name}</span>
-        <span class="ing-qty">${fmtQtyUnit(p.qty,p.unit)}</span>
-        <button class="iconbtn" title="Add ${fmtQtyUnit(p.restockQty!=null?p.restockQty:p.qty, p.restockUnit||p.unit)} to shopping list" style="background:#2E6F40; color:#FFF;" data-add-list="${p.id}">${ICONS.plus}</button>
+        <span class="ing-qty" style="display:flex; align-items:center; gap:4px;">
+          <input type="number" step="0.25" value="${p.qty}" data-quick-qty="${p.id}" style="width:52px; padding:2px; font-size:11px; text-align:center;">
+          <span>${p.unit}</span>
+        </span>
+        <button class="iconbtn" title="Add restock to shopping list" style="background:#2E6F40; color:#FFF;" data-add-list="${p.id}">${ICONS.plus}</button>
         <button class="iconbtn" title="Edit item" data-edit-pantry="${p.id}">&#9998;</button>
         <button class="iconbtn" title="Delete item" style="background:#FF0000; color:#FFF;" data-rm="${p.id}">${ICONS.x}</button>
       `;
+      row.querySelector(`[data-quick-qty="${p.id}"]`).onchange = (e)=>{
+        const val = parseFloat(e.target.value);
+        if(!isNaN(val) && val >= 0) {
+          p.qty = val;
+          save();
+          showToast(`Updated ${p.name} on hand`);
+        }
+      };
       row.querySelector('[data-add-list]').onclick = ()=>addPantryItemToShoppingList(p);
       row.querySelector('[data-edit-pantry]').onclick = ()=>openPantryForm(p.id);
       row.querySelector('[data-rm]').onclick = ()=>{
@@ -1763,7 +1904,7 @@ function renderPantryTab(view){
 
 function openPantryForm(pantryId){
   const editing = !!pantryId;
-  const item = editing ? state.pantry.find(p=>p.id===pantryId) : { id:uid(), name:'', qty:1, unit:'ea', restockQty:1, restockUnit:'ea' };
+  const item = editing ? state.pantry.find(p=>p.id===pantryId) : { id:uid(), name:'', qty:1, unit:'oz', restockQty:1, restockUnit:'oz' };
 
   openModal(`
     <h2>${editing ? 'Edit Pantry Item' : 'Add Pantry Item'}</h2>
@@ -1771,10 +1912,10 @@ function openPantryForm(pantryId){
     <input type="text" id="pName" placeholder="e.g. olive oil" value="${item.name}">
     <div style="display:flex; gap:8px;">
       <div style="flex:1;"><label class="field-label">On-Hand Qty</label><input type="number" id="pQty" step="0.25" value="${item.qty}"></div>
-      <div style="flex:1;"><label class="field-label">Unit</label><select id="pUnit">${UNIT_LIST.map(u=>`<option value="${u}" ${u===item.unit?'selected':''}>${u}</option>`).join('')}</select></div>
+      <div style="flex:1;"><label class="field-label">Unit (Weight/Volume/Count)</label><select id="pUnit">${UNIT_LIST.map(u=>`<option value="${u}" ${u===item.unit?'selected':''}>${u}</option>`).join('')}</select></div>
     </div>
     <div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--win-border-dark);">
-      <label class="field-label">Default Amount Added to Shopping List</label>
+      <label class="field-label">Default Restock Amount Added to Shopping List</label>
       <div style="display:flex; gap:8px;">
         <div style="flex:1;"><input type="number" id="pRestockQty" step="0.25" value="${item.restockQty!=null?item.restockQty:item.qty}"></div>
         <div style="flex:1;"><select id="pRestockUnit">${UNIT_LIST.map(u=>`<option value="${u}" ${u===(item.restockUnit||item.unit)?'selected':''}>${u}</option>`).join('')}</select></div>
@@ -1827,12 +1968,11 @@ function renderBudgetTab(view){
   controls.querySelector('#newPlanBtn').onclick = ()=>openBudgetPlanBuilder(null);
   controls.querySelector('#addRuleBtn').onclick = openRuleBuilderModal;
 
-  /* --- Meal Budget Plans: a sandbox for testing meal combos against a budget over any date range --- */
   const plansCard = document.createElement('div');
   plansCard.className = 'card';
-  plansCard.innerHTML = `<h2 class="section-title">Meal Budget Plans</h2><div style="font-size:11px; color:#555; margin-bottom:10px; font-family:var(--font-body);">Sandbox meal combos for a week, a month, or any date range and see how it lands against a target — before anything touches the calendar.</div>`;
+  plansCard.innerHTML = `<h2 class="section-title">Meal Budget Plans (Edit / Delete)</h2><div style="font-size:11px; color:#555; margin-bottom:10px; font-family:var(--font-body);">Sandbox meal combos for any date range and see how it lands against your target.</div>`;
   if(!state.budgetPlans || state.budgetPlans.length === 0){
-    plansCard.innerHTML += `<div class="empty" style="font-size:13px; padding:12px; font-family:var(--font-body);">No plans yet. Tap "New Meal Budget Plan" above to start trying out meal combinations.</div>`;
+    plansCard.innerHTML += `<div class="empty" style="font-size:13px; padding:12px; font-family:var(--font-body);">No plans yet. Tap "New Meal Budget Plan" above.</div>`;
   } else {
     state.budgetPlans.forEach(p=>{
       const total = planTotal(p);
@@ -1847,6 +1987,7 @@ function renderBudgetTab(view){
           <strong style="font-size:12px; cursor:pointer;" data-open="${p.id}">${p.name}</strong>
           <span style="display:flex; align-items:center; gap:6px;">
             <span class="tag">${niceDate(new Date(p.startDate+'T00:00:00'))} – ${niceDate(new Date(p.endDate+'T00:00:00'))}</span>
+            <button class="btn btn-ghost btn-sm" style="padding:2px 6px;" data-edit-plan="${p.id}">Edit</button>
             <button class="iconbtn" style="background:#FF0000; color:#FFF; padding:2px 6px;" data-del-plan="${p.id}">${ICONS.x}</button>
           </span>
         </div>
@@ -1857,6 +1998,10 @@ function renderBudgetTab(view){
         </div>
       `;
       row.querySelectorAll('[data-open]').forEach(el=>{ el.onclick = ()=>openBudgetPlanBuilder(p.id); });
+      row.querySelector('[data-edit-plan]').onclick = (e)=>{
+        e.stopPropagation();
+        openBudgetPlanBuilder(p.id);
+      };
       row.querySelector('[data-del-plan]').onclick = (e)=>{
         e.stopPropagation();
         if(confirm(`Delete plan "${p.name}"?`)){
@@ -1875,7 +2020,7 @@ function renderBudgetTab(view){
   ruleCard.innerHTML = `<h2 class="section-title">Recurring Rule Templates</h2>`;
   
   if(!state.ruleTemplates || state.ruleTemplates.length === 0){
-    ruleCard.innerHTML += `<div class="empty" style="font-size:13px; padding:12px; font-family:var(--font-body);">No recurring rules created yet. Click above to add items like Cereal (5 times/wk at 3 servings) to project into your budget!</div>`;
+    ruleCard.innerHTML += `<div class="empty" style="font-size:13px; padding:12px; font-family:var(--font-body);">No recurring rules created yet.</div>`;
   } else {
     state.ruleTemplates.forEach(r => {
       const meal = state.meals.find(m => m.id === r.mealId);
