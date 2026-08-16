@@ -1,17 +1,25 @@
-const CACHE_NAME = 'hearth-v32-cache';
+// Bump this version string any time you push a new deploy so old
+// clients pick up the change instead of serving a stale cached copy.
+const CACHE_NAME = 'hearth-v3-cache';
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png'
 ];
 
+// Install event - cache assets
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    })
   );
   self.skipWaiting();
 });
 
+// Activate event - clean up old caches
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
@@ -27,8 +35,13 @@ self.addEventListener('activate', (e) => {
   self.clients.claim();
 });
 
+// Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    fetch(e.request).catch(() => caches.match(e.request))
+    caches.match(e.request).then((cachedResponse) => {
+      return cachedResponse || fetch(e.request).catch(() => {
+        // Fallback or offline page handling can go here if needed
+      });
+    })
   );
 });
