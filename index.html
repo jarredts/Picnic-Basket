@@ -689,8 +689,11 @@ applyTheme();
 db.ref('hearth_state').on('value', (snapshot) => {
   const remoteData = snapshot.val();
   if(remoteData){
-    if(initialSyncDone && (remoteData.lastModified || 0) < (state.lastModified || 0)){
-      console.log('Ignored stale Firebase snapshot (older than local state)');
+    // Always compare timestamps, including the very first snapshot on page load.
+    // <= (not just <) so our own write-echo is also skipped instead of triggering a needless re-render.
+    if((remoteData.lastModified || 0) <= (state.lastModified || 0)){
+      console.log('Ignored stale/redundant Firebase snapshot');
+      initialSyncDone = true;
       return;
     }
     isRemoteUpdate = true;
