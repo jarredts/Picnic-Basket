@@ -626,6 +626,7 @@ function defaultState(){
     ruleTemplates: [
       { id: uid(), mealId: b1.id, frequency: 5, servings: 3 }
     ],
+    budgetPlans: [],
     entryStops: [],
     shoppingList:[],
     pantry:[
@@ -652,10 +653,9 @@ function defaultState(){
 let state = load();
 function load(){
   try{
-    const raw = localStorage.getItem(STORE_KEY);
     const def = defaultState();
-    if(!raw) return def;
-    const parsed = JSON.parse(raw);
+    const raw = localStorage.getItem(STORE_KEY);
+    const parsed = raw ? JSON.parse(raw) : {};
     const merged = {...def, ...parsed};
     if(!merged.meals || merged.meals.length < 10){
       merged.meals = def.meals;
@@ -665,9 +665,13 @@ function load(){
     merged.menuFilterType = merged.menuFilterType || 'all';
     merged.entryStops = merged.entryStops || [];
     merged.ruleTemplates = merged.ruleTemplates || def.ruleTemplates;
+    merged.budgetPlans = merged.budgetPlans || [];
     merged.theme = parsed.theme || def.theme;
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, daysOfWeek:[], ...e}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
+    // Give every pantry item a default "restock" amount (what gets added to the
+    // shopping list when tapped) - falls back to its on-hand qty/unit if not set.
+    merged.pantry = (merged.pantry||[]).map(p=>({restockQty:p.qty, restockUnit:p.unit, ...p}));
     return merged;
   }catch(e){ return defaultState(); }
 }
@@ -827,6 +831,22 @@ function addIngredientsToShoppingListForEntry(meal, entry){
   });
   save();
   return added;
+}
+
+function addPantryItemToShoppingList(p){
+  const qty = (p.restockQty!=null ? p.restockQty : p.qty) || 1;
+  const unit = p.restockUnit || p.unit;
+  const cat = UNITS[unit].cat;
+  const base = toBase(qty, unit);
+  const key = p.key || p.name.trim().toLowerCase();
+  let item = state.shoppingList.find(i=>i.key===key && i.category===cat);
+  if(item){
+    item.base += base;
+  } else {
+    state.shoppingList.push({id:uid(), key, name:p.name, category:cat, base, purchased:false, costEstimate:0});
+  }
+  save(); render();
+  showToast(`${p.name} added to shopping list`);
 }
 
 function pantryHas(name){
@@ -1704,11 +1724,13 @@ function renderPantryTab(view){
       const row = document.createElement('div');
       row.className='ing-row';
       row.innerHTML = `
-        <span>${p.name}</span>
+        <span style="flex:1;">${p.name}</span>
         <span class="ing-qty">${fmtQtyUnit(p.qty,p.unit)}</span>
+        <button class="iconbtn" title="Add ${fmtQtyUnit(p.restockQty!=null?p.restockQty:p.qty, p.restockUnit||p.unit)} to shopping list" style="background:#2E6F40; color:#FFF;" data-add-list="${p.id}">${ICONS.plus}</button>
         <button class="iconbtn" title="Edit item" data-edit-pantry="${p.id}">&#9998;</button>
         <button class="iconbtn" title="Delete item" style="background:#FF0000; color:#FFF;" data-rm="${p.id}">${ICONS.x}</button>
       `;
+      row.querySelector('[data-add-list]').onclick = ()=>addPantryItemToShoppingList(p);
       row.querySelector('[data-edit-pantry]').onclick = ()=>openPantryForm(p.id);
       row.querySelector('[data-rm]').onclick = ()=>{
         state.pantry = state.pantry.filter(x=>x.id!==p.id);
@@ -1741,15 +1763,22 @@ function renderPantryTab(view){
 
 function openPantryForm(pantryId){
   const editing = !!pantryId;
-  const item = editing ? state.pantry.find(p=>p.id===pantryId) : { id:uid(), name:'', qty:1, unit:'ea' };
+  const item = editing ? state.pantry.find(p=>p.id===pantryId) : { id:uid(), name:'', qty:1, unit:'ea', restockQty:1, restockUnit:'ea' };
 
   openModal(`
     <h2>${editing ? 'Edit Pantry Item' : 'Add Pantry Item'}</h2>
     <label class="field-label">Item Name</label>
     <input type="text" id="pName" placeholder="e.g. olive oil" value="${item.name}">
     <div style="display:flex; gap:8px;">
-      <div style="flex:1;"><label class="field-label">Qty</label><input type="number" id="pQty" step="0.25" value="${item.qty}"></div>
+      <div style="flex:1;"><label class="field-label">On-Hand Qty</label><input type="number" id="pQty" step="0.25" value="${item.qty}"></div>
       <div style="flex:1;"><label class="field-label">Unit</label><select id="pUnit">${UNIT_LIST.map(u=>`<option value="${u}" ${u===item.unit?'selected':''}>${u}</option>`).join('')}</select></div>
+    </div>
+    <div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--win-border-dark);">
+      <label class="field-label">Default Amount Added to Shopping List</label>
+      <div style="display:flex; gap:8px;">
+        <div style="flex:1;"><input type="number" id="pRestockQty" step="0.25" value="${item.restockQty!=null?item.restockQty:item.qty}"></div>
+        <div style="flex:1;"><select id="pRestockUnit">${UNIT_LIST.map(u=>`<option value="${u}" ${u===(item.restockUnit||item.unit)?'selected':''}>${u}</option>`).join('')}</select></div>
+      </div>
     </div>
     <div style="display:flex; gap:8px; margin-top:14px;">
       ${editing ? '<button class="btn btn-danger btn-block" id="deletePantry">Delete</button>' : ''}
@@ -1769,6 +1798,8 @@ function openPantryForm(pantryId){
     const name = document.getElementById('pName').value.trim();
     const qty = parseFloat(document.getElementById('pQty').value)||0;
     const unit = document.getElementById('pUnit').value;
+    const restockQty = parseFloat(document.getElementById('pRestockQty').value)|| qty || 1;
+    const restockUnit = document.getElementById('pRestockUnit').value;
     if(!name) return;
     
     if(editing){
@@ -1776,8 +1807,10 @@ function openPantryForm(pantryId){
       item.key = name.toLowerCase();
       item.qty = qty;
       item.unit = unit;
+      item.restockQty = restockQty;
+      item.restockUnit = restockUnit;
     } else {
-      state.pantry.push({ id:uid(), key:name.toLowerCase(), name, qty, unit });
+      state.pantry.push({ id:uid(), key:name.toLowerCase(), name, qty, unit, restockQty, restockUnit });
     }
     save(); closeModal(); render();
     showToast(editing ? 'Item updated' : 'Added to pantry');
@@ -1788,9 +1821,54 @@ function openPantryForm(pantryId){
 function renderBudgetTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
-    <button class="pill active" id="addRuleBtn">${ICONS.plus} Add Recurring Budget Rule</button>
+    <button class="pill active" id="newPlanBtn">${ICONS.plus} New Meal Budget Plan</button>
+    <button class="pill" id="addRuleBtn">${ICONS.plus} Add Recurring Rule</button>
   `;
+  controls.querySelector('#newPlanBtn').onclick = ()=>openBudgetPlanBuilder(null);
   controls.querySelector('#addRuleBtn').onclick = openRuleBuilderModal;
+
+  /* --- Meal Budget Plans: a sandbox for testing meal combos against a budget over any date range --- */
+  const plansCard = document.createElement('div');
+  plansCard.className = 'card';
+  plansCard.innerHTML = `<h2 class="section-title">Meal Budget Plans</h2><div style="font-size:11px; color:#555; margin-bottom:10px; font-family:var(--font-body);">Sandbox meal combos for a week, a month, or any date range and see how it lands against a target — before anything touches the calendar.</div>`;
+  if(!state.budgetPlans || state.budgetPlans.length === 0){
+    plansCard.innerHTML += `<div class="empty" style="font-size:13px; padding:12px; font-family:var(--font-body);">No plans yet. Tap "New Meal Budget Plan" above to start trying out meal combinations.</div>`;
+  } else {
+    state.budgetPlans.forEach(p=>{
+      const total = planTotal(p);
+      const over = total > p.targetBudget;
+      const pct = p.targetBudget>0 ? Math.min(100, Math.round((total/p.targetBudget)*100)) : 0;
+      const row = document.createElement('div');
+      row.style.marginBottom = '12px';
+      row.style.paddingBottom = '10px';
+      row.style.borderBottom = '1px dotted var(--win-border-dark)';
+      row.innerHTML = `
+        <div class="row-between">
+          <strong style="font-size:12px; cursor:pointer;" data-open="${p.id}">${p.name}</strong>
+          <span style="display:flex; align-items:center; gap:6px;">
+            <span class="tag">${niceDate(new Date(p.startDate+'T00:00:00'))} – ${niceDate(new Date(p.endDate+'T00:00:00'))}</span>
+            <button class="iconbtn" style="background:#FF0000; color:#FFF; padding:2px 6px;" data-del-plan="${p.id}">${ICONS.x}</button>
+          </span>
+        </div>
+        <div class="match-bar-track" data-open="${p.id}" style="cursor:pointer; margin-top:6px;"><div class="match-bar-fill" style="width:${pct}%; background:${over?'#FF0000':'#2E6F40'};"></div></div>
+        <div class="row-between" style="margin-top:4px;">
+          <span style="font-size:12px; font-weight:700; color:${over?'#FF0000':'var(--win-blue)'};">$${total.toFixed(2)} planned</span>
+          <span style="font-size:11px; color:#666;">of $${p.targetBudget.toFixed(2)} &middot; ${p.items.length} meal option${p.items.length===1?'':'s'}</span>
+        </div>
+      `;
+      row.querySelectorAll('[data-open]').forEach(el=>{ el.onclick = ()=>openBudgetPlanBuilder(p.id); });
+      row.querySelector('[data-del-plan]').onclick = (e)=>{
+        e.stopPropagation();
+        if(confirm(`Delete plan "${p.name}"?`)){
+          state.budgetPlans = state.budgetPlans.filter(x=>x.id!==p.id);
+          save(); render();
+          showToast('Plan deleted');
+        }
+      };
+      plansCard.appendChild(row);
+    });
+  }
+  view.appendChild(plansCard);
 
   const ruleCard = document.createElement('div');
   ruleCard.className = 'card';
@@ -1912,6 +1990,145 @@ function openRuleBuilderModal(){
     });
     save(); closeModal(); render();
     showToast('Recurring budget rule added');
+  };
+}
+
+/* ============================= MEAL BUDGET PLAN SANDBOX ============================= */
+function planTotal(plan){
+  return (plan.items||[]).reduce((sum, it)=>{
+    const meal = state.meals.find(m=>m.id===it.mealId);
+    if(!meal) return sum;
+    const baseServings = meal.servings || 4;
+    const costPerPerson = (meal.costTotal || 0) / baseServings;
+    return sum + costPerPerson * it.servings * it.times;
+  }, 0);
+}
+
+function openBudgetPlanBuilder(planId){
+  const editing = !!planId;
+  const start = todayISO();
+  const plan = editing
+    ? state.budgetPlans.find(p=>p.id===planId)
+    : { id: uid(), name:'New Meal Plan', startDate: start, endDate: iso(addDays(new Date(start+'T00:00:00'),6)), targetBudget: 150, items: [] };
+
+  function reopen(){
+    openModal(bodyHtml());
+    wire();
+  }
+
+  function bodyHtml(){
+    const total = planTotal(plan);
+    const over = total > plan.targetBudget;
+    const pct = plan.targetBudget>0 ? Math.min(100, Math.round((total/plan.targetBudget)*100)) : 0;
+    return `
+      <h2>${editing ? 'Edit Meal Budget Plan' : 'New Meal Budget Plan'}</h2>
+      <label class="field-label">Plan Name</label>
+      <input type="text" id="planName" value="${plan.name}">
+      <div style="display:flex; gap:8px;">
+        <div style="flex:1;"><label class="field-label">Start Date</label><input type="date" id="planStart" value="${plan.startDate}"></div>
+        <div style="flex:1;"><label class="field-label">End Date</label><input type="date" id="planEnd" value="${plan.endDate}"></div>
+      </div>
+      <label class="field-label">Target Budget ($)</label>
+      <input type="number" id="planTarget" value="${plan.targetBudget}" step="5">
+
+      <div class="budget-bar-track" style="margin-top:12px;"><div class="budget-bar-fill" style="width:${pct}%; background:${over?'#FF0000':'#2E6F40'}"></div></div>
+      <div class="row-between" style="margin-top:4px;">
+        <span style="font-weight:700; color:${over?'#FF0000':'var(--win-blue)'};">$${total.toFixed(2)} planned</span>
+        <span style="font-size:11.5px; color:#666;">of $${plan.targetBudget.toFixed(2)}</span>
+      </div>
+
+      <h2 class="section-title" style="margin-top:16px;">Meal Options In This Plan</h2>
+      <div id="planItemsList">
+        ${plan.items.length===0 ? `<div class="empty" style="font-size:12px; padding:8px;">No meals added yet. Add options below and swap them in/out to hit your target.</div>` : plan.items.map(it=>{
+          const meal = state.meals.find(m=>m.id===it.mealId);
+          const mealName = meal ? meal.name : 'Unknown Recipe';
+          const baseServings = meal ? (meal.servings||4) : 4;
+          const costPerPerson = meal ? (meal.costTotal||0)/baseServings : 0;
+          const lineCost = costPerPerson * it.servings * it.times;
+          return `<div class="ing-row">
+            <span style="flex:1;"><strong>${mealName}</strong> &middot; ${it.times}x &middot; ${it.servings}p</span>
+            <span class="ing-qty">$${lineCost.toFixed(2)}</span>
+            <button class="iconbtn" style="background:#FF0000; color:#FFF; padding:2px 6px;" data-del-item="${it.id}">${ICONS.x}</button>
+          </div>`;
+        }).join('')}
+      </div>
+      <button class="btn btn-ghost btn-block" id="addPlanItemBtn" style="margin-top:8px;">${ICONS.plus} Add Meal Option</button>
+
+      <div style="display:flex; gap:8px; margin-top:14px;">
+        <button class="btn btn-ghost btn-block" id="cancelPlanBuilder">Cancel</button>
+        <button class="btn btn-primary btn-block" id="savePlanBuilder">${editing ? 'Save Plan' : 'Create Plan'}</button>
+      </div>
+    `;
+  }
+
+  function wire(){
+    document.getElementById('cancelPlanBuilder').onclick = closeModal;
+    document.getElementById('planName').onchange = (e)=>{ plan.name = e.target.value.trim() || 'Untitled Plan'; };
+    document.getElementById('planStart').onchange = (e)=>{ plan.startDate = e.target.value; };
+    document.getElementById('planEnd').onchange = (e)=>{ plan.endDate = e.target.value; };
+    document.getElementById('planTarget').onchange = (e)=>{ plan.targetBudget = parseFloat(e.target.value)||0; reopen(); };
+
+    document.querySelectorAll('[data-del-item]').forEach(btn=>{
+      btn.onclick = ()=>{
+        plan.items = plan.items.filter(i=>i.id!==btn.dataset.delItem);
+        reopen();
+      };
+    });
+
+    document.getElementById('addPlanItemBtn').onclick = ()=>openPlanItemPicker(plan, reopen);
+
+    document.getElementById('savePlanBuilder').onclick = ()=>{
+      plan.name = document.getElementById('planName').value.trim() || 'Untitled Plan';
+      plan.startDate = document.getElementById('planStart').value || plan.startDate;
+      plan.endDate = document.getElementById('planEnd').value || plan.endDate;
+      plan.targetBudget = parseFloat(document.getElementById('planTarget').value)||0;
+
+      if(!state.budgetPlans) state.budgetPlans = [];
+      if(!editing) state.budgetPlans.push(plan);
+      save(); closeModal(); render();
+      showToast(editing ? 'Plan updated' : 'Plan created');
+    };
+  }
+
+  reopen();
+}
+
+function openPlanItemPicker(plan, onDone){
+  if(state.meals.length===0){
+    openModal(`<h2>No recipes yet</h2><p>Add a recipe in the Menu tab first.</p><button class="btn btn-primary btn-block" id="closeM">Got it</button>`);
+    document.getElementById('closeM').onclick = ()=>{ closeModal(); onDone(); };
+    return;
+  }
+  let selMeal = state.meals[0].id;
+  let times = 1;
+  let servings = state.householdSize;
+
+  openModal(`
+    <h2>Add Meal Option</h2>
+    <label class="field-label">Select Recipe</label>
+    <select id="itemMealSelect">${state.meals.map(m=>`<option value="${m.id}">${m.name} (${m.type})</option>`).join('')}</select>
+
+    <label class="field-label">Times During This Plan</label>
+    <input type="number" id="itemTimesInput" value="${times}" min="1" max="60">
+
+    <label class="field-label">Servings Per Time</label>
+    <input type="number" id="itemServInput" value="${servings}" min="1" max="100">
+
+    <div style="display:flex; gap:8px; margin-top:14px;">
+      <button class="btn btn-ghost btn-block" id="cancelItem">Cancel</button>
+      <button class="btn btn-primary btn-block" id="saveItem">Add to Plan</button>
+    </div>
+  `);
+
+  document.getElementById('cancelItem').onclick = ()=>{ closeModal(); onDone(); };
+  document.getElementById('itemMealSelect').onchange = (e)=>{ selMeal = e.target.value; };
+  document.getElementById('itemTimesInput').onchange = (e)=>{ times = parseInt(e.target.value,10) || 1; };
+  document.getElementById('itemServInput').onchange = (e)=>{ servings = parseInt(e.target.value,10) || 1; };
+
+  document.getElementById('saveItem').onclick = ()=>{
+    plan.items.push({ id: uid(), mealId: selMeal, times, servings });
+    closeModal();
+    onDone();
   };
 }
 
