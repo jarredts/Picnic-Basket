@@ -10,11 +10,11 @@
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bungee&display=swap" rel="stylesheet">
 <style>
 /* ================= THEME DEFINITIONS ================= */
 :root {
-  /* Default: Retro 95 (Wife's preference) */
+  /* Mode 1: Win95 Retro Computer (Clean Gray & Titlebar Blue) */
   --win-bg:#C0C0C0;
   --win-blue:#000080;
   --win-blue-lt:#1084D0;
@@ -24,8 +24,9 @@
   --card-bg:#FFFFFF;
   --card-text:#000000;
   --accent-btn:#C0C0C0;
-  --accent-active:#000080;
-  --accent-active-text:#FFFFFF;
+  --primary-action:#000080;
+  --primary-text:#FFFFFF;
+  --danger-action:#AA0000;
   --highlight:#FFFFCC;
   --font-disp:'Press Start 2P', monospace;
   --font-body:'Space Mono', monospace;
@@ -35,7 +36,7 @@
 }
 
 [data-theme="cyber"] {
-  /* Cyber Neon 90s (Your preference) */
+  /* Mode 2: 90s Arcade Neon (Hot Pink, Electric Cyan & Acid Green) */
   --win-bg:#00FFFF;
   --win-blue:#9D00FF;
   --win-blue-lt:#FF007F;
@@ -45,9 +46,11 @@
   --card-bg:#FFFF00;
   --card-text:#0A0A0A;
   --accent-btn:#39FF14;
-  --accent-active:#FF007F;
-  --accent-active-text:#FFFF00;
+  --primary-action:#FF007F;
+  --primary-text:#FFFF00;
+  --danger-action:#FF0000;
   --highlight:#FF99CC;
+  --font-disp:'Bungee', cursive;
   --pattern: radial-gradient(#9D00FF 15%, transparent 16%), radial-gradient(#FF007F 15%, transparent 16%);
   --pattern-size: 30px 30px;
 }
@@ -106,16 +109,32 @@ button{font-family:inherit;}
   padding: 1px 4px;
   border: 1px solid var(--win-border-light);
 }
+
+/* 90s Styled Windows 95 / Arcade Toggle Button */
 .theme-toggle-btn{
   font-family: var(--font-vt);
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: bold;
   background: #C0C0C0;
   color: #000;
   border: 2px solid;
   border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
-  padding: 0 6px;
+  padding: 2px 8px;
   cursor: pointer;
+  box-shadow: 1px 1px 0px #000;
 }
+.theme-toggle-btn:active{
+  border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
+  transform: translate(1px, 1px);
+  box-shadow: none;
+}
+[data-theme="cyber"] .theme-toggle-btn {
+  background: var(--neon-pink);
+  color: var(--neon-yellow);
+  border-color: #FFFF00 #0A0A0A #0A0A0A #FFFF00;
+  text-shadow: 1px 1px 0px #000;
+}
+
 .topbar .sub{
   font-size: 10px;
   color: #00FFFF;
@@ -143,7 +162,7 @@ button{font-family:inherit;}
 }
 h2.section-title{
   font-family: var(--font-disp);
-  font-size: 11px;
+  font-size: 10px;
   margin: 0 0 8px;
   color: var(--win-blue);
   text-shadow: 1px 1px 0px #FFF;
@@ -156,6 +175,7 @@ h2.section-title{
   box-shadow: 2px 2px 0px #000;
   padding: 12px;
   margin-bottom: 12px;
+  position: relative;
 }
 .pill{
   display:inline-flex; align-items:center; gap:4px;
@@ -165,8 +185,8 @@ h2.section-title{
   border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
 }
 .pill.active{
-  background: var(--win-blue);
-  color: #FFF;
+  background: var(--primary-action);
+  color: var(--primary-text);
 }
 .chip{
   display:inline-flex; align-items:center; gap:4px;
@@ -176,8 +196,8 @@ h2.section-title{
   border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light);
 }
 .chip.active{
-  background: var(--win-blue);
-  color: #FFF;
+  background: var(--primary-action);
+  color: var(--primary-text);
 }
 .btn{
   display:inline-flex; align-items:center; justify-content:center; gap:6px;
@@ -192,11 +212,11 @@ h2.section-title{
   border-color: var(--win-border-darkest) var(--win-border-light) var(--win-border-light) var(--win-border-darkest);
   transform: translate(1px, 1px); box-shadow: none;
 }
-.btn-primary{background: var(--win-blue); color: #FFF;}
+.btn-primary{background: var(--primary-action); color: var(--primary-text);}
 .btn-teal{background: #2E6F40; color: #FFF;}
 .btn-gold{background: #D99B26; color: #000;}
 .btn-ghost{background: #E0E0E0; color: #000;}
-.btn-danger{background: #FF0000; color: #FFF;}
+.btn-danger{background: var(--danger-action); color: #FFF;}
 .btn-block{width:100%;}
 .btn-sm{padding: 4px 8px; font-size: 10.5px;}
 
@@ -209,6 +229,42 @@ input[type=text],input[type=number],input[type=url],input[type=date],select,text
 label.field-label{
   display:block; font-size: 10px; font-weight:700; text-transform:uppercase;
   color: var(--win-blue); margin: 8px 0 3px; font-family: var(--font-disp);
+}
+
+/* ---------- Win95 Window Titlebar Simulation for Cards ---------- */
+.win-titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, var(--win-blue), var(--win-blue-lt));
+  color: #FFF;
+  padding: 2px 4px;
+  margin: -12px -12px 10px -12px;
+  font-family: var(--font-disp);
+  font-size: 9px;
+}
+.win-titlebar-controls {
+  display: flex;
+  gap: 2px;
+}
+.win-btn {
+  width: 14px;
+  height: 14px;
+  background: #C0C0C0;
+  color: #000;
+  border: 1px solid;
+  border-color: #FFF #000 #000 #FFF;
+  font-size: 9px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+.win-btn:active {
+  border-color: #000 #FFF #FFF #000;
 }
 
 /* ---------- Taskbar ---------- */
@@ -258,7 +314,7 @@ label.field-label{
   padding:8px; min-height:160px; box-shadow: 2px 2px 0px #000;
 }
 .cal-week-day.today{border-color: var(--win-blue); border-width: 3px;}
-.cal-week-day h3{font-family:var(--font-disp); font-size:10px; margin:0 0 6px; color: var(--win-blue);}
+.cal-week-day h3{font-family:var(--font-disp); font-size:9px; margin:0 0 6px; color: var(--win-blue);}
 .week-meal-row{
   display:flex; justify-content:space-between; align-items:center; gap:6px;
   padding:4px 6px; background:#FFFFEE; color:#000; border: 1px solid var(--win-border-darkest);
@@ -282,7 +338,7 @@ label.field-label{
   position:relative;
 }
 .receipt-head{text-align:center; margin-bottom:8px;}
-.receipt-head .store{font-family:var(--font-disp); font-size:11px; color: var(--win-blue); letter-spacing: 1px;}
+.receipt-head .store{font-family:var(--font-disp); font-size:10px; color: var(--win-blue); letter-spacing: 1px;}
 .receipt-head .meta{font-size:13px; color:#333;}
 .receipt hr{border:none; border-top:2px dashed var(--win-border-darkest); margin:6px 0;}
 .receipt-line{display:flex; align-items:center; gap:6px; padding:3px 0;}
@@ -339,8 +395,8 @@ label.field-label{
     <div class="topbar-header">
       <h1 id="topTitle">HEARTH 95</h1>
       <div class="header-right">
-        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle 90s Theme">🎨 Theme</button>
-        <span class="version-tag">v9.4.7.6</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle 90s Theme">🖥️ 90s Theme</button>
+        <span class="version-tag">v9.4.7.7</span>
       </div>
     </div>
     <div class="sub" id="topSub">90s RETRO MENU BUILDER</div>
@@ -361,7 +417,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_builder_v2';
+const STORE_KEY = 'hearth_v9_win95';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -564,9 +620,16 @@ function load(){
 }
 function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
 
-/* Apply Theme */
 function applyTheme(){
   document.body.setAttribute('data-theme', state.theme || 'retro');
+  const btn = document.getElementById('themeToggleBtn');
+  if(btn){
+    if(state.theme === 'cyber'){
+      btn.textContent = '🕹️ Cyber 90s';
+    } else {
+      btn.textContent = '🖥️ Win95 Retro';
+    }
+  }
 }
 
 /* ============================= SCALING & RECURRING ENGINE ============================= */
@@ -696,7 +759,8 @@ const ICONS = {
   pantry:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 8l8-5 8 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8z"/><path d="M9 21v-6h6v6"/></svg>`,
   budget:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 15c.5 1 1.5 1.5 2.7 1.5 1.7 0 2.8-.9 2.8-2.1 0-3-5.5-1.4-5.5-4.3 0-1.2 1.1-2.1 2.8-2.1 1.2 0 2.2.5 2.7 1.5M12 6.5v11"/></svg>`,
   plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
-  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`
+  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
+  minus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>`
 };
 
 const TABS = [
@@ -737,7 +801,6 @@ function render(){
   subEl.textContent = subs[state.activeTab];
   view.innerHTML='';
 
-  // Hook up theme toggle button
   document.getElementById('themeToggleBtn').onclick = ()=>{
     state.theme = state.theme === 'retro' ? 'cyber' : 'retro';
     save(); render();
@@ -762,8 +825,8 @@ function byType(a,b){ return TYPE_ORDER.indexOf(a.mealType)-TYPE_ORDER.indexOf(b
 function renderCalendarTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `
-    <div style="display:flex; align-items:center; gap:6px; background:#FFFF00; padding:4px 8px; border:2px solid #000;">
-      <span style="font-size:11px; font-weight:700; color:#000;">Servings:</span>
+    <div style="display:flex; align-items:center; gap:6px; background:var(--card-bg); padding:4px 8px; border:2px solid var(--win-border-darkest);">
+      <span style="font-size:11px; font-weight:700;">Servings:</span>
       <input type="number" id="globalServingsInput" value="${state.householdSize}" min="1" max="100" style="width:38px; padding:2px; font-size:12px; font-weight:700; text-align:center; border:2px solid #000; background:#fff;">
     </div>
     <button class="pill ${state.calendarView==='week'?'active':''}" id="viewWeekBtn">Week</button>
@@ -790,7 +853,7 @@ function renderWeekView(view){
   nav.style.marginBottom='10px';
   nav.innerHTML = `
     <button class="btn btn-ghost btn-sm" id="prevWeek">&larr; Prev</button>
-    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid #000; font-size:11px; color:#000;">${niceDate(start)} – ${niceDate(addDays(start,6))}</strong>
+    <strong style="background:var(--card-bg); padding:4px 8px; border:2px solid var(--win-border-darkest); font-size:11px; color:var(--card-text);">${niceDate(start)} – ${niceDate(addDays(start,6))}</strong>
     <button class="btn btn-ghost btn-sm" id="nextWeek">Next &rarr;</button>
   `;
   wrap.appendChild(nav);
@@ -845,7 +908,7 @@ function renderMonthView(view){
   nav.style.marginBottom='10px';
   nav.innerHTML = `
     <button class="btn btn-ghost btn-sm" id="prevMonth">&larr;</button>
-    <strong style="background:#FFFF00; padding:4px 8px; border:2px solid #000; font-size:11px; color:#000;">${anchor.toLocaleDateString(undefined,{month:'long', year:'numeric'})}</strong>
+    <strong style="background:var(--card-bg); padding:4px 8px; border:2px solid var(--win-border-darkest); font-size:11px; color:var(--card-text);">${anchor.toLocaleDateString(undefined,{month:'long', year:'numeric'})}</strong>
     <button class="btn btn-ghost btn-sm" id="nextMonth">&rarr;</button>
   `;
   wrap.appendChild(nav);
@@ -924,14 +987,14 @@ function renderDayDetail(view){
     }).join('');
 
     card.innerHTML = `
-      <div class="row-between">
-        <div style="display:flex; align-items:center; gap:6px;">
-          <span class="type-badge" style="background:${TYPE_COLORS[entry.mealType]}; width:16px;height:16px;font-size:9px;">${TYPE_LABELS[entry.mealType]}</span>
-          <h3 style="font-family:var(--font-disp); margin:0; font-size:10px;">${meal.name} ${entry.recurring?'<span style="font-size:11px;color:#9D00FF;" title="Recurring Rule Active">&#8635;</span>':''}</h3>
+      <div class="win-titlebar">
+        <span>${meal.name} ${entry.recurring?'<span style="color:#00FFFF;" title="Recurring Rule Active">&#8635;</span>':''}</span>
+        <div class="win-titlebar-controls">
+          <button class="win-btn" title="Edit or Manage Rule" data-edit-entry="${entry.id}">-</button>
+          <button class="win-btn" title="Delete Meal" data-remove-entry="${entry.id}">×</button>
         </div>
-        <button class="btn btn-danger btn-sm" style="padding:2px 6px;" title="Delete meal" data-remove-entry="${entry.id}">${ICONS.x}</button>
       </div>
-      <div class="costline" style="margin-top:4px; display:flex; justify-content:space-between; align-items:center;">
+      <div class="costline" style="margin-top:2px; display:flex; justify-content:space-between; align-items:center;">
         <span>$${scaledCost.toFixed(2)} total &middot; $${costPerPerson.toFixed(2)}/p</span>
         <div style="display:flex; align-items:center; gap:4px;">
           <span style="font-size:10.5px; font-weight:700;">Servings:</span>
@@ -963,12 +1026,15 @@ function renderDayDetail(view){
     });
     card.querySelector('[data-remove-entry]').onclick = ()=>{
       if(entry.recurring){
-        openStopRecurringModal(entry);
+        openStopRecurringModal(entry, 'delete');
         return;
       }
       state.entries = state.entries.filter(e=>e.id!==entry.id);
       save(); render();
       showToast('Meal removed');
+    };
+    card.querySelector('[data-edit-entry]').onclick = ()=>{
+      openPlanModal({mealId: entry.mealId, defaultDate: entry.date, existingEntry: entry});
     };
     card.querySelector('[data-add-unchecked]').onclick = ()=>{
       const addedCount = addIngredientsToShoppingListForEntry(meal, entry);
@@ -985,57 +1051,69 @@ function renderDayDetail(view){
   view.appendChild(wrap);
 }
 
-function openStopRecurringModal(entry){
+function openStopRecurringModal(entry, actionType = 'delete'){
+  const isDel = actionType === 'delete';
   openModal(`
-    <h2>Manage Recurring Rule</h2>
-    <p style="font-size:12px; font-weight:700; margin-bottom:12px;">This meal follows a custom recurring schedule. How would you like to delete it?</p>
-    <button class="btn btn-ghost btn-block" id="delOnlyThis" style="margin-bottom:8px; background:#FFFF00;">Delete only this instance</button>
-    <button class="btn btn-danger btn-block" id="delForward" style="margin-bottom:12px;">Stop rule from this date forward</button>
+    <h2>${isDel ? 'Delete Recurring Meal' : 'Edit Recurring Meal'}</h2>
+    <p style="font-size:12px; font-weight:700; margin-bottom:12px;">This meal is part of a recurring schedule. Would you like to affect only this instance or future occurrences?</p>
+    <button class="btn btn-ghost btn-block" id="onlyThis" style="margin-bottom:8px; background:#FFFF00;">Only this instance</button>
+    <button class="btn btn-danger btn-block" id="forward" style="margin-bottom:12px;">From this date forward</button>
     <button class="btn btn-primary btn-block" id="cancelStop">Cancel</button>
   `);
   document.getElementById('cancelStop').onclick = closeModal;
-  document.getElementById('delOnlyThis').onclick = ()=>{
-    state.entries = state.entries.filter(e=>e.id!==entry.id);
+  document.getElementById('onlyThis').onclick = ()=>{
+    if(isDel){
+      state.entries = state.entries.filter(e=>e.id!==entry.id);
+      showToast('Single instance removed');
+    } else {
+      closeModal();
+      openPlanModal({mealId: entry.mealId, defaultDate: entry.date, existingEntry: entry});
+      return;
+    }
     save(); closeModal(); render();
-    showToast('Single instance removed');
   };
-  document.getElementById('delForward').onclick = ()=>{
+  document.getElementById('forward').onclick = ()=>{
     if(!state.entryStops) state.entryStops = [];
     state.entryStops.push({ mealId: entry.mealId, date: entry.date });
     
-    const targetDateObj = new Date(entry.date+'T00:00:00');
-    const dayOfWeek = targetDateObj.getDay();
-    state.entries = state.entries.filter(e => {
-      const eDateObj = new Date(e.date+'T00:00:00');
-      const isSameMeal = e.mealId === entry.mealId;
-      const isSameDayOfWeek = eDateObj.getDay() === dayOfWeek;
-      const isFutureOrToday = eDateObj >= targetDateObj;
-      if(isSameMeal && isSameDayOfWeek && isFutureOrToday) return false;
-      return true;
-    });
-    save(); closeModal(); render();
-    showToast('Recurring rule stopped from this date forward');
+    if(isDel){
+      const targetDateObj = new Date(entry.date+'T00:00:00');
+      const dayOfWeek = targetDateObj.getDay();
+      state.entries = state.entries.filter(e => {
+        const eDateObj = new Date(e.date+'T00:00:00');
+        const isSameMeal = e.mealId === entry.mealId;
+        const isSameDayOfWeek = eDateObj.getDay() === dayOfWeek;
+        const isFutureOrToday = eDateObj >= targetDateObj;
+        if(isSameMeal && isSameDayOfWeek && isFutureOrToday) return false;
+        return true;
+      });
+      showToast('Recurring series stopped from this date forward');
+      save(); closeModal(); render();
+    } else {
+      closeModal();
+      openPlanModal({mealId: entry.mealId, defaultDate: entry.date, existingEntry: entry});
+    }
   };
 }
 
 /* ============================= ADVANCED MENU PLANNER BUILDER ============================= */
-function openPlanModal({mealId=null, defaultDate=null}={}){
+function openPlanModal({mealId=null, defaultDate=null, existingEntry=null}={}){
   if(state.meals.length===0){
     openModal(`<h2>No recipes yet</h2><p>Add a recipe in the Menu tab first.</p><button class="btn btn-primary btn-block" id="closeM">Got it</button>`);
     document.getElementById('closeM').onclick = closeModal;
     return;
   }
   const d0 = defaultDate || state.selectedDate;
-  let selMeal = mealId || state.meals[0].id;
-  let selType = 'dinner';
-  let mealServings = state.householdSize;
-  let isRecurring = false;
-  let selectedDays = [new Date(d0+'T00:00:00').getDay()]; // defaults to clicked day of week
+  let selMeal = mealId || (existingEntry ? existingEntry.mealId : state.meals[0].id);
+  let selType = existingEntry ? existingEntry.mealType : 'dinner';
+  let mealServings = existingEntry ? existingEntry.servings : state.householdSize;
+  let isRecurring = existingEntry ? existingEntry.recurring : false;
+  let selectedDays = existingEntry && existingEntry.daysOfWeek ? [...existingEntry.daysOfWeek] : [new Date(d0+'T00:00:00').getDay()];
 
   const DOW_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   function bodyHtml(){
-    const fixedMealName = mealId ? (state.meals.find(m=>m.id===mealId)||{}).name : null;
+    const fixedMealName = mealId ? (state.meals.find(m=>m.id===selMeal)||{}).name : null;
     return `
       <h2>Menu Planner Builder</h2>
       ${fixedMealName ? `<div class="card" style="padding:6px 10px; margin-bottom:6px;"><strong>${fixedMealName}</strong></div>` :
@@ -1074,7 +1152,7 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
 
       <div style="display:flex; gap:8px; margin-top:14px;">
         <button class="btn btn-ghost btn-block" id="cancelPlan">Cancel</button>
-        <button class="btn btn-primary btn-block" id="confirmPlan">Build & Add Schedule</button>
+        <button class="btn btn-primary btn-block" id="confirmPlan">${existingEntry ? 'Update Schedule' : 'Build & Add Schedule'}</button>
       </div>
     `;
   }
@@ -1116,6 +1194,10 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
     document.getElementById('confirmPlan').onclick = ()=>{
       const targetDateStr = document.getElementById('singleDateInput').value || d0;
       
+      if(existingEntry){
+        state.entries = state.entries.filter(e=>e.id!==existingEntry.id);
+      }
+
       if(isRecurring && selectedDays.length > 0){
         const baseDate = new Date(targetDateStr+'T00:00:00');
         let addedCount = 0;
@@ -1230,19 +1312,18 @@ function updateMealListContainer(container){
     const costPerPerson = scaledCost / state.householdSize;
 
     card.innerHTML = `
-      <div class="row-between">
-        <div style="display:flex; align-items:center; gap:6px;">
-          <span class="type-badge" style="background:${TYPE_COLORS[meal.type||'dinner']}; width:16px;height:16px;font-size:9px;">${TYPE_LABELS[meal.type||'dinner']}</span>
-          <h3>${meal.name}</h3>
+      <div class="win-titlebar">
+        <span>${meal.name}</span>
+        <div class="win-titlebar-controls">
+          <button class="win-btn" title="Edit Recipe" data-edit="${meal.id}">-</button>
+          <button class="win-btn" title="Delete Recipe" data-del="${meal.id}">×</button>
         </div>
-        <button class="iconbtn" title="Edit recipe" data-edit="${meal.id}">&#9998;</button>
       </div>
       <div class="costline">$${scaledCost.toFixed(2)} for ${state.householdSize} people &middot; $${costPerPerson.toFixed(2)}/p</div>
       <div style="margin-top:6px;">${meal.ingredients.map(i=>`<span class="tag">${i.name}</span>`).join('')}</div>
       ${meal.instructionsUrl?`<div style="margin-top:6px;"><a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener">Recipe Source Link &rarr;</a></div>`:''}
       <div style="display:flex; gap:8px; margin-top:10px;">
         <button class="btn btn-teal btn-sm" data-plan="${meal.id}">+ Plan on calendar</button>
-        <button class="btn btn-danger btn-sm" data-del="${meal.id}">Delete</button>
       </div>
     `;
     container.appendChild(card);
