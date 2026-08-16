@@ -443,7 +443,7 @@ label.field-label{
       <h1 id="topTitle">HEARTH 95</h1>
       <div class="header-right">
         <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle 90s Theme">🖥️ Win95</button>
-        <span class="version-tag">v9.4.7.9</span>
+        <span class="version-tag">v9.4.8.0</span>
       </div>
     </div>
     <div class="sub" id="topSub">90s RETRO MENU BUILDER</div>
@@ -464,7 +464,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_perfect';
+const STORE_KEY = 'hearth_v9_complete';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -1051,7 +1051,7 @@ function renderDayDetail(view){
       ${meal.instructionsUrl?`<a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener" style="display:block; margin-top:4px;">Recipe Source &rarr;</a>`:''}
       <div style="margin-top:8px;">${ingHtml}</div>
       <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
-        <button class="btn btn-primary btn-sm" style="flex:1;" data-add-unchecked="${entry.id}">Add unchecked to list</button>
+        <button class="btn btn-teal btn-sm" style="flex:1;" data-add-unchecked="${entry.id}">Add unchecked to list</button>
       </div>
     `;
     wrap.appendChild(card);
@@ -1230,7 +1230,6 @@ function openPlanModal({mealId=null, defaultDate=null, existingEntry=null}={}){
     if(searchBox){
       searchBox.oninput = (e)=>{
         recipeSearchQuery = e.target.value;
-        // Re-render list section without resetting input focus
         const listDiv = document.getElementById('recipePickerList');
         const filtered = state.meals.filter(m => m.name.toLowerCase().includes(recipeSearchQuery.toLowerCase()));
         listDiv.innerHTML = filtered.map(m => `
