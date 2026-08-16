@@ -1,12 +1,12 @@
 // Bump this version string any time you push a new deploy so old
 // clients pick up the change instead of serving a stale cached copy.
-const CACHE_NAME = 'hearth-v40-cache';
+const CACHE_NAME = 'hearth-v4-cache';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 // Install event - cache assets
