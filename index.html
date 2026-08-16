@@ -18,11 +18,11 @@
   --bg:#FAF6F0;
   --card:#FFFFFF;
   --card-line:#EADFD6;
-  --primary:#8B263E;       /* Rich Cranberry Red */
+  --primary:#8B263E;
   --primary-dark:#691A2E;
-  --accent:#2E6F40;        /* Fresh Sage Green */
+  --accent:#2E6F40;
   --accent-dark:#1E4A2A;
-  --gold:#D99B26;          /* Warm Honey Gold */
+  --gold:#D99B26;
   --gold-dark:#A67215;
   --paper-shadow: 0 2px 8px rgba(44,34,30,.06), 0 8px 20px rgba(44,34,30,.04);
   --radius: 16px;
@@ -323,7 +323,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_4';
+const STORE_KEY = 'hearth_v9_5';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -483,23 +483,39 @@ function defaultState(){
     ],
     shoppingList:[],
     pantry:[
-      {id:uid(), key:'rice', name:'rice', qty:5, unit:'lb'},
-      {id:uid(), key:'pasta', name:'pasta', qty:3, unit:'lb'},
-      {id:uid(), key:'eggs', name:'eggs', qty:12, unit:'ea'},
-      {id:uid(), key:'milk', name:'milk', qty:1, unit:'qt'},
-      {id:uid(), key:'butter', name:'butter', qty:8, unit:'oz'},
-      {id:uid(), key:'flour', name:'flour', qty:5, unit:'lb'},
-      {id:uid(), key:'sugar', name:'sugar', qty:4, unit:'lb'},
-      {id:uid(), key:'olive oil', name:'olive oil', qty:16, unit:'oz'},
-      {id:uid(), key:'salt', name:'salt', qty:16, unit:'oz'},
-      {id:uid(), key:'black pepper', name:'black pepper', qty:4, unit:'oz'},
-      {id:uid(), key:'garlic powder', name:'garlic powder', qty:4, unit:'oz'},
-      {id:uid(), key:'onion powder', name:'onion powder', qty:4, unit:'oz'},
+      {id:uid(), key:'rice', name:'rice', qty:10, unit:'lb'},
+      {id:uid(), key:'pasta', name:'pasta', qty:5, unit:'lb'},
+      {id:uid(), key:'macaroni pasta', name:'macaroni pasta', qty:3, unit:'lb'},
+      {id:uid(), key:'flour', name:'flour', qty:10, unit:'lb'},
+      {id:uid(), key:'sugar', name:'sugar', qty:8, unit:'lb'},
+      {id:uid(), key:'rolled oats', name:'rolled oats', qty:3, unit:'lb'},
+      {id:uid(), key:'eggs', name:'eggs', qty:24, unit:'ea'},
+      {id:uid(), key:'milk', name:'milk', qty:2, unit:'qt'},
+      {id:uid(), key:'butter', name:'butter', qty:16, unit:'oz'},
+      {id:uid(), key:'cheddar cheese', name:'cheddar cheese', qty:16, unit:'oz'},
+      {id:uid(), key:'parmesan cheese', name:'parmesan cheese', qty:8, unit:'oz'},
+      {id:uid(), key:'cream cheese', name:'cream cheese', qty:8, unit:'oz'},
+      {id:uid(), key:'yogurt', name:'yogurt', qty:4, unit:'cup'},
+      {id:uid(), key:'olive oil', name:'olive oil', qty:32, unit:'oz'},
+      {id:uid(), key:'salt', name:'salt', qty:32, unit:'oz'},
+      {id:uid(), key:'black pepper', name:'black pepper', qty:8, unit:'oz'},
+      {id:uid(), key:'garlic powder', name:'garlic powder', qty:8, unit:'oz'},
+      {id:uid(), key:'onion powder', name:'onion powder', qty:8, unit:'oz'},
+      {id:uid(), key:'cinnamon', name:'cinnamon', qty:4, unit:'oz'},
       {id:uid(), key:'soy sauce', name:'soy sauce', qty:16, unit:'oz'},
-      {id:uid(), key:'black beans', name:'black beans', qty:4, unit:'ea'},
-      {id:uid(), key:'canned diced tomatoes', name:'canned diced tomatoes', qty:3, unit:'ea'},
-      {id:uid(), key:'bread', name:'bread', qty:1, unit:'ea'},
-      {id:uid(), key:'peanut butter', name:'peanut butter', qty:1, unit:'ea'}
+      {id:uid(), key:'peanut butter', name:'peanut butter', qty:2, unit:'ea'},
+      {id:uid(), key:'jelly', name:'jelly', qty:1, unit:'ea'},
+      {id:uid(), key:'honey', name:'honey', qty:12, unit:'oz'},
+      {id:uid(), key:'black beans', name:'black beans', qty:6, unit:'ea'},
+      {id:uid(), key:'kidney beans', name:'kidney beans', qty:4, unit:'ea'},
+      {id:uid(), key:'canned diced tomatoes', name:'canned diced tomatoes', qty:6, unit:'ea'},
+      {id:uid(), key:'marinara sauce', name:'marinara sauce', qty:3, unit:'ea'},
+      {id:uid(), key:'salsa', name:'salsa', qty:2, unit:'ea'},
+      {id:uid(), key:'chicken broth', name:'chicken broth', qty:4, unit:'qt'},
+      {id:uid(), key:'bread', name:'bread', qty:2, unit:'ea'},
+      {id:uid(), key:'tortillas', name:'tortillas', qty:2, unit:'ea'},
+      {id:uid(), key:'potatoes', name:'potatoes', qty:10, unit:'lb'},
+      {id:uid(), key:'onion', name:'onion', qty:5, unit:'ea'}
     ]
   };
 }
@@ -1379,7 +1395,7 @@ function openShoppingItemEdit(itemId){
 function renderPantryTab(view){
   const controls = document.getElementById('topControls');
   controls.innerHTML = `<button class="pill active" id="addPantryBtn">${ICONS.plus} Add item</button>`;
-  controls.querySelector('#addPantryBtn').onclick = openPantryAddForm;
+  controls.querySelector('#addPantryBtn').onclick = ()=>openPantryForm(null);
 
   const listCard = document.createElement('div');
   listCard.className='card';
@@ -1390,8 +1406,13 @@ function renderPantryTab(view){
     state.pantry.forEach(p=>{
       const row = document.createElement('div');
       row.className='ing-row';
-      row.innerHTML = `<span>${p.name}</span><span class="ing-qty">${fmtQtyUnit(p.qty,p.unit)}</span>
-        <button class="iconbtn" data-rm="${p.id}">${ICONS.x}</button>`;
+      row.innerHTML = `
+        <span>${p.name}</span>
+        <span class="ing-qty">${fmtQtyUnit(p.qty,p.unit)}</span>
+        <button class="iconbtn" title="Edit item" data-edit-pantry="${p.id}">&#9998;</button>
+        <button class="iconbtn" title="Delete item" data-rm="${p.id}">${ICONS.x}</button>
+      `;
+      row.querySelector('[data-edit-pantry]').onclick = ()=>openPantryForm(p.id);
       row.querySelector('[data-rm]').onclick = ()=>{
         state.pantry = state.pantry.filter(x=>x.id!==p.id);
         save(); render();
@@ -1421,28 +1442,48 @@ function renderPantryTab(view){
   view.appendChild(matchCard);
 }
 
-function openPantryAddForm(){
+function openPantryForm(pantryId){
+  const editing = !!pantryId;
+  const item = editing ? state.pantry.find(p=>p.id===pantryId) : { id:uid(), name:'', qty:1, unit:'ea' };
+
   openModal(`
-    <h2>Add pantry item</h2>
-    <label class="field-label">Item</label>
-    <input type="text" id="pName" placeholder="e.g. olive oil">
+    <h2>${editing ? 'Edit pantry item' : 'Add pantry item'}</h2>
+    <label class="field-label">Item name</label>
+    <input type="text" id="pName" placeholder="e.g. olive oil" value="${item.name}">
     <div style="display:flex; gap:10px;">
-      <div style="flex:1;"><label class="field-label">Qty</label><input type="number" id="pQty" step="0.25" value="1"></div>
-      <div style="flex:1;"><label class="field-label">Unit</label><select id="pUnit">${UNIT_LIST.map(u=>`<option value="${u}">${u}</option>`).join('')}</select></div>
+      <div style="flex:1;"><label class="field-label">Qty</label><input type="number" id="pQty" step="0.25" value="${item.qty}"></div>
+      <div style="flex:1;"><label class="field-label">Unit</label><select id="pUnit">${UNIT_LIST.map(u=>`<option value="${u}" ${u===item.unit?'selected':''}>${u}</option>`).join('')}</select></div>
     </div>
     <div style="display:flex; gap:8px; margin-top:16px;">
-      <button class="btn btn-ghost btn-block" id="cancelPantry">Cancel</button>
-      <button class="btn btn-primary btn-block" id="savePantry">Add</button>
+      ${editing ? '<button class="btn btn-danger btn-block" id="deletePantry">Delete</button>' : ''}
+      <button class="btn btn-primary btn-block" id="savePantry">${editing ? 'Save' : 'Add'}</button>
     </div>
   `);
-  document.getElementById('cancelPantry').onclick = closeModal;
+
+  if(editing){
+    document.getElementById('deletePantry').onclick = ()=>{
+      state.pantry = state.pantry.filter(p=>p.id!==pantryId);
+      save(); closeModal(); render();
+      showToast('Item removed from pantry');
+    };
+  }
+
   document.getElementById('savePantry').onclick = ()=>{
     const name = document.getElementById('pName').value.trim();
     const qty = parseFloat(document.getElementById('pQty').value)||0;
     const unit = document.getElementById('pUnit').value;
     if(!name) return;
-    state.pantry.push({id:uid(), key:name.toLowerCase(), name, qty, unit});
+    
+    if(editing){
+      item.name = name;
+      item.key = name.toLowerCase();
+      item.qty = qty;
+      item.unit = unit;
+    } else {
+      state.pantry.push({ id:uid(), key:name.toLowerCase(), name, qty, unit });
+    }
     save(); closeModal(); render();
+    showToast(editing ? 'Pantry item updated' : 'Added to pantry');
   };
 }
 
