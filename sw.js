@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hearth-v9-cache';
+const CACHE_NAME = 'hearth-v10-cache';
 const ASSETS = [
   './',
   './index.html',
