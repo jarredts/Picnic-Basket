@@ -406,7 +406,7 @@ label.field-label{
 .ing-edit-subrow{display:flex; gap:4px; margin-top:3px; align-items:center;}
 .ing-edit-subrow input[type=number]{width:48px; flex:0 0 48px; padding:6px 4px;}
 .ing-edit-subrow select{flex:0 0 58px; padding:6px 2px;}
-.ing-edit-subrow .cost-input{flex:0 0 54px;}
+.ing-edit-subrow .cost-input{flex:0 0 64px;}
 .iconbtn{background:#C0C0C0; border: 2px solid; border-color: var(--win-border-light) var(--win-border-darkest) var(--win-border-darkest) var(--win-border-light); cursor:pointer; font-size:14px; padding:2px 6px;}
 
 #toast{
@@ -429,7 +429,7 @@ label.field-label{
       <h1 id="topTitle">HEARTH 95</h1>
       <div class="header-right">
         <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle 90s Theme">🖥️ Win95</button>
-        <span class="version-tag">v9.4.7.9</span>
+        <span class="version-tag">v9.4.8.0</span>
       </div>
     </div>
     <div class="sub" id="topSub">90s RETRO MENU BUILDER</div>
@@ -471,20 +471,20 @@ const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36
 const todayISO = () => new Date().toISOString().slice(0,10);
 
 const UNITS = {
-  tsp: {cat:'volume', toBase:1,   label:'tsp', type:'volume'},
-  tbsp:{cat:'volume', toBase:3,   label:'tbsp', type:'volume'},
-  cup: {cat:'volume', toBase:48,  label:'cup', type:'volume'},
-  fl_oz:{cat:'volume', toBase:6,  label:'fl oz', type:'volume'},
-  pt:  {cat:'volume', toBase:96,  label:'pt', type:'volume'},
-  qt:  {cat:'volume', toBase:192, label:'qt', type:'volume'},
-  gal: {cat:'volume', toBase:768, label:'gal', type:'volume'},
-  ml:  {cat:'volume', toBase:0.202884, label:'ml', type:'volume'},
-  l:   {cat:'volume', toBase:202.884,  label:'l', type:'volume'},
-  oz:  {cat:'weight', toBase:1,   label:'oz', type:'weight'},
-  lb:  {cat:'weight', toBase:16,  label:'lb', type:'weight'},
-  g:   {cat:'weight', toBase:0.035274, label:'g', type:'weight'},
-  kg:  {cat:'weight', toBase:35.274,  label:'kg', type:'weight'},
-  ea:  {cat:'count',  toBase:1,   label:'ea', type:'count'},
+  tsp: {cat:'volume', toBase:1,   label:'tsp'},
+  tbsp:{cat:'volume', toBase:3,   label:'tbsp'},
+  cup: {cat:'volume', toBase:48,  label:'cup'},
+  fl_oz:{cat:'volume', toBase:6,  label:'fl oz'},
+  pt:  {cat:'volume', toBase:96,  label:'pt'},
+  qt:  {cat:'volume', toBase:192, label:'qt'},
+  gal: {cat:'volume', toBase:768, label:'gal'},
+  ml:  {cat:'volume', toBase:0.202884, label:'ml'},
+  l:   {cat:'volume', toBase:202.884,  label:'l'},
+  oz:  {cat:'weight', toBase:1,   label:'oz'},
+  lb:  {cat:'weight', toBase:16,  label:'lb'},
+  g:   {cat:'weight', toBase:0.035274, label:'g'},
+  kg:  {cat:'weight', toBase:35.274,  label:'kg'},
+  ea:  {cat:'count',  toBase:1,   label:'ea'},
 };
 const UNIT_LIST = Object.keys(UNITS);
 
@@ -498,65 +498,65 @@ function getTypeColor(type) {
 
 function defaultState(){
   const b1 = { id:uid(), type:'breakfast', name:'Overnight Peanut Butter Oats', servings:4, costTotal:3.20, instructionsUrl:'https://www.budgetbytes.com/peanut-butter-overnight-oats/', ingredients:[
-    {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20, costPricePerUnit:0}, {id:uid(), name:'milk', qty:2, unit:'cup', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:1.00, costPricePerUnit:0}
+    {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'milk', qty:2, unit:'cup', cost:1.00}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:1.00}
   ]};
   const b2 = { id:uid(), type:'breakfast', name:'Scrambled Eggs & Toast', servings:4, costTotal:2.80, instructionsUrl:'https://www.allrecipes.com/recipe/23971/fluffy-scrambled-eggs/', ingredients:[
-    {id:uid(), name:'eggs', qty:8, unit:'ea', cost:2.00, costPricePerUnit:0}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80, costPricePerUnit:0}
+    {id:uid(), name:'eggs', qty:8, unit:'ea', cost:2.00}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80}
   ]};
   const b3 = { id:uid(), type:'breakfast', name:'Classic Pancakes', servings:4, costTotal:2.20, instructionsUrl:'https://www.allrecipes.com/recipe/21014/good-old-fashioned-pancakes/', ingredients:[
-    {id:uid(), name:'flour', qty:2, unit:'cup', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50, costPricePerUnit:0}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50, costPricePerUnit:0}, {id:uid(), name:'sugar', qty:2, unit:'tbsp', cost:0.40, costPricePerUnit:0}
+    {id:uid(), name:'flour', qty:2, unit:'cup', cost:0.80}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50}, {id:uid(), name:'sugar', qty:2, unit:'tbsp', cost:0.40}
   ]};
   const b4 = { id:uid(), type:'breakfast', name:'Cinnamon French Toast', servings:4, costTotal:3.10, instructionsUrl:'https://www.allrecipes.com/recipe/7018/french-toast-i/', ingredients:[
-    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60, costPricePerUnit:0}, {id:uid(), name:'eggs', qty:3, unit:'ea', cost:0.75, costPricePerUnit:0}, {id:uid(), name:'milk', qty:0.5, unit:'cup', cost:0.50, costPricePerUnit:0}, {id:uid(), name:'cinnamon', qty:1, unit:'tbsp', cost:0.25, costPricePerUnit:0}
+    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'eggs', qty:3, unit:'ea', cost:0.75}, {id:uid(), name:'milk', qty:0.5, unit:'cup', cost:0.50}, {id:uid(), name:'cinnamon', qty:1, unit:'tbsp', cost:0.25}
   ]};
   const b5 = { id:uid(), type:'breakfast', name:'Banana Oatmeal Porridge', servings:4, costTotal:2.00, instructionsUrl:'https://www.budgetbytes.com/cinnamon-apple-oatmeal/', ingredients:[
-    {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20, costPricePerUnit:0}, {id:uid(), name:'bananas', qty:2, unit:'ea', cost:0.60, costPricePerUnit:0}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.20, costPricePerUnit:0}
+    {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'bananas', qty:2, unit:'ea', cost:0.60}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.20}
   ]};
   const b6 = { id:uid(), type:'breakfast', name:'Breakfast Egg & Cheese Burritos', servings:4, costTotal:4.50, instructionsUrl:'https://www.budgetbytes.com/freezer-breakfast-burritos/', ingredients:[
-    {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50, costPricePerUnit:0}, {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50, costPricePerUnit:0}, {id:uid(), name:'salsa', qty:0.5, unit:'cup', cost:0.50, costPricePerUnit:0}
+    {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50}, {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50}, {id:uid(), name:'salsa', qty:0.5, unit:'cup', cost:0.50}
   ]};
   const b7 = { id:uid(), type:'breakfast', name:'Cheesy Scrambled Egg Toast', servings:2, costTotal:2.10, instructionsUrl:'https://www.allrecipes.com/recipe/23971/fluffy-scrambled-eggs/', ingredients:[
-    {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'bread', qty:2, unit:'ea', cost:0.30, costPricePerUnit:0}
+    {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.80}, {id:uid(), name:'bread', qty:2, unit:'ea', cost:0.30}
   ]};
   const b8 = { id:uid(), type:'breakfast', name:'Bagels & Cream Cheese', servings:4, costTotal:3.50, instructionsUrl:'https://www.seriouseats.com/homemade-bagels-recipe', ingredients:[
-    {id:uid(), name:'bagels', qty:4, unit:'ea', cost:2.50, costPricePerUnit:0}, {id:uid(), name:'cream cheese', qty:4, unit:'oz', cost:1.00, costPricePerUnit:0}
+    {id:uid(), name:'bagels', qty:4, unit:'ea', cost:2.50}, {id:uid(), name:'cream cheese', qty:4, unit:'oz', cost:1.00}
   ]};
   const b9 = { id:uid(), type:'breakfast', name:'Yogurt & Honey Granola Bowl', servings:3, costTotal:4.20, instructionsUrl:'https://www.budgetbytes.com/yogurt-parfait/', ingredients:[
-    {id:uid(), name:'yogurt', qty:3, unit:'cup', cost:2.50, costPricePerUnit:0}, {id:uid(), name:'granola', qty:1.5, unit:'cup', cost:1.20, costPricePerUnit:0}, {id:uid(), name:'honey', qty:2, unit:'tbsp', cost:0.50, costPricePerUnit:0}
+    {id:uid(), name:'yogurt', qty:3, unit:'cup', cost:2.50}, {id:uid(), name:'granola', qty:1.5, unit:'cup', cost:1.20}, {id:uid(), name:'honey', qty:2, unit:'tbsp', cost:0.50}
   ]};
   const b10 = { id:uid(), type:'breakfast', name:'Loaded Breakfast Potato Hash', servings:4, costTotal:3.80, instructionsUrl:'https://www.budgetbytes.com/skillet-breakfast-hash/', ingredients:[
-    {id:uid(), name:'potatoes', qty:4, unit:'ea', cost:2.00, costPricePerUnit:0}, {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'onion', qty:1, unit:'ea', cost:0.80, costPricePerUnit:0}
+    {id:uid(), name:'potatoes', qty:4, unit:'ea', cost:2.00}, {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'onion', qty:1, unit:'ea', cost:0.80}
   ]};
 
   const l1 = { id:uid(), type:'lunch', name:'Classic Peanut Butter & Jelly', servings:4, costTotal:2.50, instructionsUrl:'https://www.allrecipes.com/recipe/238712/peanut-butter-and-jelly-sandwich/', ingredients:[
-    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60, costPricePerUnit:0}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:0.60, costPricePerUnit:0}, {id:uid(), name:'jelly', qty:4, unit:'tbsp', cost:0.30, costPricePerUnit:0}
+    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:0.60}, {id:uid(), name:'jelly', qty:4, unit:'tbsp', cost:0.30}
   ]};
   const l2 = { id:uid(), type:'lunch', name:'Tuna Salad Sandwiches', servings:4, costTotal:4.20, instructionsUrl:'https://www.allrecipes.com/recipe/14352/classic-tuna-salad/', ingredients:[
-    {id:uid(), name:'canned tuna', qty:2, unit:'ea', cost:3.00, costPricePerUnit:0}, {id:uid(), name:'mayo', qty:4, unit:'tbsp', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.40, costPricePerUnit:0}
+    {id:uid(), name:'canned tuna', qty:2, unit:'ea', cost:3.00}, {id:uid(), name:'mayo', qty:4, unit:'tbsp', cost:0.80}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.40}
   ]};
   const l3 = { id:uid(), type:'lunch', name:'Grilled Cheese & Tomato Soup', servings:4, costTotal:4.80, instructionsUrl:'https://www.budgetbytes.com/classic-grilled-cheese-tomato-soup/', ingredients:[
-    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20, costPricePerUnit:0}, {id:uid(), name:'canned tomato soup', qty:2, unit:'ea', cost:1.00, costPricePerUnit:0}
+    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'canned tomato soup', qty:2, unit:'ea', cost:1.00}
   ]};
   const l4 = { id:uid(), type:'lunch', name:'Black Bean & Rice Bowls', servings:4, costTotal:3.60, instructionsUrl:'https://www.budgetbytes.com/southwest-black-bean-rice-bowls/', ingredients:[
-    {id:uid(), name:'black beans', qty:2, unit:'ea', cost:1.40, costPricePerUnit:0}, {id:uid(), name:'rice', qty:2, unit:'cup', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'salsa', qty:1, unit:'cup', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.60, costPricePerUnit:0}
+    {id:uid(), name:'black beans', qty:2, unit:'ea', cost:1.40}, {id:uid(), name:'rice', qty:2, unit:'cup', cost:0.80}, {id:uid(), name:'salsa', qty:1, unit:'cup', cost:0.80}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.60}
   ]};
   const l5 = { id:uid(), type:'lunch', name:'Egg Salad Sandwiches', servings:4, costTotal:3.20, instructionsUrl:'https://www.allrecipes.com/recipe/14725/classic-egg-salad/', ingredients:[
-    {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50, costPricePerUnit:0}, {id:uid(), name:'mayo', qty:3, unit:'tbsp', cost:0.60, costPricePerUnit:0}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80, costPricePerUnit:0}, {id:uid(), name:'mustard', qty:1, unit:'tbsp', cost:0.30, costPricePerUnit:0}
+    {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50}, {id:uid(), name:'mayo', qty:3, unit:'tbsp', cost:0.60}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80}, {id:uid(), name:'mustard', qty:1, unit:'tbsp', cost:0.30}
   ]};
   const l6 = { id:uid(), type:'lunch', name:'Turkey & Cheese Wraps', servings:4, costTotal:5.50, instructionsUrl:'https://www.allrecipes.com/recipe/222146/turkey-wrap/', ingredients:[
-    {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'sliced turkey', qty:8, unit:'oz', cost:3.00, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50, costPricePerUnit:0}
+    {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'sliced turkey', qty:8, unit:'oz', cost:3.00}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50}
   ]};
   const l7 = { id:uid(), type:'lunch', name:'Quick Ramen & Soft Egg', servings:2, costTotal:2.20, instructionsUrl:'https://www.budgetbytes.com/upgraded-ramen/', ingredients:[
-    {id:uid(), name:'instant ramen', qty:2, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50, costPricePerUnit:0}, {id:uid(), name:'frozen vegetables', qty:1, unit:'cup', cost:0.70, costPricePerUnit:0}
+    {id:uid(), name:'instant ramen', qty:2, unit:'ea', cost:1.00}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50}, {id:uid(), name:'frozen vegetables', qty:1, unit:'cup', cost:0.70}
   ]};
   const l8 = { id:uid(), type:'lunch', name:'Hummus & Veggie Pita Pockets', servings:3, costTotal:4.50, instructionsUrl:'https://www.budgetbytes.com/mediterranean-veggie-pitas/', ingredients:[
-    {id:uid(), name:'pita bread', qty:3, unit:'ea', cost:1.80, costPricePerUnit:0}, {id:uid(), name:'hummus', qty:1, unit:'cup', cost:2.00, costPricePerUnit:0}, {id:uid(), name:'cucumber', qty:1, unit:'ea', cost:0.70, costPricePerUnit:0}
+    {id:uid(), name:'pita bread', qty:3, unit:'ea', cost:1.80}, {id:uid(), name:'hummus', qty:1, unit:'cup', cost:2.00}, {id:uid(), name:'cucumber', qty:1, unit:'ea', cost:0.70}
   ]};
   const l9 = { id:uid(), type:'lunch', name:'Loaded Macaroni & Cheese', servings:4, costTotal:3.40, instructionsUrl:'https://www.budgetbytes.com/extra-creamy-homemade-mac-and-cheese/', ingredients:[
-    {id:uid(), name:'macaroni pasta', qty:12, unit:'oz', cost:1.20, costPricePerUnit:0}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:1.70, costPricePerUnit:0}
+    {id:uid(), name:'macaroni pasta', qty:12, unit:'oz', cost:1.20}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:1.70}
   ]};
   const l10 = { id:uid(), type:'lunch', name:'Quesadillas with Beans & Cheese', servings:4, costTotal:3.80, instructionsUrl:'https://www.budgetbytes.com/cheesy-black-bean-quesadillas/', ingredients:[
-    {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00, costPricePerUnit:0}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20, costPricePerUnit:0}, {id:uid(), name:'black beans', qty:1, unit:'ea', cost:0.60, costPricePerUnit:0}
+    {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'black beans', qty:1, unit:'ea', cost:0.60}
   ]};
 
   const dinners = [
@@ -609,7 +609,7 @@ function defaultState(){
     servings: 4,
     costTotal: d.cost,
     instructionsUrl: d.link,
-    ingredients: d.ing.map(i => ({ id: uid(), name: i.n, qty: i.q, unit: i.u, cost: i.c, costPricePerUnit: 0 }))
+    ingredients: d.ing.map(i => ({ id: uid(), name: i.n, qty: i.q, unit: i.u, cost: i.c }))
   }));
 
   const breakfasts = [b1,b2,b3,b4,b5,b6,b7,b8,b9,b10];
@@ -637,22 +637,22 @@ function defaultState(){
     entryStops: [],
     shoppingList:[],
     pantry:[
-      {id:uid(), key:'rice', name:'rice', qty:10, unit:'lb'},
-      {id:uid(), key:'pasta', name:'pasta', qty:5, unit:'lb'},
-      {id:uid(), key:'flour', name:'flour', qty:10, unit:'lb'},
-      {id:uid(), key:'sugar', name:'sugar', qty:8, unit:'lb'},
-      {id:uid(), key:'rolled oats', name:'rolled oats', qty:3, unit:'lb'},
-      {id:uid(), key:'eggs', name:'eggs', qty:24, unit:'ea'},
-      {id:uid(), key:'milk', name:'milk', qty:2, unit:'qt'},
-      {id:uid(), key:'butter', name:'butter', qty:16, unit:'oz'},
-      {id:uid(), key:'cheddar cheese', name:'cheddar cheese', qty:16, unit:'oz'},
-      {id:uid(), key:'olive oil', name:'olive oil', qty:32, unit:'oz'},
-      {id:uid(), key:'salt', name:'salt', qty:32, unit:'oz'},
-      {id:uid(), key:'bread', name:'bread', qty:2, unit:'ea'},
-      {id:uid(), key:'peanut butter', name:'peanut butter', qty:2, unit:'ea'},
-      {id:uid(), key:'jelly', name:'jelly', qty:1, unit:'ea'},
-      {id:uid(), key:'potatoes', name:'potatoes', qty:10, unit:'lb'},
-      {id:uid(), key:'onion', name:'onion', qty:5, unit:'ea'}
+      {id:uid(), key:'rice', name:'rice', qty:10, unit:'lb', costPrice:0},
+      {id:uid(), key:'pasta', name:'pasta', qty:5, unit:'lb', costPrice:0},
+      {id:uid(), key:'flour', name:'flour', qty:10, unit:'lb', costPrice:0},
+      {id:uid(), key:'sugar', name:'sugar', qty:8, unit:'lb', costPrice:0},
+      {id:uid(), key:'rolled oats', name:'rolled oats', qty:3, unit:'lb', costPrice:0.083},
+      {id:uid(), key:'eggs', name:'eggs', qty:24, unit:'ea', costPrice:0},
+      {id:uid(), key:'milk', name:'milk', qty:2, unit:'qt', costPrice:0},
+      {id:uid(), key:'butter', name:'butter', qty:16, unit:'oz', costPrice:0},
+      {id:uid(), key:'cheddar cheese', name:'cheddar cheese', qty:16, unit:'oz', costPrice:0},
+      {id:uid(), key:'olive oil', name:'olive oil', qty:32, unit:'oz', costPrice:0},
+      {id:uid(), key:'salt', name:'salt', qty:32, unit:'oz', costPrice:0},
+      {id:uid(), key:'bread', name:'bread', qty:2, unit:'ea', costPrice:0},
+      {id:uid(), key:'peanut butter', name:'peanut butter', qty:2, unit:'ea', costPrice:0},
+      {id:uid(), key:'jelly', name:'jelly', qty:1, unit:'ea', costPrice:0},
+      {id:uid(), key:'potatoes', name:'potatoes', qty:10, unit:'lb', costPrice:0},
+      {id:uid(), key:'onion', name:'onion', qty:5, unit:'ea', costPrice:0}
     ]
   };
 }
@@ -676,15 +676,7 @@ function load(){
     merged.theme = parsed.theme || def.theme;
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, daysOfWeek:[], ...e}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
-    merged.pantry = (merged.pantry||[]).map(p=>({restockQty:p.qty, restockUnit:p.unit, ...p}));
-    // Ensure costPricePerUnit exists on all recipe ingredients
-    merged.meals.forEach(m => {
-      if(m.ingredients) {
-        m.ingredients.forEach(i => {
-          if(i.costPricePerUnit === undefined) i.costPricePerUnit = 0;
-        });
-      }
-    });
+    merged.pantry = (merged.pantry||[]).map(p=>({restockQty:p.qty, restockUnit:p.unit, costPrice:p.costPrice||0, ...p}));
     return merged;
   }catch(e){ return defaultState(); }
 }
@@ -731,54 +723,88 @@ function applyTheme(){
   }
 }
 
-/* ============================= SCALING & RULE ENGINE ============================= */
+/* ============================= SCALING & COST CALCULATION ============================= */
 function getEntryServings(entry){
   return entry.servings !== undefined ? entry.servings : state.householdSize;
 }
+
+function getPantryItem(name){
+  if(!name) return null;
+  const key = name.trim().toLowerCase();
+  return state.pantry.find(p => (p.key || p.name.toLowerCase()) === key);
+}
+
 function getScaledMealCostForEntry(meal, entry){
-  // Calculate cost dynamically from ingredients if costPricePerUnit is set, else fall back to scaled total cost
-  let calculatedCost = 0;
-  let hasUnitCost = false;
   const baseServings = meal.servings || 4;
   const scale = getEntryServings(entry) / baseServings;
+  
+  let totalCost = 0;
+  let useManual = false;
 
   meal.ingredients.forEach(ing => {
-    if(ing.costPricePerUnit && ing.costPricePerUnit > 0) {
-      hasUnitCost = true;
-      calculatedCost += (ing.qty * scale) * ing.costPricePerUnit;
+    const pantryMatch = getPantryItem(ing.name);
+    const scaledQty = ing.qty * scale;
+    if(pantryMatch && pantryMatch.costPrice > 0) {
+      useManual = true;
+      // Convert ingredient unit base to pantry unit base if possible or calculate directly
+      const ingBase = toBase(scaledQty, ing.unit);
+      const pantryUnitObj = UNITS[pantryMatch.unit] || {toBase:1};
+      const pantryQtyEquivalent = ingBase / pantryUnitObj.toBase;
+      totalCost += pantryQtyEquivalent * pantryMatch.costPrice;
+    } else if (ing.cost > 0) {
+      useManual = true;
+      totalCost += (ing.cost / baseServings) * getEntryServings(entry);
     }
   });
 
-  if(hasUnitCost) return calculatedCost;
+  if(useManual && totalCost > 0) return totalCost;
   const costPerPerson = (meal.costTotal || 0) / baseServings;
   return costPerPerson * getEntryServings(entry);
 }
+
 function getScaledQtyForEntry(qty, meal, entry){
   const baseServings = meal.servings || 4;
   return qty * (getEntryServings(entry) / baseServings);
 }
+
 function getScaledIngredientCostForEntry(ing, meal, entry){
   const baseServings = meal.servings || 4;
   const scale = getEntryServings(entry) / baseServings;
-  if(ing.costPricePerUnit && ing.costPricePerUnit > 0) {
-    return (ing.qty * scale) * ing.costPricePerUnit;
+  const pantryMatch = getPantryItem(ing.name);
+  const scaledQty = ing.qty * scale;
+  
+  if(pantryMatch && pantryMatch.costPrice > 0) {
+    const ingBase = toBase(scaledQty, ing.unit);
+    const pantryUnitObj = UNITS[pantryMatch.unit] || {toBase:1};
+    return (ingBase / pantryUnitObj.toBase) * pantryMatch.costPrice;
   }
-  const costPerPerson = (ing.cost || 0) / baseServings;
-  return costPerPerson * getEntryServings(entry);
+  if(ing.cost > 0) {
+    return (ing.cost / baseServings) * getEntryServings(entry);
+  }
+  return 0;
 }
+
 function getScaledMealCost(meal){
-  let calculatedCost = 0;
-  let hasUnitCost = false;
   const baseServings = meal.servings || 4;
+  const scale = state.householdSize / baseServings;
+  let totalCost = 0;
+  let useManual = false;
 
   meal.ingredients.forEach(ing => {
-    if(ing.costPricePerUnit && ing.costPricePerUnit > 0) {
-      hasUnitCost = true;
-      calculatedCost += (ing.qty * (state.householdSize / baseServings)) * ing.costPricePerUnit;
+    const pantryMatch = getPantryItem(ing.name);
+    const scaledQty = ing.qty * scale;
+    if(pantryMatch && pantryMatch.costPrice > 0) {
+      useManual = true;
+      const ingBase = toBase(scaledQty, ing.unit);
+      const pantryUnitObj = UNITS[pantryMatch.unit] || {toBase:1};
+      totalCost += (ingBase / pantryUnitObj.toBase) * pantryMatch.costPrice;
+    } else if (ing.cost > 0) {
+      useManual = true;
+      totalCost += (ing.cost / baseServings) * state.householdSize;
     }
   });
 
-  if(hasUnitCost) return calculatedCost;
+  if(useManual && totalCost > 0) return totalCost;
   const costPerPerson = (meal.costTotal || 0) / baseServings;
   return costPerPerson * state.householdSize;
 }
@@ -844,31 +870,6 @@ function displayFromBase(cat, baseQty){
   return {qty: round4(baseQty), unit:'tsp'};
 }
 
-// Cross-category conversion helper for Pantry deduction / matching
-function convertBase(baseQty, fromCat, toCat, targetUnit) {
-  // If categories match or we can convert between volume and weight approx (water density 1g/ml = 1 oz/fl_oz roughly)
-  if (fromCat === toCat) {
-    if (toCat === 'weight') {
-      if (targetUnit === 'lb') return baseQty / 16;
-      if (targetUnit === 'g') return baseQty / UNITS.g.toBase;
-      if (targetUnit === 'kg') return baseQty / UNITS.kg.toBase;
-      return baseQty; // oz
-    }
-    if (toCat === 'volume') {
-      if (targetUnit === 'cup') return baseQty / UNITS.cup.toBase;
-      if (targetUnit === 'qt') return baseQty / UNITS.qt.toBase;
-      if (targetUnit === 'gal') return baseQty / UNITS.gal.toBase;
-      if (targetUnit === 'tbsp') return baseQty / UNITS.tbsp.toBase;
-      if (targetUnit === 'tsp') return baseQty / UNITS.tsp.toBase;
-      if (targetUnit === 'ml') return baseQty / UNITS.ml.toBase;
-      if (targetUnit === 'l') return baseQty / UNITS.l.toBase;
-      return baseQty; // tsp base
-    }
-    return baseQty;
-  }
-  return baseQty;
-}
-
 function round4(n){
   const r = Math.round(n*4)/4;
   return r % 1 === 0 ? r : Math.round(r*100)/100;
@@ -876,8 +877,7 @@ function round4(n){
 function fmtQtyUnit(qty, unit){ return `${round4(qty)} ${unit}`; }
 
 function deductPantryForIngredient(ingName, scaledQty, ingUnit) {
-  const key = ingName.trim().toLowerCase();
-  const pantryItem = state.pantry.find(p => (p.key || p.name.toLowerCase()) === key);
+  const pantryItem = getPantryItem(ingName);
   if(!pantryItem) return;
 
   const ingUnitObj = UNITS[ingUnit] || {cat:'count', toBase:1};
@@ -889,7 +889,6 @@ function deductPantryForIngredient(ingName, scaledQty, ingUnit) {
   const newBase = Math.max(0, currentPantryBase - neededBase);
   const converted = displayFromBase(pantryUnitObj.cat, newBase);
   
-  // Keep original pantry unit if categories match and it's clean, otherwise update
   if(pantryUnitObj.cat === ingUnitObj.cat) {
     pantryItem.qty = Math.max(0, pantryItem.qty - (neededBase / pantryUnitObj.toBase));
   } else {
@@ -939,8 +938,7 @@ function addPantryItemToShoppingList(p){
 }
 
 function pantryHas(name){
-  const key = name.trim().toLowerCase();
-  return state.pantry.find(p=>(p.key||p.name.toLowerCase())===key);
+  return !!getPantryItem(name);
 }
 function mealMatchPct(meal){
   if(!meal.ingredients.length) return 0;
@@ -1220,7 +1218,6 @@ function renderDayDetail(view){
         const ingObj = meal.ingredients.find(i => i.id === ingId);
         if(cb.checked){
           if(!entry.checked.includes(ingId)) entry.checked.push(ingId);
-          // Deduct from pantry when checked off
           if(ingObj) {
             const scaledQty = getScaledQtyForEntry(ingObj.qty, meal, entry);
             deductPantryForIngredient(ingObj.name, scaledQty, ingObj.unit);
@@ -1576,7 +1573,7 @@ function openMealForm(mealId){
   const meal = editing ? state.meals.find(m=>m.id===mealId) : {
     id:uid(), type:'dinner', name:'', servings:4, costTotal:0, instructionsUrl:'', ingredients:[]
   };
-  let draftIngredients = meal.ingredients.map(i=>({costPricePerUnit:0, ...i}));
+  let draftIngredients = meal.ingredients.map(i=>({...i}));
 
   function ingredientRowHtml(ing){
     return `
@@ -1587,8 +1584,7 @@ function openMealForm(mealId){
           <select data-ing-unit="${ing.id}">
             ${UNIT_LIST.map(u=>`<option value="${u}" ${u===ing.unit?'selected':''}>${u}</option>`).join('')}
           </select>
-          <input type="number" class="cost-input" step="0.001" min="0" placeholder="$/unit" value="${ing.costPricePerUnit||''}" data-ing-cppu="${ing.id}" title="Cost price per unit (e.g. $0.083/oz)">
-          <input type="number" class="cost-input" step="0.01" min="0" placeholder="total $" value="${ing.cost||''}" data-ing-cost="${ing.id}" title="Total item cost">
+          <input type="number" class="cost-input" step="0.01" min="0" placeholder="total $" value="${ing.cost||''}" data-ing-cost="${ing.id}">
           <button class="iconbtn" data-ing-remove="${ing.id}">${ICONS.x}</button>
         </div>
       </div>`;
@@ -1618,7 +1614,7 @@ function openMealForm(mealId){
       <input type="number" id="mCost" value="${meal.costTotal||''}" step="0.01" min="0">
       <label class="field-label">Recipe Source Link</label>
       <input type="url" id="mLink" value="${meal.instructionsUrl}" placeholder="https://...">
-      <label class="field-label">Ingredients (with Cost/Unit option)</label>
+      <label class="field-label">Ingredients (Costs pull from Pantry unit prices)</label>
       <div id="ingRows">${draftIngredients.map(ingredientRowHtml).join('')}</div>
       <button class="btn btn-ghost btn-sm" id="addIngRow" style="margin-top:4px;">${ICONS.plus} Add ingredient</button>
       <div style="display:flex; gap:8px; margin-top:14px;">
@@ -1634,7 +1630,7 @@ function openMealForm(mealId){
   function wireMealForm(){
     document.getElementById('cancelMeal').onclick = closeModal;
     document.getElementById('addIngRow').onclick = ()=>{
-      const newIng = {id:uid(), name:'', qty:1, unit:'oz', cost:0, costPricePerUnit:0};
+      const newIng = {id:uid(), name:'', qty:1, unit:'oz', cost:0};
       draftIngredients.push(newIng);
       document.getElementById('ingRows').insertAdjacentHTML('beforeend', ingredientRowHtml(newIng));
       wireIngRow(newIng.id);
@@ -1647,20 +1643,7 @@ function openMealForm(mealId){
       meal.name = name;
       meal.type = document.getElementById('mType').value;
       meal.servings = parseFloat(document.getElementById('mServings').value) || 4;
-      
-      // Calculate total cost automatically if unit costs are present
-      let autoTotalCost = 0;
-      let hasUnitCosts = false;
-      draftIngredients.forEach(i => {
-        if(i.costPricePerUnit && i.costPricePerUnit > 0) {
-          hasUnitCosts = true;
-          autoTotalCost += i.qty * i.costPricePerUnit;
-        } else {
-          autoTotalCost += (i.cost || 0);
-        }
-      });
-
-      meal.costTotal = hasUnitCosts ? autoTotalCost : (parseFloat(document.getElementById('mCost').value) || 0);
+      meal.costTotal = parseFloat(document.getElementById('mCost').value) || 0;
       meal.instructionsUrl = document.getElementById('mLink').value.trim();
       meal.ingredients = draftIngredients.filter(i=>i.name.trim()!=='');
       if(!editing) state.meals.push(meal);
@@ -1671,29 +1654,12 @@ function openMealForm(mealId){
     const nameEl = document.querySelector(`[data-ing-name="${id}"]`);
     const qtyEl = document.querySelector(`[data-ing-qty="${id}"]`);
     const unitEl = document.querySelector(`[data-ing-unit="${id}"]`);
-    const cppuEl = document.querySelector(`[data-ing-cppu="${id}"]`);
     const costEl = document.querySelector(`[data-ing-cost="${id}"]`);
     const rmEl = document.querySelector(`[data-ing-remove="${id}"]`);
     const target = ()=>draftIngredients.find(i=>i.id===id);
-
     nameEl.oninput = ()=>{ target().name = nameEl.value; };
-    qtyEl.oninput = ()=>{ 
-      target().qty = parseFloat(qtyEl.value)||0; 
-      const t = target();
-      if(t.costPricePerUnit > 0) {
-        t.cost = t.qty * t.costPricePerUnit;
-        if(costEl) costEl.value = t.cost.toFixed(2);
-      }
-    };
+    qtyEl.oninput = ()=>{ target().qty = parseFloat(qtyEl.value)||0; };
     unitEl.onchange = ()=>{ target().unit = unitEl.value; };
-    cppuEl.oninput = ()=>{ 
-      target().costPricePerUnit = parseFloat(cppuEl.value)||0; 
-      const t = target();
-      if(t.costPricePerUnit > 0) {
-        t.cost = t.qty * t.costPricePerUnit;
-        if(costEl) costEl.value = t.cost.toFixed(2);
-      }
-    };
     costEl.oninput = ()=>{ target().cost = parseFloat(costEl.value)||0; };
     rmEl.onclick = ()=>{
       draftIngredients = draftIngredients.filter(i=>i.id!==id);
@@ -1846,7 +1812,7 @@ function renderPantryTab(view){
 
   const listCard = document.createElement('div');
   listCard.className='card';
-  listCard.innerHTML = `<h2 class="section-title">On Hand Inventory (Manual Override)</h2>`;
+  listCard.innerHTML = `<h2 class="section-title">On Hand Inventory & Cost Prices</h2>`;
   if(state.pantry.length===0){
     listCard.innerHTML += `<div class="empty">Pantry is empty.</div>`;
   } else {
@@ -1854,13 +1820,16 @@ function renderPantryTab(view){
       const row = document.createElement('div');
       row.className='ing-row';
       row.innerHTML = `
-        <span style="flex:1;">${p.name}</span>
+        <span style="flex:1;">
+          <strong>${p.name}</strong><br>
+          <span style="font-size:10px; color:#555;">Cost: $${(p.costPrice||0).toFixed(3)}/${p.unit}</span>
+        </span>
         <span class="ing-qty" style="display:flex; align-items:center; gap:4px;">
           <input type="number" step="0.25" value="${p.qty}" data-quick-qty="${p.id}" style="width:52px; padding:2px; font-size:11px; text-align:center;">
           <span>${p.unit}</span>
         </span>
         <button class="iconbtn" title="Add restock to shopping list" style="background:#2E6F40; color:#FFF;" data-add-list="${p.id}">${ICONS.plus}</button>
-        <button class="iconbtn" title="Edit item" data-edit-pantry="${p.id}">&#9998;</button>
+        <button class="iconbtn" title="Edit item & unit cost" data-edit-pantry="${p.id}">&#9998;</button>
         <button class="iconbtn" title="Delete item" style="background:#FF0000; color:#FFF;" data-rm="${p.id}">${ICONS.x}</button>
       `;
       row.querySelector(`[data-quick-qty="${p.id}"]`).onchange = (e)=>{
@@ -1904,16 +1873,18 @@ function renderPantryTab(view){
 
 function openPantryForm(pantryId){
   const editing = !!pantryId;
-  const item = editing ? state.pantry.find(p=>p.id===pantryId) : { id:uid(), name:'', qty:1, unit:'oz', restockQty:1, restockUnit:'oz' };
+  const item = editing ? state.pantry.find(p=>p.id===pantryId) : { id:uid(), name:'', qty:1, unit:'oz', costPrice:0, restockQty:1, restockUnit:'oz' };
 
   openModal(`
     <h2>${editing ? 'Edit Pantry Item' : 'Add Pantry Item'}</h2>
     <label class="field-label">Item Name</label>
-    <input type="text" id="pName" placeholder="e.g. olive oil" value="${item.name}">
+    <input type="text" id="pName" placeholder="e.g. rolled oats" value="${item.name}">
     <div style="display:flex; gap:8px;">
       <div style="flex:1;"><label class="field-label">On-Hand Qty</label><input type="number" id="pQty" step="0.25" value="${item.qty}"></div>
-      <div style="flex:1;"><label class="field-label">Unit (Weight/Volume/Count)</label><select id="pUnit">${UNIT_LIST.map(u=>`<option value="${u}" ${u===item.unit?'selected':''}>${u}</option>`).join('')}</select></div>
+      <div style="flex:1;"><label class="field-label">Unit</label><select id="pUnit">${UNIT_LIST.map(u=>`<option value="${u}" ${u===item.unit?'selected':''}>${u}</option>`).join('')}</select></div>
     </div>
+    <label class="field-label">Cost Price per Unit (e.g. $0.083 / oz)</label>
+    <input type="number" id="pCostPrice" step="0.001" min="0" value="${item.costPrice||0}">
     <div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--win-border-dark);">
       <label class="field-label">Default Restock Amount Added to Shopping List</label>
       <div style="display:flex; gap:8px;">
@@ -1939,6 +1910,7 @@ function openPantryForm(pantryId){
     const name = document.getElementById('pName').value.trim();
     const qty = parseFloat(document.getElementById('pQty').value)||0;
     const unit = document.getElementById('pUnit').value;
+    const costPrice = parseFloat(document.getElementById('pCostPrice').value)||0;
     const restockQty = parseFloat(document.getElementById('pRestockQty').value)|| qty || 1;
     const restockUnit = document.getElementById('pRestockUnit').value;
     if(!name) return;
@@ -1948,10 +1920,11 @@ function openPantryForm(pantryId){
       item.key = name.toLowerCase();
       item.qty = qty;
       item.unit = unit;
+      item.costPrice = costPrice;
       item.restockQty = restockQty;
       item.restockUnit = restockUnit;
     } else {
-      state.pantry.push({ id:uid(), key:name.toLowerCase(), name, qty, unit, restockQty, restockUnit });
+      state.pantry.push({ id:uid(), key:name.toLowerCase(), name, qty, unit, costPrice, restockQty, restockUnit });
     }
     save(); closeModal(); render();
     showToast(editing ? 'Item updated' : 'Added to pantry');
