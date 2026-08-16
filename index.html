@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
 <title>Hearth — Family Meal Planner</title>
 <meta name="theme-color" content="#8B263E">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -323,7 +323,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v9_7';
+const STORE_KEY = 'hearth_v9_8';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -522,15 +522,19 @@ let state = load();
 function load(){
   try{
     const raw = localStorage.getItem(STORE_KEY);
-    if(!raw) return defaultState();
+    const def = defaultState();
+    if(!raw) return def;
     const parsed = JSON.parse(raw);
-    const merged = {...defaultState(), ...parsed};
+    const merged = {...def, ...parsed};
+    // Ensure meals array is populated even if localstorage saved an empty or partial list previously
+    if(!merged.meals || merged.meals.length === 0){
+      merged.meals = def.meals;
+    }
     merged.householdSize = merged.householdSize || 5;
     merged.menuSearchQuery = merged.menuSearchQuery || '';
     merged.menuFilterType = merged.menuFilterType || 'all';
     merged.entryStops = merged.entryStops || [];
     merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', servings:merged.householdSize, checked:[], recurring:false, ...e}));
-    merged.meals = (merged.meals||[]).map(m=>({type:'dinner', ...m, ingredients:(m.ingredients||[]).map(i=>({cost:0, ...i}))}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
     return merged;
   }catch(e){ return defaultState(); }
