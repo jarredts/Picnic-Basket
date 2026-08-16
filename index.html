@@ -310,7 +310,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================= STATE ============================= */
-const STORE_KEY = 'hearth_v2';
+const STORE_KEY = 'hearth_v3';
 const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
 const todayISO = () => new Date().toISOString().slice(0,10);
 
@@ -331,22 +331,126 @@ const TYPE_NAMES = {breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', snack
 const TYPE_COLORS = {breakfast:'#C99A2E', lunch:'#1F8A82', dinner:'#E8613C', snack:'#6B4A7A'};
 
 function defaultState(){
-  const buffaloDip = {
-    id: uid(), name:'Buffalo Chicken Dip', servings:6, costTotal:14.5, instructionsUrl:'',
-    ingredients:[
-      {id:uid(), name:'cream cheese', qty:24, unit:'oz', cost:3.5},
-      {id:uid(), name:'buffalo sauce', qty:0.5, unit:'cup', cost:1.5},
-      {id:uid(), name:'shredded chicken', qty:2, unit:'cup', cost:4},
-      {id:uid(), name:'ranch dressing', qty:0.5, unit:'cup', cost:1.5},
-    ]
-  };
-  const bagels = {
-    id: uid(), name:'Everything Bagels', servings:8, costTotal:6, instructionsUrl:'',
-    ingredients:[
-      {id:uid(), name:'bagels', qty:8, unit:'ea', cost:5},
-      {id:uid(), name:'cream cheese', qty:8, unit:'oz', cost:1.2},
-    ]
-  };
+  // --- 10 BREAKFASTS ---
+  const b1 = { id:uid(), name:'Overnight Peanut Butter Oats', servings:4, costTotal:3.20, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'milk', qty:2, unit:'cup', cost:1.00}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:1.00}
+  ]};
+  const b2 = { id:uid(), name:'Scrambled Eggs & Toast', servings:4, costTotal:2.80, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'eggs', qty:8, unit:'ea', cost:2.00}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80}
+  ]};
+  const b3 = { id:uid(), name:'Classic Pancakes', servings:4, costTotal:2.20, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'flour', qty:2, unit:'cup', cost:0.80}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50}, {id:uid(), name:'sugar', qty:2, unit:'tbsp', cost:0.40}
+  ]};
+  const b4 = { id:uid(), name:'Cinnamon French Toast', servings:4, costTotal:3.10, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'eggs', qty:3, unit:'ea', cost:0.75}, {id:uid(), name:'milk', qty:0.5, unit:'cup', cost:0.50}, {id:uid(), name:'cinnamon', qty:1, unit:'tbsp', cost:0.25}
+  ]};
+  const b5 = { id:uid(), name:'Banana Oatmeal Porridge', servings:4, costTotal:2.00, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'rolled oats', qty:2, unit:'cup', cost:1.20}, {id:uid(), name:'bananas', qty:2, unit:'ea', cost:0.60}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.20}
+  ]};
+  const b6 = { id:uid(), name:'Breakfast Egg & Cheese Burritos', servings:4, costTotal:4.50, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50}, {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50}, {id:uid(), name:'salsa', qty:0.5, unit:'cup', cost:0.50}
+  ]};
+  const b7 = { id:uid(), name:'Cheesy Scrambled Egg Toast', servings:2, costTotal:2.10, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.80}, {id:uid(), name:'bread', qty:2, unit:'ea', cost:0.30}
+  ]};
+  const b8 = { id:uid(), name:'Bagels & Cream Cheese', servings:4, costTotal:3.50, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'bagels', qty:4, unit:'ea', cost:2.50}, {id:uid(), name:'cream cheese', qty:4, unit:'oz', cost:1.00}
+  ]};
+  const b9 = { id:uid(), name:'Yogurt & Honey Granola Bowl', servings:3, costTotal:4.20, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'yogurt', qty:3, unit:'cup', cost:2.50}, {id:uid(), name:'granola', qty:1.5, unit:'cup', cost:1.20}, {id:uid(), name:'honey', qty:2, unit:'tbsp', cost:0.50}
+  ]};
+  const b10 = { id:uid(), name:'Loaded Breakfast Potato Hash', servings:4, costTotal:3.80, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'potatoes', qty:4, unit:'ea', cost:2.00}, {id:uid(), name:'eggs', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'onion', qty:1, unit:'ea', cost:0.80}
+  ]};
+
+  // --- 10 LUNCHES ---
+  const l1 = { id:uid(), name:'Classic Peanut Butter & Jelly', servings:4, costTotal:2.50, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'peanut butter', qty:0.5, unit:'cup', cost:0.60}, {id:uid(), name:'jelly', qty:4, unit:'tbsp', cost:0.30}
+  ]};
+  const l2 = { id:uid(), name:'Tuna Salad Sandwiches', servings:4, costTotal:4.20, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'canned tuna', qty:2, unit:'ea', cost:3.00}, {id:uid(), name:'mayo', qty:4, unit:'tbsp', cost:0.80}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.40}
+  ]};
+  const l3 = { id:uid(), name:'Grilled Cheese & Tomato Soup', servings:4, costTotal:4.80, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'bread', qty:8, unit:'ea', cost:1.60}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'canned tomato soup', qty:2, unit:'ea', cost:1.00}
+  ]};
+  const l4 = { id:uid(), name:'Black Bean & Rice Bowls', servings:4, costTotal:3.60, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'black beans', qty:2, unit:'ea', cost:1.40}, {id:uid(), name:'rice', qty:2, unit:'cup', cost:0.80}, {id:uid(), name:'salsa', qty:1, unit:'cup', cost:0.80}, {id:uid(), name:'cheddar cheese', qty:2, unit:'oz', cost:0.60}
+  ]};
+  const l5 = { id:uid(), name:'Egg Salad Sandwiches', servings:4, costTotal:3.20, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'eggs', qty:6, unit:'ea', cost:1.50}, {id:uid(), name:'mayo', qty:3, unit:'tbsp', cost:0.60}, {id:uid(), name:'bread', qty:4, unit:'ea', cost:0.80}, {id:uid(), name:'mustard', qty:1, unit:'tbsp', cost:0.30}
+  ]};
+  const l6 = { id:uid(), name:'Turkey & Cheese Wraps', servings:4, costTotal:5.50, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'sliced turkey', qty:8, unit:'oz', cost:3.00}, {id:uid(), name:'cheddar cheese', qty:4, unit:'oz', cost:1.50}
+  ]};
+  const l7 = { id:uid(), name:'Quick Ramen & Soft Egg', servings:2, costTotal:2.20, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'instant ramen', qty:2, unit:'ea', cost:1.00}, {id:uid(), name:'eggs', qty:2, unit:'ea', cost:0.50}, {id:uid(), name:'frozen vegetables', qty:1, unit:'cup', cost:0.70}
+  ]};
+  const l8 = { id:uid(), name:'Hummus & Veggie Pita Pockets', servings:3, costTotal:4.50, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'pita bread', qty:3, unit:'ea', cost:1.80}, {id:uid(), name:'hummus', qty:1, unit:'cup', cost:2.00}, {id:uid(), name:'cucumber', qty:1, unit:'ea', cost:0.70}
+  ]};
+  const l9 = { id:uid(), name:'Loaded Macaroni & Cheese', servings:4, costTotal:3.40, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'macaroni pasta', qty:12, unit:'oz', cost:1.20}, {id:uid(), name:'milk', qty:1, unit:'cup', cost:0.50}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:1.70}
+  ]};
+  const l10 = { id:uid(), name:'Quesadillas with Beans & Cheese', servings:4, costTotal:3.80, instructionsUrl:'', ingredients:[
+    {id:uid(), name:'tortillas', qty:4, unit:'ea', cost:1.00}, {id:uid(), name:'cheddar cheese', qty:6, unit:'oz', cost:2.20}, {id:uid(), name:'black beans', qty:1, unit:'ea', cost:0.60}
+  ]};
+
+  // --- 40 DINNERS ---
+  const dinners = [
+    { name:'Cheesy Rice & Black Bean Skillet', cost:5.50, ing:[{n:'black beans',q:3,u:'ea',c:2.10},{n:'rice',q:2,u:'cup',c:0.80},{n:'cheddar cheese',q:8,u:'oz',c:2.20},{n:'salsa',q:1,u:'cup',c:0.40}] },
+    { name:'Garlic Butter Pasta & Peas', cost:4.00, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'butter',q:4,u:'tbsp',c:1.00},{n:'frozen peas',q:2,u:'cup',c:1.50}] },
+    { name:'Sheet Pan Chicken & Roasted Potatoes', cost:8.20, ing:[{n:'chicken thighs',q:4,u:'ea',c:5.00},{n:'potatoes',q:4,u:'ea',c:2.00},{n:'olive oil',q:2,u:'tbsp',c:1.20}] },
+    { name:'Hearty Beef & Bean Chili', cost:9.50, ing:[{n:'ground beef',q:1,u:'lb',c:5.00},{n:'kidney beans',q:2,u:'ea',c:1.40},{n:'canned diced tomatoes',q:2,u:'ea',c:1.80},{n:'onion',q:1,u:'ea',c:1.30}] },
+    { name:'Spaghetti with Marinara & Meat Sauce', cost:7.00, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'ground beef',q:0.5,u:'lb',c:2.50},{n:'marinara sauce',q:1,u:'ea',c:2.00},{n:'parmesan cheese',q:2,u:'oz',c:1.00}] },
+    { name:'Creamy Garlic Parmesan Chicken Pasta', cost:9.20, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'milk',q:1.5,u:'cup',c:1.00},{n:'parmesan cheese',q:4,u:'oz',c:2.00},{n:'butter',q:2,u:'tbsp',c:0.70}] },
+    { name:'Loaded Pork Carnitas Tacos', cost:8.80, ing:[{n:'pork shoulder',q:1.5,u:'lb',c:5.00},{n:'tortillas',q:8,u:'ea',c:2.00},{n:'salsa',q:1,u:'cup',c:1.00},{n:'onion',q:1,u:'ea',c:0.80}] },
+    { name:'Sheet Pan Sausage & Bell Peppers', cost:7.50, ing:[{n:'sausage links',q:4,u:'ea',c:4.50},{n:'bell peppers',q:3,u:'ea',c:2.20},{n:'onion',q:1,u:'ea',c:0.80}] },
+    { name:'Creamy Tuna Noodle Casserole', cost:5.20, ing:[{n:'egg noodles',q:12,u:'oz',c:1.50},{n:'canned tuna',q:3,u:'ea',c:2.20},{n:'frozen peas',q:1,u:'cup',c:0.70},{n:'milk',q:1,u:'cup',c:0.80}] },
+    { name:'Homemade Chicken Fried Rice', cost:6.80, ing:[{n:'rice',q:3,u:'cup',c:1.20},{n:'shredded chicken',q:1.5,u:'cup',c:3.00},{n:'eggs',q:3,u:'ea',c:0.80},{n:'frozen vegetables',q:1.5,u:'cup',c:1.80}] },
+    { name:'Classic Sloppy Joes', cost:6.50, ing:[{n:'ground beef',q:1,u:'lb',c:5.00},{n:'hamburger buns',q:5,u:'ea',c:1.50}] },
+    { name:'Vegetable & Chickpea Curry', cost:6.20, ing:[{n:'chickpeas',q:2,u:'ea',c:1.40},{n:'coconut milk',q:1,u:'ea',c:2.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'spinach',q:2,u:'cup',c:2.00}] },
+    { name:'Crispy Baked Fish Tacos', cost:8.50, ing:[{n:'frozen fish fillets',q:1,u:'lb',c:5.50},{n:'tortillas',q:8,u:'ea',c:2.00},{n:'salsa',q:0.5,u:'cup',c:1.00}] },
+    { name:'Stuffed Baked Potatoes with Chili', cost:7.20, ing:[{n:'potatoes',q:4,u:'ea',c:2.00},{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'cheddar cheese',q:4,u:'oz',c:1.20}] },
+    { name:'Sweet Potato & Black Bean Burrito Bowls', cost:6.00, ing:[{n:'sweet potatoes',q:2,u:'ea',c:2.00},{n:'black beans',q:2,u:'ea',c:1.40},{n:'rice',q:2,u:'cup',c:0.80},{n:'salsa',q:1,u:'cup',c:1.80}] },
+    { name:'Honey Mustard Chicken & Rice', cost:7.80, ing:[{n:'chicken thighs',q:4,u:'ea',c:5.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'honey',q:2,u:'tbsp',c:0.80},{n:'mustard',q:2,u:'tbsp',c:1.20}] },
+    { name:'Broccoli Cheddar Soup with Bread', cost:6.40, ing:[{n:'broccoli',q:2,u:'ea',c:3.00},{n:'cheddar cheese',q:6,u:'oz',c:2.00},{n:'milk',q:2,u:'cup',c:1.00},{n:'bread',q:4,u:'ea',c:0.40}] },
+    { name:'Pesto Butter Penne Pasta', cost:5.00, ing:[{n:'penne pasta',q:16,u:'oz',c:1.50},{n:'pesto sauce',q:1,u:'ea',c:3.00},{n:'butter',q:1,u:'tbsp',c:0.50}] },
+    { name:'Classic Meatloaf & Mashed Potatoes', cost:9.80, ing:[{n:'ground beef',q:1.5,u:'lb',c:7.50},{n:'potatoes',q:4,u:'ea',c:2.00},{n:'milk',q:0.5,u:'cup',c:0.30}] },
+    { name:'Lemon Herb Roasted Chicken & Veggies', cost:8.90, ing:[{n:'whole chicken',q:1,u:'ea',c:6.00},{n:'potatoes',q:3,u:'ea',c:1.50},{n:'lemon',q:2,u:'ea',c:1.40}] },
+    { name:'Quick Beef Stir-Fry with Noodles', cost:8.50, ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'ramen noodles',q:3,u:'ea',c:1.50},{n:'frozen vegetables',q:1.5,u:'cup',c:1.80},{n:'soy sauce',q:2,u:'tbsp',c:1.20}] },
+    { name:'Baked Ziti Casserole', cost:7.80, ing:[{n:'ziti pasta',q:16,u:'oz',c:1.50},{n:'marinara sauce',q:1,u:'ea',c:2.00},{n:'ricotta cheese',q:8,u:'oz',c:3.30},{n:'mozzarella cheese',q:4,u:'oz',c:1.00}] },
+    { name:'Black Bean & Corn Quesadillas', cost:5.20, ing:[{n:'tortillas',q:6,u:'ea',c:1.50},{n:'black beans',q:2,u:'ea',c:1.40},{n:'corn',q:1,u:'ea',c:0.60},{n:'cheddar cheese',q:6,u:'oz',c:1.70}] },
+    { name:'Crispy Chicken Patty Sandwiches', cost:6.90, ing:[{n:'frozen chicken patties',q:4,u:'ea',c:4.50},{n:'hamburger buns',q:4,u:'ea',c:1.20},{n:'lettuce',q:1,u:'ea',c:1.20}] },
+    { name:'Hearty Lentil Soup & Bread', cost:4.50, ing:[{n:'dried lentils',q:2,u:'cup',c:1.80},{n:'canned diced tomatoes',q:1,u:'ea',c:1.00},{n:'onion',q:1,u:'ea',c:0.80},{n:'bread',q:4,u:'ea',c:0.90}] },
+    { name:'Teriyaki Chicken Rice Bowls', cost:7.40, ing:[{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'teriyaki sauce',q:0.5,u:'cup',c:1.50},{n:'frozen broccoli',q:1,u:'cup',c:1.10}] },
+    { name:'Creamy Tomato Basil Pasta', cost:4.80, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'marinara sauce',q:1,u:'ea',c:2.00},{n:'milk',q:0.5,u:'cup',c:0.30},{n:'butter',q:2,u:'tbsp',c:1.00}] },
+    { name:'Sausage & White Bean Stew', cost:6.70, ing:[{n:'sausage links',q:3,u:'ea',c:3.40},{n:'cannellini beans',q:2,u:'ea',c:1.60},{n:'chicken broth',q:2,u:'cup',c:1.00},{n:'onion',q:1,u:'ea',c:0.70}] },
+    { name:'Loaded Nachos Supreme', cost:7.50, ing:[{n:'tortilla chips',q:1,u:'ea',c:3.00},{n:'ground beef',q:0.5,u:'lb',c:2.50},{n:'cheddar cheese',q:6,u:'oz',c:1.70},{n:'salsa',q:0.5,u:'cup',c:0.30}] },
+    { name:'Garlic Butter Shrimp Pasta', cost:9.50, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'frozen shrimp',q:1,u:'lb',c:6.00},{n:'butter',q:3,u:'tbsp',c:1.00},{n:'garlic powder',q:1,u:'tsp',c:1.00}] },
+    { name:'Beef & Cabbage Skillet', cost:6.20, ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'cabbage',q:1,u:'ea',c:1.50},{n:'onion',q:1,u:'ea',c:0.70}] },
+    { name:'BBQ Pulled Chicken Sandwiches', cost:7.20, ing:[{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'bbq sauce',q:1,u:'cup',c:1.80},{n:'hamburger buns',q:4,u:'ea',c:1.40}] },
+    { name:'Minestrone Soup & Crackers', cost:5.80, ing:[{n:'canned diced tomatoes',q:2,u:'ea',c:1.80},{n:'kidney beans',q:1,u:'ea',c:0.70},{n:'pasta',q:0.5,u:'cup',c:0.50},{n:'frozen vegetables',q:1,u:'cup',c:1.20},{n:'crackers',q:1,u:'ea',c:1.60}] },
+    { name:'Ham & Cheese Pasta Bake', cost:6.50, ing:[{n:'pasta',q:16,u:'oz',c:1.50},{n:'diced ham',q:8,u:'oz',c:3.00},{n:'cheddar cheese',q:4,u:'oz',c:1.20},{n:'milk',q:0.5,u:'cup',c:0.80}] },
+    { name:'Smoky Black Bean & Corn Chili', cost:5.40, ing:[{n:'black beans',q:2,u:'ea',c:1.40},{n:'kidney beans',q:1,u:'ea',c:0.70},{n:'canned diced tomatoes',q:2,u:'ea',c:1.80},{n:'corn',q:1,u:'ea',c:0.60},{n:'onion',q:1,u:'ea',c:0.90}] },
+    { name:'Crispy Baked Pork Chops & Applesauce', cost:8.10, ing:[{n:'pork chops',q:4,u:'ea',c:6.00},{n:'applesauce',q:1,u:'cup',c:1.50},{n:'bread crumbs',q:0.5,u:'cup',c:0.60}] },
+    { name:'Loaded Potato Soup', cost:6.10, ing:[{n:'potatoes',q:5,u:'ea',c:2.50},{n:'milk',q:2,u:'cup',c:1.00},{n:'cheddar cheese',q:6,u:'oz',c:1.80},{n:'butter',q:2,u:'tbsp',c:0.80}] },
+    { name:'One-Pot Spanish Rice & Ground Beef', cost:7.10, ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'rice',q:2,u:'cup',c:0.80},{n:'canned diced tomatoes',q:1,u:'ea',c:0.90},{n:'onion',q:1,u:'ea',c:1.40}] },
+    { name:'Chicken Salad Lettuce Wraps', cost:6.90, ing:[{n:'shredded chicken',q:2,u:'cup',c:4.00},{n:'mayo',q:4,u:'tbsp',c:0.80},{n:'lettuce',q:1,u:'ea',c:1.50},{n:'celery',q:2,u:'ea',c:0.60}] },
+    { name:'Cheesy Beef and Macaroni Skillet', cost:7.40, ing:[{n:'ground beef',q:0.8,u:'lb',c:4.00},{n:'macaroni pasta',q:12,u:'oz',c:1.20},{n:'cheddar cheese',q:6,u:'oz',c:1.70},{n:'canned tomato sauce',q:1,u:'ea',c:0.50}] }
+  ];
+
+  const dinnerMeals = dinners.map(d => ({
+    id: uid(),
+    name: d.name,
+    servings: 4,
+    costTotal: d.cost,
+    instructionsUrl: '',
+    ingredients: d.ing.map(i => ({ id: uid(), name: i.n, qty: i.q, unit: i.u, cost: i.c }))
+  }));
+
+  const breakfasts = [b1,b2,b3,b4,b5,b6,b7,b8,b9,b10];
+  const lunches = [l1,l2,l3,l4,l5,l6,l7,l8,l9,l10];
+
   const t0 = new Date();
   const t2 = new Date(); t2.setDate(t2.getDate()+2);
   return {
@@ -355,15 +459,16 @@ function defaultState(){
     anchorDate: todayISO(),
     selectedDate: todayISO(),
     budgetTarget: 150,
-    meals: [buffaloDip, bagels],
+    meals: [...breakfasts, ...lunches, ...dinnerMeals],
     entries: [
-      {id:uid(), date: t0.toISOString().slice(0,10), mealId: bagels.id, mealType:'breakfast', checked:[]},
-      {id:uid(), date: t2.toISOString().slice(0,10), mealId: buffaloDip.id, mealType:'dinner', checked:[]},
+      {id:uid(), date: t0.toISOString().slice(0,10), mealId: b1.id, mealType:'breakfast', checked:[], recurring:false},
+      {id:uid(), date: t2.toISOString().slice(0,10), mealId: dinnerMeals[0].id, mealType:'dinner', checked:[], recurring:true},
     ],
     shoppingList:[],
     pantry:[
-      {id:uid(), key:'cream cheese', name:'cream cheese', qty:8, unit:'oz'},
-      {id:uid(), key:'bagels', name:'bagels', qty:4, unit:'ea'},
+      {id:uid(), key:'rice', name:'rice', qty:4, unit:'cup'},
+      {id:uid(), key:'pasta', name:'pasta', qty:16, unit:'oz'},
+      {id:uid(), key:'eggs', name:'eggs', qty:12, unit:'ea'},
     ]
   };
 }
@@ -375,13 +480,48 @@ function load(){
     if(!raw) return defaultState();
     const parsed = JSON.parse(raw);
     const merged = {...defaultState(), ...parsed};
-    merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', checked:[], ...e}));
+    merged.entries = (merged.entries||[]).map(e=>({mealType:'dinner', checked:[], recurring:false, ...e}));
     merged.meals = (merged.meals||[]).map(m=>({...m, ingredients:(m.ingredients||[]).map(i=>({cost:0, ...i}))}));
     merged.shoppingList = (merged.shoppingList||[]).map(i=>({costEstimate:0, purchased:false, ...i}));
     return merged;
   }catch(e){ return defaultState(); }
 }
 function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+/* ============================= RECURRING AUTO-GENERATOR ============================= */
+function checkRecurringEntries(){
+  const todayStr = todayISO();
+  let updated = false;
+  // Look for any recurring entries in the past or present, and ensure they exist for upcoming matching weekday or next 7 days
+  state.entries.forEach(entry => {
+    if(entry.recurring){
+      const originalDate = new Date(entry.date+'T00:00:00');
+      const dayOfWeek = originalDate.getDay();
+      // Check next 4 weeks for this day of week
+      for(let i=1; i<=28; i++){
+        const checkDate = new Date();
+        checkDate.setDate(checkDate.getDate() + i);
+        if(checkDate.getDay() === dayOfWeek){
+          const checkIso = iso(checkDate);
+          const exists = state.entries.some(e => e.date === checkIso && e.mealId === entry.mealId && e.mealType === entry.mealType);
+          if(!exists){
+            state.entries.push({
+              id: uid(),
+              date: checkIso,
+              mealId: entry.mealId,
+              mealType: entry.mealType,
+              checked: [],
+              recurring: true
+            });
+            updated = true;
+          }
+        }
+      }
+    }
+  });
+  if(updated) save();
+}
+checkRecurringEntries();
 
 /* ============================= TOAST ============================= */
 function showToast(msg){
@@ -451,6 +591,7 @@ const ICONS = {
   budget:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 15c.5 1 1.5 1.5 2.7 1.5 1.7 0 2.8-.9 2.8-2.1 0-3-5.5-1.4-5.5-4.3 0-1.2 1.1-2.1 2.8-2.1 1.2 0 2.2.5 2.7 1.5M12 6.5v11"/></svg>`,
   plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
   x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
+  copy:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`
 };
 
 /* ============================= TAB BAR ============================= */
@@ -552,7 +693,7 @@ function renderWeekView(view){
         const r = document.createElement('div');
         r.className='week-meal-row';
         r.style.borderLeftColor = TYPE_COLORS[e.mealType];
-        r.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span><span class="mname">${meal.name}</span><span class="cost">$${(meal.costTotal||0).toFixed(2)}</span>`;
+        r.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span><span class="mname">${meal.name} ${e.recurring?'<span style="font-size:10px;color:var(--gold-dark);">&#8635;</span>':''}</span><span class="cost">$${(meal.costTotal||0).toFixed(2)}</span>`;
         r.onclick = ()=>{ state.selectedDate = ds; save(); render(); };
         col.appendChild(r);
       });
@@ -663,14 +804,20 @@ function renderDayDetail(view){
       <div class="row-between">
         <div style="display:flex; align-items:center; gap:8px;">
           <span class="type-badge" style="background:${TYPE_COLORS[entry.mealType]}; width:18px;height:18px;font-size:10px;">${TYPE_LABELS[entry.mealType]}</span>
-          <h3 style="font-family:var(--disp); margin:0;">${meal.name}</h3>
+          <h3 style="font-family:var(--disp); margin:0;">${meal.name} ${entry.recurring?'<span style="font-size:12px;color:var(--gold-dark);" title="Recurring weekly">&#8635;</span>':''}</h3>
         </div>
-        <button class="iconbtn" data-remove-entry="${entry.id}">${ICONS.x}</button>
+        <div style="display:flex; gap:4px; align-items:center;">
+          <button class="iconbtn" title="Duplicate record" data-duplicate-entry="${entry.id}">${ICONS.copy}</button>
+          <button class="iconbtn" title="Remove" data-remove-entry="${entry.id}">${ICONS.x}</button>
+        </div>
       </div>
       <div class="costline">$${(meal.costTotal||0).toFixed(2)} total ${meal.servings?`&middot; $${(meal.costTotal/meal.servings).toFixed(2)}/person`:''}</div>
       ${meal.instructionsUrl?`<a class="link" href="${meal.instructionsUrl}" target="_blank" rel="noopener">Instructions &rarr;</a>`:''}
       <div style="margin-top:8px;">${ingHtml}</div>
-      <button class="btn btn-teal btn-sm btn-block" style="margin-top:10px;" data-add-unchecked="${entry.id}">Add unchecked items to shopping list</button>
+      <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
+        <button class="btn btn-teal btn-sm" style="flex:1;" data-add-unchecked="${entry.id}">Add unchecked to list</button>
+        <button class="btn btn-ghost btn-sm ${entry.recurring?'active':''}" data-toggle-recurring="${entry.id}" style="${entry.recurring?'background:var(--gold);color:#3A2B04;border-color:var(--gold);':''}">${entry.recurring?'Recurring (On)':'Make Recurring'}</button>
+      </div>
     `;
     wrap.appendChild(card);
 
@@ -685,6 +832,24 @@ function renderDayDetail(view){
     card.querySelector('[data-remove-entry]').onclick = ()=>{
       state.entries = state.entries.filter(e=>e.id!==entry.id);
       save(); render();
+    };
+    card.querySelector('[data-duplicate-entry]').onclick = ()=>{
+      state.entries.push({
+        id: uid(),
+        date: entry.date,
+        mealId: entry.mealId,
+        mealType: entry.mealType,
+        checked: [...entry.checked],
+        recurring: entry.recurring
+      });
+      save(); render();
+      showToast('Meal record duplicated');
+    };
+    card.querySelector('[data-toggle-recurring]').onclick = ()=>{
+      entry.recurring = !entry.recurring;
+      if(entry.recurring) checkRecurringEntries();
+      save(); render();
+      showToast(entry.recurring ? 'Set as recurring weekly!' : 'Recurring turned off');
     };
     card.querySelector('[data-add-unchecked]').onclick = ()=>{
       const unchecked = meal.ingredients.filter(ing=>!entry.checked.includes(ing.id));
@@ -711,6 +876,7 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
   const d0 = defaultDate || state.selectedDate;
   let selMeal = mealId || state.meals[0].id;
   let selType = 'dinner';
+  let isRecurring = false;
   const weekStart = startOfWeek(d0);
   const weekDates = Array.from({length:7},(_,i)=>iso(addDays(weekStart,i)));
   let chosen = new Set([d0]);
@@ -726,6 +892,10 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
       <label class="field-label">Meal type</label>
       <div id="typeToggle" style="display:flex; gap:6px; flex-wrap:wrap;">
         ${TYPE_ORDER.map(t=>`<button type="button" class="chip ${t===selType?'active':''}" data-type="${t}">${TYPE_LABELS[t]} ${TYPE_NAMES[t]}</button>`).join('')}
+      </div>
+      <div style="margin:12px 0; display:flex; align-items:center; gap:8px;">
+        <input type="checkbox" id="planRecurringCb" ${isRecurring?'checked':''} style="width:18px;height:18px;accent-color:var(--gold);">
+        <label for="planRecurringCb" style="font-size:13px;font-weight:600;cursor:pointer;margin:0;">Make this a recurring weekly meal (e.g. Taco Tuesday)</label>
       </div>
       <label class="field-label">Days this week</label>
       <div id="dayToggle" style="display:flex; gap:6px; flex-wrap:wrap;">
@@ -758,6 +928,8 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
     document.getElementById('cancelPlan').onclick = closeModal;
     const mealSel = document.getElementById('planMealSelect');
     if(mealSel) mealSel.onchange = ()=>{ selMeal = mealSel.value; };
+    const recCb = document.getElementById('planRecurringCb');
+    if(recCb) recCb.onchange = ()=>{ isRecurring = recCb.checked; };
     document.querySelectorAll('#typeToggle .chip').forEach(b=>{
       b.onclick = ()=>{ selType = b.dataset.type; refresh(); };
     });
@@ -786,8 +958,9 @@ function openPlanModal({mealId=null, defaultDate=null}={}){
     document.getElementById('confirmPlan').onclick = ()=>{
       if(chosen.size===0){ alert('Pick at least one day.'); return; }
       chosen.forEach(d=>{
-        state.entries.push({id:uid(), date:d, mealId:selMeal, mealType:selType, checked:[]});
+        state.entries.push({id:uid(), date:d, mealId:selMeal, mealType:selType, checked:[], recurring:isRecurring});
       });
+      if(isRecurring) checkRecurringEntries();
       save(); closeModal();
       state.activeTab='calendar'; state.selectedDate=[...chosen][0]; save();
       render();
@@ -816,7 +989,10 @@ function renderMenuTab(view){
     card.innerHTML = `
       <div class="row-between">
         <h3>${meal.name}</h3>
-        <button class="iconbtn" data-edit="${meal.id}">&#9998;</button>
+        <div style="display:flex; gap:4px;">
+          <button class="iconbtn" title="Duplicate meal" data-duplicate-meal="${meal.id}">${ICONS.copy}</button>
+          <button class="iconbtn" title="Edit meal" data-edit="${meal.id}">&#9998;</button>
+        </div>
       </div>
       <div class="costline">$${(meal.costTotal||0).toFixed(2)} total ${perPerson?`&middot; $${perPerson.toFixed(2)}/person (${meal.servings} servings)`:''}</div>
       <div style="margin-top:6px;">${meal.ingredients.map(i=>`<span class="tag">${i.name}</span>`).join('')}</div>
@@ -828,6 +1004,15 @@ function renderMenuTab(view){
     `;
     view.appendChild(card);
     card.querySelector('[data-edit]').onclick = ()=>openMealForm(meal.id);
+    card.querySelector('[data-duplicate-meal]').onclick = ()=>{
+      const dup = JSON.parse(JSON.stringify(meal));
+      dup.id = uid();
+      dup.name = meal.name + ' (Copy)';
+      dup.ingredients.forEach(i => i.id = uid());
+      state.meals.push(dup);
+      save(); render();
+      showToast('Meal duplicated to recipe box');
+    };
     card.querySelector('[data-del]').onclick = ()=>{
       if(confirm(`Remove "${meal.name}" from the recipe box?`)){
         state.meals = state.meals.filter(m=>m.id!==meal.id);
@@ -1197,7 +1382,7 @@ function renderBudgetTab(view){
       const row = document.createElement('div');
       row.className='ing-row';
       row.innerHTML = `<span class="type-badge" style="background:${TYPE_COLORS[e.mealType]}">${TYPE_LABELS[e.mealType]}</span>
-        <span>${meal.name} <span class="tag">${e.date}</span></span>
+        <span>${meal.name} ${e.recurring?'&#8635;':''} <span class="tag">${e.date}</span></span>
         <span class="ing-qty">$${(meal.costTotal||0).toFixed(2)}</span>
         <button class="iconbtn" data-rm="${e.id}">${ICONS.x}</button>`;
       row.querySelector('[data-rm]').onclick=()=>{
